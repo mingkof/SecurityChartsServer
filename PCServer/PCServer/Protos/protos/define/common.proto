@@ -1,0 +1,24 @@
+syntax = "proto3";
+package onlineproto;
+
+import "common.proto";
+
+
+//错误码常量定义
+enum E_ErrorCode {
+    // 无错误
+    NO_ERROR = 0;
+    // 已在其他设备登陆
+    LOGIN_ON_OTHER_DEVICE = 1;
+}
+
+//********************************数据结构定义*********************************
+// 玩家信息
+message G_Player {
+    int64 id = 1; //玩家id
+    string account = 2; //账号名
+    string nickname = 3; //昵称
+    int32 level = 4; //等级
+    int32 exp = 5; //经验
+    int32 vipLv = 6; //vip等级
+}
