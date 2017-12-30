@@ -35,6 +35,8 @@ namespace SHSecurityContext.DBContext
         public DbSet<sys_cameras> sys_cameras { get; set; }
 
         public DbSet<sys_camPeopleCount> sys_camPeopleCount { get; set; }
+
+        public DbSet<PoliceGPSAreaStatic> PoliceGPSAreaStatic { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //    => optionsBuilder
         // .UseMySql(@"Server=127.0.0.1;database=SHSecuritySys;uid=strike2014;pwd=strike@2014;");

@@ -57,6 +57,27 @@ namespace SHSecurityServer.Controllers
                 array = list
             });
         }
+        
+
+        //获取最新时间的警情列表，分页
+        [HttpGet("NewerListByPage/{pageIndex}/{pageSize}")]
+        public IActionResult NewerListByPage(int pageIndex, int pageSize)
+        {
+            string nowYear = System.DateTime.Now.Year.ToString();
+            string nowMonth = System.DateTime.Now.Month.ToString("00");
+            string nowDay = System.DateTime.Now.Day.ToString("00");
+
+            var list = _sys110warnRepository.FindPageList(pageIndex, pageSize,out int totalSize, p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay, "TIMESIGN", true);
+
+            if (list == null)
+                return BadRequest("无数据");
+
+            return Ok(new
+            {
+                array = list
+            });
+        }
+
 
         [HttpGet("areamsg")]
         public async Task<IActionResult> GetAreaMsg([FromServices] INodeServices nodeServices) {
@@ -125,6 +146,36 @@ namespace SHSecurityServer.Controllers
 
             var count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay);
             return Ok(count);
+        }
+
+
+        /// <summary>
+        /// cate: 1 报警类，  2 交通类， 3 事故类， 4 其他
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <returns></returns>
+        [HttpGet("countByCate/{cate}")]
+        public IActionResult CountByCate(int cate)
+        {
+            Random r = new Random();
+            return Ok(r.Next(0,200));
+
+            //if (string.IsNullOrEmpty(cate))
+            //    cate = "其他";
+
+            //string nowYear = System.DateTime.Now.Year.ToString();
+            //string nowMonth = System.DateTime.Now.Month.ToString("00");
+            //string nowDay = System.DateTime.Now.Day.ToString("00");
+
+            ////TODO: 修改为如果是其他， 则分类不等于 报警类， 交通类， 事故类
+            //if(cate == "其他")
+            //{
+            //    var count1 = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay );
+            //    return Ok(count1);
+            //}
+
+            //var count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.FKAY1 == cate);
+            //return Ok(count);
         }
 
 
@@ -216,6 +267,9 @@ namespace SHSecurityServer.Controllers
 
             return hourCounts;
         }
+
+
+
 
     }
 }

@@ -58,7 +58,9 @@ namespace PCServer
             services.AddScoped<IGpsGridRepository, GpsGridRepository>();
             services.AddScoped<ICamerasRepository, CamerasRepository>();
             services.AddScoped<ICamePeopleCountRepository, CamePeopleCountRepository>();
+            services.AddScoped<IPoliceGPSAreaStaticRepository, PoliceGPSAreaStaticRepository>();
 
+            
 
             var conn = Configuration.GetConnectionString("DefaultConnection");
 

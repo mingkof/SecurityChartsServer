@@ -18,5 +18,8 @@ namespace MKServerWeb.Model.RealData
         public string username { get; set; }
 
         public string userpassword { get; set; }
+
+        public string GPSSocketServerIP { get; set; }
+        public string GPSSocketServerPort { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using MKServerWeb.Server;
+﻿using Microsoft.Extensions.Options;
+using MKServerWeb.Model.RealData;
+using MKServerWeb.Server;
 using Newtonsoft.Json;
 using SHSecurityContext.IRepositorys;
 using SHSecurityModels;
@@ -22,11 +24,18 @@ namespace PCServer.Server.GPSSocket
         //private static PoliceGPSArray dataArray;
 
         IPoliceGpsRepository _repo;
+        RealDataUrl _realData;
 
-        public void Run(IPoliceGpsRepository repo)
+
+        public void Run(IPoliceGpsRepository repo, IOptions<RealDataUrl> config)
         {
             Logmng.Logger.Trace("GPSSocketClient is Run 001");
             _repo = repo;
+            _realData = config.Value;
+
+            tb_ServerIP = _realData.GPSSocketServerIP;
+            tb_ServerPort = _realData.GPSSocketServerPort;
+
             ConnectServer();
 
             //var query = _repo.Find(p => p.PoliceID == "test");
@@ -69,6 +78,7 @@ namespace PCServer.Server.GPSSocket
             catch (SocketException se)
             {
                 Logmng.Logger.Error("连接服务器失败，服务器正在运行么?\n" + se.Message);
+                Logmng.Logger.Error("IP/port: " + tb_ServerIP + " " + tb_ServerPort);
                 UpdateStatusMsg(false);
 
             }
@@ -170,12 +180,30 @@ namespace PCServer.Server.GPSSocket
 
         public void HandleMsg(string msg)
         {
+            int timeNow = KVDDDCore.Utils.TimeUtils.ConvertToTimeStampNow();
+            var DayNow = DateTime.Now;
+            string nowYear = DayNow.Year.ToString();
+            string nowMonth = DayNow.Month.ToString("00");
+            string nowDay = DayNow.Day.ToString("00");
+
+            string nowHour= DayNow.Hour.ToString("00");
+            string nowMinute = DayNow.Minute.ToString("00");
+            string nowSecond = DayNow.Second.ToString("00");
+
+
             //?083068N,JR50300,13:50:38,1,121.459702,31.237600,0.0,202.5,0,2,0,0,0,0,00000000軺
             string[] dt = msg.Split(',');
             PoliceGPS tamp = new PoliceGPS();
             tamp.PoliceID = dt[0];
             tamp.GPS_X = dt[4];
             tamp.GPS_Y = dt[5];
+            tamp.Timestamp = timeNow;
+            tamp.Year = nowYear;
+            tamp.Month = nowMonth;
+            tamp.Day = nowDay;
+            tamp.HH = nowHour;
+            tamp.MM = nowMinute;
+            tamp.SS = nowSecond;
 
             var query = _repo.Find(p => p.PoliceID == tamp.PoliceID);
             if(query == null)
@@ -186,8 +214,22 @@ namespace PCServer.Server.GPSSocket
             {
                 query.GPS_X = tamp.GPS_X;
                 query.GPS_Y = tamp.GPS_Y;
+                query.Timestamp = tamp.Timestamp;
+                query.Year = tamp.Year;
+                query.Month = tamp.Month;
+                query.Day = tamp.Day;
+                query.HH = tamp.HH;
+                query.MM = tamp.MM;
+                query.SS = tamp.SS;
+
                 _repo.Update(query);
             }
+
+
+            //统计更新区域内警员人次的历史记录
+            PCServerMain.Instance.PoliceGpsStaticAreaManager.UpdatePoliceAreaStatic(tamp);
+
+
 
             //bool find = false;
             //foreach (var item in dataArray.PoliceArray)

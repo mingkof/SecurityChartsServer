@@ -11,9 +11,10 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    partial class SHSecuritySysContextModelSnapshot : ModelSnapshot
+    [Migration("20171230080927_AddData20171230")]
+    partial class AddData20171230
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,28 +77,6 @@ namespace SHSecurityContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("police_gps");
-                });
-
-            modelBuilder.Entity("SHSecurityModels.PoliceGPSAreaStatic", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AreaName");
-
-                    b.Property<string>("Day");
-
-                    b.Property<string>("HH");
-
-                    b.Property<string>("Month");
-
-                    b.Property<string>("PoliceId");
-
-                    b.Property<string>("Year");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PoliceGPSAreaStatic");
                 });
 
             modelBuilder.Entity("SHSecurityModels.sys_110warningdb", b =>

@@ -25,4 +25,15 @@ namespace SHSecurityContext.Repositorys
             return Find(p => p.JJD_ID == jjdId);
         }
     }
+
+    public class PoliceGPSAreaStaticRepository : BaseRepository<PoliceGPSAreaStatic>, IPoliceGPSAreaStaticRepository
+    {
+        public PoliceGPSAreaStaticRepository(SHSecuritySysContext context)
+        {
+            nContext = context;
+        }
+
+    }
+
+
 }

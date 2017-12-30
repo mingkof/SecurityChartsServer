@@ -12,4 +12,11 @@ namespace SHSecurityContext.IRepositorys
         sys_110warningdb GetWarn(string jjdId);
 
     }
+
+
+    public interface IPoliceGPSAreaStaticRepository : IBaseRepository<PoliceGPSAreaStatic>
+    {
+    }
+
+
 }

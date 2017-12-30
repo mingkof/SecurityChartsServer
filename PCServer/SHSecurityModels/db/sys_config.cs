@@ -12,6 +12,9 @@ namespace SHSecurityModels
         kTimer2 = 102,
 
         kGpsGridServerLast110Timestamp = 103,
+
+        //静安今日警力总数
+        kPoliceTotalCountTaday = 104
     }
 
 

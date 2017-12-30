@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MKServerWeb.Model.RealData;
 using MKServerWeb.Server;
 using PCServer.Redis;
 using PCServer.Server.GPS;
@@ -10,7 +11,9 @@ using SHSecurityContext.IRepositorys;
 using SHSecurityModels;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,8 +21,13 @@ namespace PCServer.Server
 {
     public class PCServerEntry
     {
+       public PoliceGpsStaticAreaManager PoliceGpsStaticAreaManager = new PoliceGpsStaticAreaManager();
+
+
         public async void Init(bool isPublishGongAn = false)
         {
+            test();
+
             using (var serviceScope = ServiceLocator.Instance.CreateScope())
             {
                 //获取Context
@@ -49,10 +57,11 @@ namespace PCServer.Server
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
                     {
                         var IPoliceGpsRepo = serviceScope.ServiceProvider.GetService<IPoliceGpsRepository>();
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
                         //启动GPSSocket服务
                         GPSSocketClient GPSSocketClient = new GPSSocketClient();
-                        GPSSocketClient.Run(IPoliceGpsRepo);
+                        GPSSocketClient.Run(IPoliceGpsRepo, RealDataConfig);
 
 
                         while (true)
@@ -73,9 +82,43 @@ namespace PCServer.Server
             }
 
 
+            //读取配置
+            ReadConfig_PoliceGpsStaticAreas();
+
+
+
+
             return;
         }
 
+        private void test()
+        {
+           // var point1 = new Point(20, 20);   //1
+           // var point2 = new Point(110, 20);   //0
+           // var point3 = new Point(20, 70);  //0
+           // var point4 = new Point(1, 20);  //1
+           // var point5 = new Point(50, 60);  //1
+           // var point6 = new Point(50, 71);  //0
+           // var point7 = new Point(60, 90);  //0
+
+
+           // var arr = new Point[] {
+           //     new Point(0,0),
+           //     new Point(0,30),
+           //     new Point(50,70),
+           //     new Point(100,70),
+           //     new Point(100,0)
+           // };
+
+           //bool t1 = KVDDDCore.Utils.PointInPolygon.CheckPointInPolygon(point1, arr);
+           // bool t2 = KVDDDCore.Utils.PointInPolygon.CheckPointInPolygon(point2, arr);
+           // bool t3 = KVDDDCore.Utils.PointInPolygon.CheckPointInPolygon(point3, arr);
+           // bool t4 = KVDDDCore.Utils.PointInPolygon.CheckPointInPolygon(point4, arr);
+           // bool t5 = KVDDDCore.Utils.PointInPolygon.CheckPointInPolygon(point5, arr);
+           // bool t6 = KVDDDCore.Utils.PointInPolygon.CheckPointInPolygon(point6, arr);
+           // bool t7 = KVDDDCore.Utils.PointInPolygon.CheckPointInPolygon(point7, arr);
+
+        }
 
         private async Task InitDatabase(SHSecuritySysContext context)
         {
@@ -178,6 +221,40 @@ namespace PCServer.Server
 
 
 
+        /// <summary>
+        /// 读取static下的 PoliceGpsStaticAreas.json文件
+        /// 目的是为了图表4-警力分布，需要统计按小时，某区域的警员分布人数
+        /// 这个配置是区域的 场景世界坐标区域
+        /// 需要将gps位置转换，并判断在哪个区域，并记录在数据库，供api使用
+        /// </summary>
+        void ReadConfig_PoliceGpsStaticAreas ()
+        {
+            using (var serviceScope = ServiceLocator.Instance.CreateScope())
+            {
+                var police_area_static_repo = serviceScope.ServiceProvider.GetService<IPoliceGPSAreaStaticRepository>();
 
-    }
+
+                string file = "static/PoliceGpsStaticAreas.json";
+
+                var content = KVDDDCore.Utils.FileUtils.ReadFile(file);
+
+
+                PoliceGpsStaticAreaManager.AreaConfig = 
+                Newtonsoft.Json.JsonConvert.DeserializeObject<PoliceGpsStaticAreaConfig>(content);
+                PoliceGpsStaticAreaManager.InitAreaConfig(police_area_static_repo);
+
+                //test
+                //var p1 = PoliceGpsStaticAreaManager.CheckInArea(1580, 120);
+                //var p12 = PoliceGpsStaticAreaManager.CheckInArea(850, 100);
+                //var p2 = PoliceGpsStaticAreaManager.CheckInArea(15750, -200);
+                //var p3 = PoliceGpsStaticAreaManager.CheckInArea(15000, -5000);
+                //var p4 = PoliceGpsStaticAreaManager.CheckInArea(10666, -100);
+
+            }
+        }
+
+
+
+
+        }
 }

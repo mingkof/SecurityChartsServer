@@ -17,7 +17,7 @@ namespace PCServer.Server.GPS
 
         public static void Run()
         {
-            int time = 30000;
+            int time = 1000 * 60;
 
             ThreadPool.QueueUserWorkItem(async (a) =>
             {
