@@ -1,5 +1,5 @@
-﻿#define PUBLISH_GONGAN
-//#define AT_COMPANY
+﻿//#define PUBLISH_GONGAN
+#define AT_COMPANY
 
 using System;
 using System.Collections.Generic;
@@ -77,6 +77,8 @@ namespace PCServer
                 c.SwaggerDoc("v1", new Info { Title = "SHSecuritySys API", Version = "v1" });
             });
 
+            services.Configure<RealDataUrl>(this.Configuration.GetSection("RealDataUrl"));
+
             //> 配置跨域
             //services.AddCors();
             services.AddCors(options =>
@@ -87,8 +89,6 @@ namespace PCServer
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
-
-            services.Configure<RealDataUrl>(this.Configuration.GetSection("RealDataUrl"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -160,6 +160,11 @@ namespace PCServer
             //});
 
 
+            //app.UseCors(builder =>
+            //    builder.WithOrigins("http://10.1.30.207:8000")
+            //           .AllowAnyHeader());
+
+            app.UseCors("CorsPolicy");
 
 
             app.UseMvc(routes =>
@@ -184,11 +189,6 @@ namespace PCServer
             app.UseAuthentication();
 
 
-            //app.UseCors(builder =>
-            //    builder.WithOrigins("http://10.1.30.207:8000")
-            //           .AllowAnyHeader());
-
-            app.UseCors("CorsPolicy");
 
 
 
