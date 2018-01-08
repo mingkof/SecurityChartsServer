@@ -34,7 +34,7 @@ namespace PCServer.Server
                 var dbContext = serviceScope.ServiceProvider.GetService<SHSecuritySysContext>();
 
                 //自动迁移
-                await new DbInitializer().InitializeAsync(dbContext);
+                //await new DbInitializer().InitializeAsync(dbContext);
                 //迁移创建命令: Add-Migration init_data
 
 
