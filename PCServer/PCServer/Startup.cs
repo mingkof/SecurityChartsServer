@@ -77,8 +77,16 @@ namespace PCServer
                 c.SwaggerDoc("v1", new Info { Title = "SHSecuritySys API", Version = "v1" });
             });
 
-            services.AddCors();
-
+            //> 配置跨域
+            //services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
 
             services.Configure<RealDataUrl>(this.Configuration.GetSection("RealDataUrl"));
         }
@@ -180,7 +188,7 @@ namespace PCServer
             //    builder.WithOrigins("http://10.1.30.207:8000")
             //           .AllowAnyHeader());
 
-
+            app.UseCors("CorsPolicy");
 
 
 
