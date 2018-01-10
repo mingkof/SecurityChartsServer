@@ -7,6 +7,29 @@ namespace KVDDDCore.Utils
 {
     public class FileUtils
     {
+        public static string ReadFile(Stream stream)
+        {
+            if (stream == null)
+                return "";
+
+            StringBuilder sb = new StringBuilder();
+            StreamReader sr = new StreamReader(stream, Encoding.UTF8);
+
+            try
+            {
+                while (!sr.EndOfStream)
+                {
+                    sb.Append(sr.ReadLine());
+                }
+                sr.Close();
+            }
+            catch 
+            {
+            }
+ 
+            return sb.ToString();
+        }
+
         public static string ReadFile(string filePath)
         {
             if (!File.Exists(filePath))

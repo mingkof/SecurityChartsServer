@@ -150,9 +150,9 @@ namespace SHSecurityServer.Controllers
 
 
         /// <summary>
-        /// 分类获取警情数量  
+        /// cate: 1 报警类，  2 交通类， 3 事故类， 4 其他
         /// </summary>
-        /// <param name="cate">cate: 1 报警类，  2 交通类， 3 事故类， 4 其他</param>
+        /// <param name="cate"></param>
         /// <returns></returns>
         [HttpGet("countByCate/{cate}")]
         public IActionResult CountByCate(int cate)

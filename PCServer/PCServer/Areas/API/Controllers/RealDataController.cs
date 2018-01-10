@@ -110,8 +110,10 @@ namespace SHSecurityServer.Controllers
         {
             FtpClient ftpClient = new FtpClient(RealDataUrlConfig.ip, RealDataUrlConfig.username, RealDataUrlConfig.userpassword);
 
-            if (ftpClient.Download(path) != null)
-                return Ok(ftpClient.Download(path));
+            var res = ftpClient.Download(path);
+
+            if (res != null)
+                return Ok(res);
             else
                 return Ok("数据为空");
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using KVDDDCore.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MKServerWeb.Model.RealData;
@@ -23,9 +24,14 @@ namespace PCServer.Server
     {
        public PoliceGpsStaticAreaManager PoliceGpsStaticAreaManager = new PoliceGpsStaticAreaManager();
 
+        //WifiDataAreas 信息
+        public WifiDataAreaStruct WifiDataAreas = new WifiDataAreaStruct();
+
 
         public async void Init(bool isPublishGongAn = false)
         {
+           ReadConfig_WifiDataAreas();
+            
             test();
 
             using (var serviceScope = ServiceLocator.Instance.CreateScope())
@@ -34,7 +40,7 @@ namespace PCServer.Server
                 var dbContext = serviceScope.ServiceProvider.GetService<SHSecuritySysContext>();
 
                 //自动迁移
-                //await new DbInitializer().InitializeAsync(dbContext);
+                await new DbInitializer().InitializeAsync(dbContext);
                 //迁移创建命令: Add-Migration init_data
 
 
@@ -78,10 +84,249 @@ namespace PCServer.Server
                     }
                 });
 
-                GPSGridServer.Run();
+                //GPSGridServer.Run();
+
+
+
+                //每隔1分钟，读取ftp文件resultAll.json，更新wifidatapeoples和wifidatapeopleshistory表.
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
+
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var IWifiDataHistory = serviceScope.ServiceProvider.GetService<IWifiDataPeoplesHistoryRepository>();
+                        var IWifiData = serviceScope.ServiceProvider.GetService<IWifiDataPeoplesRepository>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+
+                        string path = "resultAll.json";
+
+                        
+                        while (true)
+                        {
+                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+
+                            string str = ftpClient.DownloadToStr(path);
+
+                            
+                            if (!string.IsNullOrEmpty(str))
+                            {
+                                    JsonWifiDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonWifiDataStruct>(str);
+
+                                    // Logmng.Logger.Trace(str);
+
+                                    if(res != null)
+                                    {
+                                        // Logmng.Logger.Trace("A5555555555  read ftp resultAll.json");
+                                        //存储到自己的数据库
+
+                                        int timeNow = TimeUtils.ConvertToTimeStampNow();
+
+                                        for (int i = 0; i < res.peopleList.Count; i++)
+                                        {
+                                            var item = res.peopleList[i];
+
+                                            var query = IWifiData.Find(p => p.WifiID == item.wifiID);
+                                            if(query == null)
+                                            {
+                                                int areaId = 0;
+                                                for (int m = 0; m < WifiDataAreas.data.Count; m++)
+                                                {
+                                                    if(WifiDataAreas.data[m].ids.Contains(item.wifiID))
+                                                    {
+                                                        areaId = WifiDataAreas.data[m].id;
+                                                        break;
+                                                    }
+                                                }
+
+
+                                                IWifiData.Add(new wifidata_peoples()
+                                                {
+                                                    WifiID = item.wifiID,
+                                                    Count = item.count,
+                                                    Timestamp = timeNow,
+                                                    AreaId = areaId
+                                                });
+                                            } else
+                                            {
+                                                query.Count = item.count;
+                                                query.Timestamp = timeNow;
+                                                IWifiData.Update(query);
+                                            }
+
+                                            //从57分到03分 记录且记录一次
+                                            var YEAR = System.DateTime.Now.Year.ToString();
+                                            var MONTH = System.DateTime.Now.Month.ToString("00");
+                                            var DAY = System.DateTime.Now.Day.ToString("00");
+                                            var HH = System.DateTime.Now.Hour.ToString("00");
+                                            var MM = System.DateTime.Now.Minute.ToString("00");
+                                            var SS = System.DateTime.Now.Second.ToString("00");
+
+                                            var curMinute = System.DateTime.Now.Minute;
+
+                                            Logmng.Logger.Trace("A5555555555");
+                                            
+                                            if (curMinute >= 1 && curMinute <= 59)
+                                            {
+                                                var queryHis = IWifiDataHistory.Find(p => p.WifiID == item.wifiID && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == HH);
+                                                if(queryHis == null)
+                                                {
+                                                    IWifiDataHistory.Add(new wifidata_peoples_history()
+                                                    {
+                                                        Timestamp = timeNow,
+                                                        WifiID = item.wifiID,
+                                                        Count = item.count,
+                                                         Year = YEAR,
+                                                         Month = MONTH,
+                                                         Day = DAY,
+                                                          HH = HH,
+                                                          MM = MM,
+                                                          SS = SS
+                                                    });
+                                                }
+                                            }
+
+                                        }
+                                }
+                            }
+
+                            Thread.Sleep(60 * 1000);
+                        }
+                    }
+                });
+
+
+                 //每隔1分钟，读取ftp文件KaKouData.json，更新kakoudatajin和kakoudatajinhistory表.
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
+
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var IKaKouDataJinHistory = serviceScope.ServiceProvider.GetService<IKaKouDataJinHistoryRepository>();
+                        var IKaKouDataJin = serviceScope.ServiceProvider.GetService<IKaKouDataJinRepository>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+
+                        string path = "KaKouData.json";
+                        while(true)
+                        {
+                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            // Logmng.Logger.Trace("q11111111111111111111");
+                            string str = ftpClient.DownloadToStr(path);
+                            if(!string.IsNullOrEmpty(str))
+                            {
+                                Logmng.Logger.Trace(str);
+                                JsonKaKouDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonKaKouDataStruct>(str);
+                                if(res!=null)
+                                {
+                                    int timeNow=TimeUtils.ConvertToTimeStampNow();
+                                    for(int m = 0;m<res.JinArray.Count;m++)
+                                    {
+                                        var item=res.JinArray[m];
+                                        var query=IKaKouDataJin.Find(p=>p.SBBHID==item.SBBH);
+                                        if(query==null)
+                                        {
+                                            IKaKouDataJin.Add(new kakoudata_jin(){
+                                                SBBHID=item.SBBH,
+                                                SBMC=item.SBMC,
+                                                XSFX=item.XSFX,
+                                                Count=item.Count,
+                                                pass_or_out=item.pass_or_out,
+                                                Timestamp=timeNow
+                                            });
+                                        }
+                                        else
+                                        {
+                                            query.XSFX=item.XSFX;
+                                            query.Count=item.Count;
+                                            query.pass_or_out=item.pass_or_out;
+                                            query.Timestamp=timeNow;
+                                            IKaKouDataJin.Update(query);
+                                        }
+
+                                        var curMinute = System.DateTime.Now.Minute;
+
+                                        if (curMinute>=52&&curMinute<=1)
+                                        {
+                                            var YEAR = System.DateTime.Now.Year.ToString();
+                                            var MONTH = System.DateTime.Now.Month.ToString("00");
+                                            var DAY = System.DateTime.Now.Day.ToString("00");
+                                            var HH = System.DateTime.Now.Hour.ToString("00");
+                                            var queryHis=IKaKouDataJinHistory.Find(p=>p.SBBHID==item.SBBH&&p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY&&p.HH==HH);
+
+                                            if (queryHis==null)
+                                            {
+                                                IKaKouDataJinHistory.Add(new kakoudata_jin_history(){
+                                                    Year=YEAR,
+                                                    Month=MONTH,
+                                                    Day=DAY,
+                                                    HH=HH,
+                                                    SBBHID=item.SBBH,
+                                                    SBMC=item.SBMC,
+                                                    XSFX=item.XSFX,
+                                                    Count=item.Count,
+                                                    pass_or_out=item.pass_or_out,
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            Thread.Sleep(1000*60);
+                        }
+                    }
+                });
+                 //每隔1分钟，读取ftp文件Travio.json，更新traviodata
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
+
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var ITravioData = serviceScope.ServiceProvider.GetService<ITravioDataRepositoy>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+
+                        string path = "AllTravioInfo.json";
+                        while(true)
+                        {
+                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            string str = ftpClient.DownloadToStr(path);
+                            if(!string.IsNullOrEmpty(str))
+                            {
+                                int timeNow=TimeUtils.ConvertToTimeStampNow();
+                                // Logmng.Logger.Trace(str);
+                                TraVioInfoStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<TraVioInfoStruct>(str);
+                                var count = res.NearWeekCount.nearWeekCount;
+
+                                var YEAR = System.DateTime.Now.Year.ToString();
+                                var MONTH = System.DateTime.Now.Month.ToString("00");
+                                var DAY = System.DateTime.Now.Day.ToString("00");
+
+                                var query =ITravioData.Find(p=>p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY);
+                                if(query!=null)
+                                {
+                                    query.TodayCount=count;
+                                    query.TimeStamp=timeNow;
+                                    ITravioData.Update(query);
+                                }
+                                else
+                                {
+                                    ITravioData.Add(new traviodata(){
+                                        Year=YEAR,
+                                        Month=MONTH,
+                                        Day=DAY,
+                                        TodayCount=count,
+                                        TimeStamp=timeNow
+                                    });
+                                }
+
+                            }
+                            Thread.Sleep(1000*60);
+                        }
+                    }
+                });
+
             }
-
-
             //读取配置
             ReadConfig_PoliceGpsStaticAreas();
 
@@ -254,7 +499,36 @@ namespace PCServer.Server
         }
 
 
-
-
+        /// <summary>
+        /// 读取static下的WifiDataAreas.json文件
+        /// </summary>
+        void ReadConfig_WifiDataAreas()
+        {
+            string file = "static/WifiDataAreas.json";
+            var content = KVDDDCore.Utils.FileUtils.ReadFile(file);
+            WifiDataAreas = Newtonsoft.Json.JsonConvert.DeserializeObject<WifiDataAreaStruct>(content);
         }
+
+
+
+    }
+
+
+
+
+
+    //wifidata peoples
+    public class WifiDataAreaItemStruct
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public List<string> ids { get; set; }
+    }
+
+
+    public class WifiDataAreaStruct
+    {
+        public List<WifiDataAreaItemStruct> data = new List<WifiDataAreaItemStruct>();
+    }
+
 }

@@ -36,4 +36,21 @@ namespace SHSecurityContext.Repositorys
     }
 
 
+    public class WifiDataPeoplesRepository : BaseRepository<wifidata_peoples>, IWifiDataPeoplesRepository
+    {
+        public WifiDataPeoplesRepository(SHSecuritySysContext context)
+        {
+            nContext = context;
+        }
+
+    }
+
+    public class WifiDataPeoplesHistoryRepository : BaseRepository<wifidata_peoples_history>, IWifiDataPeoplesHistoryRepository
+    {
+        public WifiDataPeoplesHistoryRepository(SHSecuritySysContext context)
+        {
+            nContext = context;
+        }
+
+    }
 }

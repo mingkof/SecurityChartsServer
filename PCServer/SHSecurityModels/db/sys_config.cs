@@ -14,7 +14,10 @@ namespace SHSecurityModels
         kGpsGridServerLast110Timestamp = 103,
 
         //静安今日警力总数
-        kPoliceTotalCountTaday = 104
+        kPoliceTotalCountTaday = 104,
+
+        //SIP用于客户端和sip处理服务器的状态更改
+        kSipSCStatus = 110,
     }
 
 

@@ -18,5 +18,11 @@ namespace SHSecurityContext.IRepositorys
     {
     }
 
+    public interface IWifiDataPeoplesRepository : IBaseRepository<wifidata_peoples>
+    {
+    }
 
+    public interface IWifiDataPeoplesHistoryRepository : IBaseRepository<wifidata_peoples_history>
+    {
+    }
 }

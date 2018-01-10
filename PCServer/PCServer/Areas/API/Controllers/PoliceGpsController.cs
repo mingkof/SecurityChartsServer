@@ -33,7 +33,7 @@ namespace SHSecurityServer.Controllers
         /// 得到今天的所有警员gps信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetList")]
+        [HttpGet("list")]
         public IActionResult GetList()
         {
             string nowYear = System.DateTime.Now.Year.ToString();
@@ -48,7 +48,7 @@ namespace SHSecurityServer.Controllers
             });
         }
 
-        [HttpGet("GetOnlineCount")]
+        [HttpGet("onlineCount")]
         public IActionResult GetOnlineCount()
         {
             string nowYear = System.DateTime.Now.Year.ToString();
@@ -64,7 +64,7 @@ namespace SHSecurityServer.Controllers
         }
 
 
-        [HttpGet("GetTotalCount")]
+        [HttpGet("totalCount")]
         public IActionResult GetTotalCount()
         {
             int totalCount = 0;

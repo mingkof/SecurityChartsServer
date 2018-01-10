@@ -194,7 +194,7 @@ namespace PCServer.Server.GPSSocket
             //?083068N,JR50300,13:50:38,1,121.459702,31.237600,0.0,202.5,0,2,0,0,0,0,00000000軺
             string[] dt = msg.Split(',');
             PoliceGPS tamp = new PoliceGPS();
-            tamp.PoliceID = dt[0];
+            tamp.PoliceID = dt[1];
             tamp.GPS_X = dt[4];
             tamp.GPS_Y = dt[5];
             tamp.Timestamp = timeNow;

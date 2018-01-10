@@ -16,7 +16,6 @@ namespace SHSecurityContext.DBContext
         }
     }
 
-
     public class SHSecuritySysContext : DbContext
     {
         public SHSecuritySysContext(DbContextOptions<SHSecuritySysContext> options) : base(options)
@@ -37,6 +36,13 @@ namespace SHSecurityContext.DBContext
         public DbSet<sys_camPeopleCount> sys_camPeopleCount { get; set; }
 
         public DbSet<PoliceGPSAreaStatic> PoliceGPSAreaStatic { get; set; }
+
+        public DbSet<wifidata_peoples_history> WifiDataPeoplesHistory { get; set; }
+        public DbSet<wifidata_peoples> WifiDataPeoples { get; set; }
+
+        public DbSet<kakoudata_jin> KaKouDataJin { get; set; }
+        public DbSet<kakoudata_jin_history> KaKouDataJinHistory { get; set; }
+        public DbSet<traviodata> TravioData { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //    => optionsBuilder
         // .UseMySql(@"Server=127.0.0.1;database=SHSecuritySys;uid=strike2014;pwd=strike@2014;");

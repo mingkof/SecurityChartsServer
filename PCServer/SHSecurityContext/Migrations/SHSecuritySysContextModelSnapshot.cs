@@ -48,6 +48,54 @@ namespace SHSecurityContext.Migrations
                     b.ToTable("db_jjds");
                 });
 
+            modelBuilder.Entity("SHSecurityModels.kakoudata_jin", b =>
+                {
+                    b.Property<string>("SBBHID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Count");
+
+                    b.Property<string>("SBMC");
+
+                    b.Property<int>("Timestamp");
+
+                    b.Property<string>("XSFX");
+
+                    b.Property<string>("pass_or_out");
+
+                    b.HasKey("SBBHID");
+
+                    b.ToTable("KaKouDataJin");
+                });
+
+            modelBuilder.Entity("SHSecurityModels.kakoudata_jin_history", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Count");
+
+                    b.Property<string>("Day");
+
+                    b.Property<string>("HH");
+
+                    b.Property<string>("Month");
+
+                    b.Property<string>("SBBHID");
+
+                    b.Property<string>("SBMC");
+
+                    b.Property<string>("XSFX");
+
+                    b.Property<string>("Year");
+
+                    b.Property<string>("pass_or_out");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KaKouDataJinHistory");
+                });
+
             modelBuilder.Entity("SHSecurityModels.PoliceGPS", b =>
                 {
                     b.Property<int>("Id")
@@ -322,6 +370,70 @@ namespace SHSecurityContext.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("sys_wifitable");
+                });
+
+            modelBuilder.Entity("SHSecurityModels.traviodata", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Day");
+
+                    b.Property<string>("Month");
+
+                    b.Property<int>("TimeStamp");
+
+                    b.Property<string>("TodayCount");
+
+                    b.Property<string>("Year");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TravioData");
+                });
+
+            modelBuilder.Entity("SHSecurityModels.wifidata_peoples", b =>
+                {
+                    b.Property<string>("WifiID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AreaId");
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("Timestamp");
+
+                    b.HasKey("WifiID");
+
+                    b.ToTable("WifiDataPeoples");
+                });
+
+            modelBuilder.Entity("SHSecurityModels.wifidata_peoples_history", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<string>("Day");
+
+                    b.Property<string>("HH");
+
+                    b.Property<string>("MM");
+
+                    b.Property<string>("Month");
+
+                    b.Property<string>("SS");
+
+                    b.Property<int>("Timestamp");
+
+                    b.Property<string>("WifiID");
+
+                    b.Property<string>("Year");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WifiDataPeoplesHistory");
                 });
 #pragma warning restore 612, 618
         }
