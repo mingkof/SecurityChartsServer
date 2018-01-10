@@ -43,6 +43,7 @@ namespace SHSecurityContext.DBContext
         public DbSet<kakoudata_jin> KaKouDataJin { get; set; }
         public DbSet<kakoudata_jin_history> KaKouDataJinHistory { get; set; }
         public DbSet<traviodata> TravioData { get; set; }
+        public DbSet<KakouTop> KakouTop { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //    => optionsBuilder
         // .UseMySql(@"Server=127.0.0.1;database=SHSecuritySys;uid=strike2014;pwd=strike@2014;");

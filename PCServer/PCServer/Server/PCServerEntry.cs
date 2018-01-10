@@ -26,8 +26,9 @@ namespace PCServer.Server
 
         //WifiDataAreas 信息
         public WifiDataAreaStruct WifiDataAreas = new WifiDataAreaStruct();
-
-
+        //卡口排名
+        public int topCount = 5;
+        List<KakouTop> topList = new List<KakouTop>();
         public async void Init(bool isPublishGongAn = false)
         {
            ReadConfig_WifiDataAreas();
@@ -204,7 +205,7 @@ namespace PCServer.Server
                     {
                         var IKaKouDataJinHistory = serviceScope.ServiceProvider.GetService<IKaKouDataJinHistoryRepository>();
                         var IKaKouDataJin = serviceScope.ServiceProvider.GetService<IKaKouDataJinRepository>();
-
+                        var IKaKouTop = serviceScope.ServiceProvider.GetService<IKaKouTopRepository>();
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
                         string path = "KaKouData.json";
@@ -245,13 +246,13 @@ namespace PCServer.Server
                                         }
 
                                         var curMinute = System.DateTime.Now.Minute;
-
+                                        var YEAR = System.DateTime.Now.Year.ToString();
+                                        var MONTH = System.DateTime.Now.Month.ToString("00");
+                                        var DAY = System.DateTime.Now.Day.ToString("00");
+                                        var HH = System.DateTime.Now.Hour.ToString("00");
                                         if (curMinute>=52&&curMinute<=1)
                                         {
-                                            var YEAR = System.DateTime.Now.Year.ToString();
-                                            var MONTH = System.DateTime.Now.Month.ToString("00");
-                                            var DAY = System.DateTime.Now.Day.ToString("00");
-                                            var HH = System.DateTime.Now.Hour.ToString("00");
+                                            
                                             var queryHis=IKaKouDataJinHistory.Find(p=>p.SBBHID==item.SBBH&&p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY&&p.HH==HH);
 
                                             if (queryHis==null)
@@ -267,6 +268,46 @@ namespace PCServer.Server
                                                     Count=item.Count,
                                                     pass_or_out=item.pass_or_out,
                                                 });
+                                            }
+                                        }
+
+                                        //记录卡口top5
+                                        KakouTop kakou = new KakouTop()
+                                        {
+                                            SBBHID = item.SBBH,
+                                            Value=int.Parse(item.Count),
+                                            Year= YEAR,
+                                            Month=MONTH,
+                                            Day=DAY
+                                        };
+                                        //判断是否超过5
+                                        if (topList.Count < topCount)
+                                        {
+                                            topList.Add(kakou);
+                                            IKaKouTop.Add(kakou);
+                                        }
+                                        else
+                                        {
+                                            //降序排列
+                                            topList = topList.OrderBy(p => p.Value).ToList();
+                                            if (topList[topList.Count-1].Value<kakou.Value)
+                                            {
+                                                //被替换的数据
+                                                KakouTop kakou_re = topList[topList.Count - 1];
+                                                var queryKakouTop= IKaKouTop.Find(p => p.SBBHID == kakou_re.SBBHID);
+                                                if (queryKakouTop!=null)
+                                                {
+                                                    //更新数据库中的数据
+                                                    queryKakouTop.SBBHID = kakou.SBBHID;
+                                                    queryKakouTop.Value = kakou.Value;
+                                                    queryKakouTop.Year = kakou.Year;
+                                                    queryKakouTop.Month = kakou.Month;
+                                                    queryKakouTop.Day = kakou.Day;
+                                                    IKaKouTop.Update(queryKakouTop);
+                                                }
+                                                //更新topList
+                                                topList.RemoveAt(topList.Count - 1);
+                                                topList.Add(kakou);
                                             }
                                         }
                                     }
@@ -370,6 +411,23 @@ namespace PCServer.Server
             AddConf(context, SHSecurityModels.EConfigKey.kLastResultUpdateTime, "0", 0);
             AddConf(context, SHSecurityModels.EConfigKey.kTimer1, "", 60000);
             AddConf(context, SHSecurityModels.EConfigKey.kTimer2, "0", 30000);
+            //用于视频监控图表
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam1_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam2_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam3_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam4_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam1_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam2_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam3_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam4_id, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam1_url, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam2_url, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam3_url, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb1_cam4_url, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam1_url, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam2_url, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam3_url, "0", 0);
+            AddConf(context, SHSecurityModels.EConfigKey.tb2_cam4_url, "0", 0);
 
             await context.SaveChangesAsync();
 

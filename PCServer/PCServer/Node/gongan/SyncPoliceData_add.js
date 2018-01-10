@@ -58,8 +58,8 @@ function doRelease(connection) {
 
 var sqlconnection = mysql.createConnection({
     host: '127.0.0.1',
-    user: 'root',
-    password: '123456',
+    user: 'strike2014',
+    password: 'strike@2014',
     port: '3306',
     database: 'securitycitydb'
 });
