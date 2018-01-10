@@ -36,19 +36,17 @@ namespace SHSecurityServer.Controllers
                 return Ok(new {
                     res=query
                 });
-                // return Ok("1111");
             }else
             {
                 return BadRequest("2222");
             }
-            // return Ok("1111");
         }
         /// <summary>
         /// 获取卡口流量top 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetKakouTop/")]
-        public IActionResult GetKakouTop()
+        [HttpGet("GetKakouTop5Data/")]
+        public IActionResult GetKakouTop5Data()
         {
             var query = _kakouTop.FindList(p => true, "", false);
             if (query!=null)
