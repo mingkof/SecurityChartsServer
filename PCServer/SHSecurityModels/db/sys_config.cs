@@ -18,6 +18,25 @@ namespace SHSecurityModels
 
         //SIP用于客户端和sip处理服务器的状态更改
         kSipSCStatus = 110,
+
+
+        //用于视频监控图表的配置
+        tb1_cam1_id = 120,
+        tb1_cam2_id = 121,
+        tb1_cam3_id = 122,
+        tb1_cam4_id = 123,
+        tb2_cam1_id = 124,
+        tb2_cam2_id = 125,
+        tb2_cam3_id = 126,
+        tb2_cam4_id = 127,
+        tb1_cam1_url = 130,
+        tb1_cam2_url = 131,
+        tb1_cam3_url = 132,
+        tb1_cam4_url = 133,
+        tb2_cam1_url = 134,
+        tb2_cam2_url = 135,
+        tb2_cam3_url = 136,
+        tb2_cam4_url = 137,
     }
 
 

@@ -11,9 +11,10 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    partial class SHSecuritySysContextModelSnapshot : ModelSnapshot
+    [Migration("20180111024221_kakoutop")]
+    partial class kakoutop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,34 +169,6 @@ namespace SHSecurityContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PoliceGPSAreaStatic");
-                });
-
-            modelBuilder.Entity("SHSecurityModels.RoadDataRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Day");
-
-                    b.Property<string>("HH");
-
-                    b.Property<string>("MM");
-
-                    b.Property<string>("Month");
-
-                    b.Property<string>("Roadname");
-
-                    b.Property<int>("Timestamp");
-
-                    b.Property<string>("TrafficAvgSpeed");
-
-                    b.Property<string>("TrafficData");
-
-                    b.Property<string>("Year");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoadDataRecord");
                 });
 
             modelBuilder.Entity("SHSecurityModels.sys_110warningdb", b =>

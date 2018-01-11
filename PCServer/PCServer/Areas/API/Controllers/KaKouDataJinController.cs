@@ -18,12 +18,15 @@ namespace SHSecurityServer.Controllers
         private readonly ILogger _logger;
         // private readonly IKaKouDataHistoryJinRepository _kakoudatajin_history;
         private readonly IKaKouDataJinRepository _kakoudatajin;
-        public KaKouDataJinController(IKaKouDataJinRepository kakoudata,ILogger<Sys110WarnController> logger)
+        private readonly IKaKouTopRepository _kakouTop;
+
+        public KaKouDataJinController(IKaKouDataJinRepository kakoudata, IKaKouTopRepository kakouTop, ILogger<Sys110WarnController> logger)
         {
             _logger = logger;
             _kakoudatajin = kakoudata;
-            // _kakoudatajin_history = kakoudata_history;
+            _kakouTop = kakouTop;
         }
+
         [HttpGet("getkakoudata/")]
         public IActionResult GetKaKouData()
         {
@@ -33,12 +36,28 @@ namespace SHSecurityServer.Controllers
                 return Ok(new {
                     res=query
                 });
-                // return Ok("1111");
             }else
             {
                 return BadRequest("2222");
             }
-            // return Ok("1111");
         }
+        /// <summary>
+        /// 获取卡口流量top 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetKakouTop5Data/")]
+        public IActionResult GetKakouTop5Data()
+        {
+            var query = _kakouTop.FindList(p => true, "", false);
+            if (query!=null)
+            {
+
+                return Ok(new {
+                    res = query
+                });
+            }
+            return BadRequest("无数据");
+        }
+
     }
  }

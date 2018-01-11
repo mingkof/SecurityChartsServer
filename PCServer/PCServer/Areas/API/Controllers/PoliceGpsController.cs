@@ -104,9 +104,8 @@ namespace SHSecurityServer.Controllers
             return Ok();
         }
 
-        //获取不同区域在今日某小时的警力数，用于警力分布图表
         /// <summary>
-        /// 
+        /// 获取不同区域在今日某小时的警力数，用于警力分布图表
         /// </summary>
         /// <param name="hour">传入小时</param>
         /// <returns></returns>
@@ -134,6 +133,23 @@ namespace SHSecurityServer.Controllers
                 counts = count
             });
         }
+        /// <summary>
+        /// 获取每小时的在岗警力
+        /// </summary>
+        /// <param name="hour"></param>
+        /// <returns></returns>
+        [HttpGet("GetHourCount/{hour}")]
+        public IActionResult GetHourCount(string hour)
+        {
+            var DayNow = DateTime.Now;
+            string nowYear = DayNow.Year.ToString();
+            string nowMonth = DayNow.Month.ToString("00");
+            string nowDay = DayNow.Day.ToString("00");
 
+            var query = _policeGps.Count(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.HH == hour);
+            return Ok(new {
+                res =query
+                });
+        }
     }
 }

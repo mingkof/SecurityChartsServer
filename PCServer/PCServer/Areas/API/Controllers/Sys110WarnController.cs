@@ -38,9 +38,11 @@ namespace SHSecurityServer.Controllers
         // }
 
 
-
+        /// <summary>
+        /// 获取今日报警列表
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("list", Name = "warnList")]
-        //[Route("/api/110warn/list")]
         public IActionResult Get()
         {
             string nowYear = System.DateTime.Now.Year.ToString();
@@ -57,9 +59,13 @@ namespace SHSecurityServer.Controllers
                 array = list
             });
         }
-        
 
-        //获取最新时间的警情列表，分页
+        /// <summary>
+        /// 获取最新时间的警情列表，分页
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet("NewerListByPage/{pageIndex}/{pageSize}")]
         public IActionResult NewerListByPage(int pageIndex, int pageSize)
         {
@@ -118,7 +124,7 @@ namespace SHSecurityServer.Controllers
 
 
         /// <summary>
-        /// 
+        ///  获取某时间段的报警列表
         /// </summary>
         /// <param name="begin">2017-09-25_14:05:00</param>
         /// <param name="end"></param>
@@ -135,9 +141,11 @@ namespace SHSecurityServer.Controllers
             });
         }
 
-
+        /// <summary>
+        /// 获取今日警情数量
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("count")]
-        //[Route("/api/110warn/count")]
         public IActionResult Count()
         {
             string nowYear = System.DateTime.Now.Year.ToString();
@@ -150,37 +158,40 @@ namespace SHSecurityServer.Controllers
 
 
         /// <summary>
-        /// cate: 1 报警类，  2 交通类， 3 事故类， 4 其他
+        ///   每小时分类获取报警信息     cate: 1 报警类，  2 交通类， 3 事故类， 4 其他
         /// </summary>
         /// <param name="cate"></param>
         /// <returns></returns>
-        [HttpGet("countByCate/{cate}")]
-        public IActionResult CountByCate(int cate)
+        [HttpGet("countByCate/{cate}/{hour}")]
+        public IActionResult CountByCate(string cate,string hour)
         {
-            Random r = new Random();
-            return Ok(r.Next(0,200));
+            if (string.IsNullOrEmpty(cate))
+                cate = "其他";
+            
+            string nowYear = System.DateTime.Now.Year.ToString();
+            string nowMonth = System.DateTime.Now.Month.ToString("00");
+            string nowDay = System.DateTime.Now.Day.ToString("00");
 
-            //if (string.IsNullOrEmpty(cate))
-            //    cate = "其他";
+            var count=0;
+            switch (cate)
+            {
+                case "1": count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.HH == hour&& (p.FKAY1.Contains("报警"))); break;
+                case "2": count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.HH == hour && (p.FKAY1.Contains("交通"))); break;
+                case "3": count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.HH == hour && (p.FKAY1.Contains("事故"))); break;
+                case "4": count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.HH == hour && (p.FKAY1.Contains("其他")|| p.FKAY1.Contains("纠纷")|| p.FKAY1.Contains("求助")|| p.FKAY1.Contains("空值"))); break;
+                default: break;
+            }
 
-            //string nowYear = System.DateTime.Now.Year.ToString();
-            //string nowMonth = System.DateTime.Now.Month.ToString("00");
-            //string nowDay = System.DateTime.Now.Day.ToString("00");
-
-            ////TODO: 修改为如果是其他， 则分类不等于 报警类， 交通类， 事故类
-            //if(cate == "其他")
-            //{
-            //    var count1 = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay );
-            //    return Ok(count1);
-            //}
-
-            //var count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.FKAY1 == cate);
-            //return Ok(count);
+            return Ok(new {
+                res = count
+            });
         }
 
-
+        /// <summary>
+        /// 获取今日每小时警情数
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("hourcount")]
-        //[Route("/api/110warn/hourcount")]
         public async Task<IActionResult> HourCount()
         {
             var res = await GetHourCount();
@@ -220,7 +231,6 @@ namespace SHSecurityServer.Controllers
 
 
         [HttpGet("phonelist/{phone}")]
-        //[Route("/api/110warn/hourcount")]
         public IActionResult HourCount(string phone)
         {
             var query = _sys110warnRepository.FindList(p => p.BJ_PHONE == phone, "", false);
@@ -235,7 +245,6 @@ namespace SHSecurityServer.Controllers
         }
 
         [HttpGet("cmsearch/{word}")]
-        //[Route("/api/110warn/hourcount")]
         public IActionResult CmSearch(string word)
         {
             var query = _sys110warnRepository.FindList(p => p.COMMET.Contains(word), "", false);
@@ -261,10 +270,9 @@ namespace SHSecurityServer.Controllers
 
             for (int i = 0; i <= nowHour; i++)
             {
-                var count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.HH == i.ToString());
+                var count = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.HH == i.ToString("00"));
                 hourCounts.Add(i, count);
             }
-
             return hourCounts;
         }
 
