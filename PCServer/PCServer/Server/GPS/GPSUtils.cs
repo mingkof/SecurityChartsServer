@@ -83,8 +83,8 @@ namespace PCServer.Server.GPS
 
        public static Vector3 ComputeLocalPositionGCJ(string longitude, string latitude)
         {
-            longitude = "121.453523";
-            latitude = "31.245909";
+            // longitude = "121.453523";
+            // latitude = "31.245909";
 
             //Logs.Clear();
 

@@ -165,7 +165,7 @@ namespace PCServer.Server
 
                                             var curMinute = System.DateTime.Now.Minute;
 
-                                            Logmng.Logger.Trace("A5555555555");
+                                            // Logmng.Logger.Trace("A5555555555");
                                             
                                             if (curMinute >= 1 && curMinute <= 59)
                                             {
@@ -216,7 +216,7 @@ namespace PCServer.Server
                             string str = ftpClient.DownloadToStr(path);
                             if(!string.IsNullOrEmpty(str))
                             {
-                                Logmng.Logger.Trace(str);
+                                // Logmng.Logger.Trace(str);
                                 JsonKaKouDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonKaKouDataStruct>(str);
                                 if(res!=null)
                                 {
@@ -278,37 +278,45 @@ namespace PCServer.Server
                                             Value=int.Parse(item.Count),
                                             Year= YEAR,
                                             Month=MONTH,
-                                            Day=DAY
+                                            Day=DAY,
+                                            Timestamp=timeNow
                                         };
                                         //判断是否超过5
                                         if (topList.Count < topCount)
                                         {
+                                        
                                             topList.Add(kakou);
-                                            IKaKouTop.Add(kakou);
+                                            if (topList.Count == topCount)
+                                            {
+                                                var queryList = IKaKouTop.FindList(p => true, "",false);
+                                                if(queryList != null){
+                                                    IKaKouTop.RemoveRange(queryList);
+                                                }
+                                                for(int i=0; i<topList.Count;i++)
+                                                {
+                                                    IKaKouTop.Add(topList[i]);
+                                                }
+                                            }
                                         }
                                         else
                                         {
                                             //降序排列
                                             topList = topList.OrderBy(p => p.Value).ToList();
-                                            if (topList[topList.Count-1].Value<kakou.Value)
+                                            // Logmng.Logger.Trace(topList[topList.Count-1].Value+"     ---    "+kakou.Value);
+                                            if (topList[0].Value<kakou.Value)
                                             {
-                                                //被替换的数据
-                                                KakouTop kakou_re = topList[topList.Count - 1];
-                                                var queryKakouTop= IKaKouTop.Find(p => p.SBBHID == kakou_re.SBBHID);
-                                                if (queryKakouTop!=null)
-                                                {
-                                                    //更新数据库中的数据
-                                                    queryKakouTop.SBBHID = kakou.SBBHID;
-                                                    queryKakouTop.Value = kakou.Value;
-                                                    queryKakouTop.Year = kakou.Year;
-                                                    queryKakouTop.Month = kakou.Month;
-                                                    queryKakouTop.Day = kakou.Day;
-                                                    IKaKouTop.Update(queryKakouTop);
-                                                }
-                                                //更新topList
-                                                topList.RemoveAt(topList.Count - 1);
+                                                topList.RemoveAt(0);
                                                 topList.Add(kakou);
+                                                var queryList = IKaKouTop.FindList(p => true, "",false);
+                                                if(queryList != null){
+                                                    IKaKouTop.RemoveRange(queryList);
+                                                }
+                                                for(int i=0; i<topList.Count;i++)
+                                                {
+                                                    IKaKouTop.Add(topList[i]);
+                                                }
                                             }
+                                           
                                         }
                                     }
                                 }
@@ -360,9 +368,73 @@ namespace PCServer.Server
                                         TimeStamp=timeNow
                                     });
                                 }
-
                             }
                             Thread.Sleep(1000*60);
+                        }
+                    }
+                });
+
+                //每隔五分钟记录roaddata   更新roaddatarecord
+                  ThreadPool.QueueUserWorkItem((a) =>
+                {
+
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var IRoadDataRecord = serviceScope.ServiceProvider.GetService<IRoadDataRecordRepository>();
+                        RealDataUrl RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>().Value;
+                        while(true)
+                        {
+                            int timeNow=TimeUtils.ConvertToTimeStampNow();
+                            var model = WebClientUls.GetString(RealDataConfig.TrafficUrl);
+                            var modelRoadTop = WebClientUls.GetString(RealDataConfig.RoadUrl);
+
+                            TrafficData tampData = null;
+                            if (model != null)
+                            {
+                                // _logger.LogInformation(model["data"]["overview"]["traIndex"].ToString());
+                                tampData = new TrafficData
+                                {
+                                    TrafficDataForAll = model["data"]["overview"]["traIndex"].ToString(),
+                                    TrafficAvgSpeed = model["data"]["overview"]["avgSpeed"].ToString(),
+                                    TopsRoads = new TrafficRoadState[5]
+                                };
+                            }
+                            if (modelRoadTop != null)
+                            {
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    tampData.TopsRoads[i] = new TrafficRoadState(
+                                            modelRoadTop["data"]["rows"][i]["roadName"].ToString(),
+                                            modelRoadTop["data"]["rows"][i]["speed"].ToString(),
+                                            modelRoadTop["data"]["rows"][i]["traIndex"].ToString());
+                                }
+                            }
+                            if(tampData!=null)
+                            {
+                                // JsonRoadDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonRoadDataStruct>(tampData);
+                                var YEAR = System.DateTime.Now.Year.ToString();
+                                var MONTH = System.DateTime.Now.Month.ToString("00");
+                                var DAY = System.DateTime.Now.Day.ToString("00");
+                                var HH = System.DateTime.Now.Hour.ToString("00");
+                                var MM = System.DateTime.Now.Minute.ToString("00");
+                                for (int i=0;i<tampData.TopsRoads.Count();i++)
+                                {
+                                    var item = tampData.TopsRoads[i];
+                                    IRoadDataRecord.Add(new RoadDataRecord{
+                                        Timestamp =timeNow,
+                                        Year =YEAR,
+                                        Month =MONTH,
+                                        Day =DAY,
+                                        HH =HH,
+                                        MM = MM,
+                                        Roadname=item.RoadName, 
+                                        TrafficAvgSpeed=item.TrafficAvgSpeed,
+                                        TrafficData =item.TrafficData
+                                    });
+                                }
+                            }
+
+                            Thread.Sleep(1000*60*3);
                         }
                     }
                 });
@@ -477,6 +549,11 @@ namespace PCServer.Server
                             c_lat = c_lat.Substring(c_lang.Length);
 
 
+                            //转换成世界坐标
+                            var c_worldX = "";
+                            var c_worldY = "";
+
+
                             var query = ICamerasRepository.Find(p => p.id == c_id);
                             if (query != null)
                             {
@@ -484,6 +561,19 @@ namespace PCServer.Server
                             }
                             else
                             {
+                                
+                                if(!string.IsNullOrEmpty(c_lang) && !string.IsNullOrEmpty(c_lat))
+                                {
+                                    if(c_lang =="0" && c_lat == "0") {
+
+
+                                    } else {
+                                        GPS.Vector3 vec = GPSUtils.ComputeLocalPositionGCJ(c_lang, c_lat);
+                                        c_worldX = vec.x.ToString();
+                                        c_worldY = vec.y.ToString();
+                                    }
+                                }
+
                                 ICamerasRepository.Add(new SHSecurityModels.sys_cameras()
                                 {
                                     id = c_id,
@@ -494,7 +584,9 @@ namespace PCServer.Server
                                     parent = c_parent,
                                     state = c_state,
                                     lang = c_lang,
-                                    lat = c_lat
+                                    lat = c_lat,
+                                    worldX = c_worldX,
+                                    worldY = c_worldY
                                 });
                             }
                         }

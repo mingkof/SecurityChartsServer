@@ -21,4 +21,22 @@ namespace SHSecurityModels
         public string TrafficData { get; set; }
     }
 
+
+
+    public class JsonRoadDataStruct
+    {
+        public List<JsonRoadItemStruct> TopRoads=new List<JsonRoadItemStruct>();
+        public string TrafficDataForAll;
+        public string TrafficAvgSpeed;
+
+    }   
+
+
+    public class JsonRoadItemStruct
+    {
+        public string  RoadName{get;set;}
+        public string TrafficAvgSpeed;
+        public string TrafficData;
+    } 
+
 }

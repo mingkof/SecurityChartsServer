@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.NodeServices;
+using PCServer.Server.GPS;
+using System.Numerics;
+
 namespace SHSecurityServer.Controllers
 {
     [Produces("application/json")]
@@ -122,6 +125,96 @@ namespace SHSecurityServer.Controllers
             }
             return BadRequest("无数据");
         }
+
+
+        /// <summary>
+        /// 获取摄像机一定圆形范围内的所有摄像头list
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetCameraRangeList/{lang}/{lat}/{radiu}")]
+        public IActionResult GetCameraRangeList(string lang, string lat, float radiu)
+        {
+            if (string.IsNullOrEmpty(lang) || string.IsNullOrEmpty(lat))
+            {
+                return BadRequest();
+            }
+
+            PCServer.Server.GPS.Vector3 centerPos = GPSUtils.ComputeLocalPositionGCJ(lang, lat);
+            System.Numerics.Vector3 center = new System.Numerics.Vector3(centerPos.x, centerPos.y, 0);
+            //距离小于等于半径
+            List<sys_cameras> query = _cameraRepo.FindList(p => true, "", false).ToList<sys_cameras>();
+
+            List<string> cameraList = new List<string>();
+            for (int i = 0; i < query.Count; i++)
+            {
+                var item = query[i];
+                float.TryParse(item.worldX,out float x);
+                float.TryParse(item.worldY, out float y);
+
+                System.Numerics.Vector3 pos = new System.Numerics.Vector3(x, y, 0);
+                if (CheckInRadio(center,pos,radiu))
+                {
+                    cameraList.Add(item.id);
+                }
+            }
+            return Ok(new {
+                res=cameraList
+            });
+
+        }
+
+        /// <summary>
+        /// 获取摄像机一定圆形范围内的所有摄像头list
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetCameraWorldRangeList/{wordX}/{wordY}/{radiu}")]
+        public IActionResult GetCameraWorldRangeList(string wordX, string wordY, float radiu)
+        {
+            if (string.IsNullOrEmpty(wordX) || string.IsNullOrEmpty(wordY))
+            {
+                return BadRequest();
+            }
+
+            float.TryParse(wordX, out float centerX);
+            float.TryParse(wordY, out float centerY);
+
+            System.Numerics.Vector3 center = new System.Numerics.Vector3(centerX, centerY, 0);
+            //距离小于等于半径
+            List<sys_cameras> query = _cameraRepo.FindList(p => true, "", false).ToList<sys_cameras>();
+
+            List<string> cameraList = new List<string>();
+            for (int i = 0; i < query.Count; i++)
+            {
+                var item = query[i];
+                float.TryParse(item.worldX,out float x);
+                float.TryParse(item.worldY, out float y);
+
+                System.Numerics.Vector3 pos = new System.Numerics.Vector3(x, y, 0);
+                if (CheckInRadio(center,pos,radiu))
+                {
+                    cameraList.Add(item.id);
+                }
+            }
+            return Ok(new {
+                res=cameraList
+            });
+
+        }
+
+
+
+
+
+        private bool CheckInRadio(System.Numerics.Vector3 center, System.Numerics.Vector3 camPos,float radiu) {
+
+            float distance = System.Numerics.Vector3.Distance(center, camPos);
+            if (distance<=radiu)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
     }
 }

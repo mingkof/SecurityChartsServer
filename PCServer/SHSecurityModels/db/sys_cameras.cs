@@ -15,5 +15,8 @@ namespace SHSecurityModels
         public string state { get; set; }
         public string lang { get; set; }
         public string lat { get; set; }
+
+        public string worldX { get; set; }
+        public string worldY { get; set; }
     }
 }

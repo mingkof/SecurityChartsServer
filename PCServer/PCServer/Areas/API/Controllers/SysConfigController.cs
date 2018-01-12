@@ -92,16 +92,16 @@ namespace SHSecurityServer.Controllers
             }
             catch
             {
-                return BadRequest("无法找到该配置" + keystr);
+                return BadRequest();
             }
             var query = _sysConfig.Find(p => p.key == key);
             if (query != null)
             {
                 query.value = camId;
                 _sysConfig.Update(query);
-                return Ok("修改" + keystr + "成功");
+                return Ok();
             }
-            return BadRequest("无法找到该配置");
+            return BadRequest();
         }
         /// <summary>
         /// 设置图标镜头的 viddeoUrl
@@ -121,16 +121,16 @@ namespace SHSecurityServer.Controllers
             }
             catch
             {
-                return BadRequest("无法找到该配置" + keystr);
+                return BadRequest();
             }
             var query = _sysConfig.Find(p => p.key == key);
             if (query != null)
             {
                 query.value = url;
                 _sysConfig.Update(query);
-                return Ok("修改" + keystr + url + "成功");
+                return Ok();
             }
-            return BadRequest("无法找到该配置");
+            return BadRequest();
         }
         /// <summary>
         /// 添加配置
@@ -139,13 +139,16 @@ namespace SHSecurityServer.Controllers
         /// <param name="valueInt"></param>
         /// <param name="valueStr"></param>
         /// <returns></returns>
-        [HttpPost("SetConfig/{key}/{valueInt}/{valueStr}")]
-        public IActionResult SetConfig(int key, int valueInt=0, string valueStr="")
+        [HttpGet("SetConfig/{key}/{valueStr}")]
+        public IActionResult SetConfig(int key,  string valueStr="")
         {
             if (key<1000)
             {
-                return BadRequest("key值无效" + key);
+                return BadRequest();
             }
+
+            int.TryParse(valueStr, out int valueInt);
+
             var query = _sysConfig.Find(p => p.key == key);
             if (query==null)
             {
@@ -154,14 +157,14 @@ namespace SHSecurityServer.Controllers
                     value = valueStr,
                     valueInt = valueInt
                 });
-                return Ok("配置已添加");
+                return Ok();
             }
             else
             {
                 query.value = valueStr;
                 query.valueInt = valueInt;
                 _sysConfig.Update(query);
-                return BadRequest("配置已更新" + key);
+                return Ok();
             }
         }
 
@@ -184,9 +187,16 @@ namespace SHSecurityServer.Controllers
                     }
                 });
             }
-            return BadRequest("无配置");
+            return BadRequest();
         }
 
 
     }
  }
+
+
+//return Ok()
+ //return Ok( new {res = List});
+
+ //return BadRequest()
+ //return BadRequest(new {  message = "" })
