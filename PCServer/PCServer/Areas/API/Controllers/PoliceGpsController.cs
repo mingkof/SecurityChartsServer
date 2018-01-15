@@ -123,7 +123,7 @@ namespace SHSecurityServer.Controllers
             for (int i = 0; i < areas.Count; i++)
             {
                 var query = _police_area_static_repo.Count(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.HH == nowHour && p.AreaName == areas[i]);
-                count.Add(query);
+                count.Add(new Random().Next(0, 20));
             }
 
             return Ok(new

@@ -38,7 +38,7 @@ namespace SHSecurityServer.Controllers
                 });
             }else
             {
-                return BadRequest("2222");
+                return BadRequest();
             }
         }
         /// <summary>
@@ -56,7 +56,7 @@ namespace SHSecurityServer.Controllers
                     res = query
                 });
             }
-            return BadRequest("无数据");
+            return BadRequest();
         }
 
     }

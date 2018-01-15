@@ -301,11 +301,11 @@ namespace PCServer.Server
                                         else
                                         {
                                             //降序排列
-                                            topList = topList.OrderBy(p => p.Value).ToList();
+                                            topList = topList.OrderByDescending(p => p.Value).ToList();
                                             // Logmng.Logger.Trace(topList[topList.Count-1].Value+"     ---    "+kakou.Value);
-                                            if (topList[0].Value<kakou.Value)
+                                            if (topList[topList.Count-1].Value<kakou.Value)
                                             {
-                                                topList.RemoveAt(0);
+                                                topList.RemoveAt(topList.Count - 1);
                                                 topList.Add(kakou);
                                                 var queryList = IKaKouTop.FindList(p => true, "",false);
                                                 if(queryList != null){

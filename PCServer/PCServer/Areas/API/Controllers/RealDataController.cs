@@ -92,14 +92,46 @@ namespace SHSecurityServer.Controllers
             }
             if (tampData == null)
             {
+                //测试数据
+                if (old_tampData == null)
+                {
+                    return Ok(new JsonRoadDataStruct
+                    {
+                        TopRoads = new List<JsonRoadItemStruct>(){
+                        new JsonRoadItemStruct {
+                            RoadName="天目西路",
+                            TrafficAvgSpeed="35",
+                            TrafficData="2.5"
+                        },
+                        new JsonRoadItemStruct{
+                             RoadName="大统路",
+                            TrafficAvgSpeed="45",
+                            TrafficData="2.0"
+                        },
+                        new JsonRoadItemStruct{
+                             RoadName="中兴路",
+                            TrafficAvgSpeed="38",
+                            TrafficData="2.8"
+                        },
+                        new JsonRoadItemStruct{
+                             RoadName="恒丰路",
+                            TrafficAvgSpeed="15",
+                            TrafficData="3.8"
+                        }
+                        },
+                        TrafficDataForAll = "3.2",
+                        TrafficAvgSpeed = "30",
+
+                    });
+                }
                 return Ok(old_tampData);
             }
             else
             {
                 old_tampData = tampData;
                 return Ok(tampData);
-
             }
+
             //_logger.LogInformation(tampData.TrafficAvgSpeed);
             //return Ok(tampData);
             //}

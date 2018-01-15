@@ -89,7 +89,7 @@ namespace SHSecurityServer.Controllers
                 }
                 catch 
                 {
-                    return BadRequest("参数错误");
+                    return BadRequest();
                 }
 
                 var urlquery = _sysConfig.Find(p => p.key == urlKey);
@@ -102,7 +102,7 @@ namespace SHSecurityServer.Controllers
                 }
                 else
                 {
-                    return BadRequest("url或者camid无数据");
+                    return BadRequest();
                 }
                 var camquery = _cameraRepo.Find(p => p.id == camId);
                 var campeoquery = _camPeopleCount.Find(p => p.ID == camId);
@@ -123,7 +123,7 @@ namespace SHSecurityServer.Controllers
                 });
 
             }
-            return BadRequest("无数据");
+            return BadRequest();
         }
 
 
