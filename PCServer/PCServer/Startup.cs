@@ -66,7 +66,7 @@ namespace PCServer
             services.AddScoped<ITravioDataRepositoy, TravioDataRepositoy>();
             services.AddScoped<IKaKouTopRepository, KaKouTopRepository>();
             services.AddScoped<IRoadDataRecordRepository, RoadDataRecordRepository>();
-
+            services.AddScoped<IMQServerDataRepository, MQServerDataRepository>();
 
             var conn = Configuration.GetConnectionString("DefaultConnection");
 

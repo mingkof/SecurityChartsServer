@@ -1,5 +1,4 @@
 ﻿using SHSecurityContext.Base;
-using SHSecurityContext.Base;
 using SHSecurityContext.DBContext;
 using SHSecurityModels;
 using System;
@@ -8,7 +7,7 @@ using System.Text;
 
 namespace SHSecurityContext.IRepositorys
 {
-    public interface ITravioDataRepositoy : IBaseRepository<traviodata>
+    public interface IMQServerDataRepository : IBaseRepository<MQServerData>
     {
 
     }

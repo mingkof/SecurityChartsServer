@@ -375,7 +375,7 @@ namespace PCServer.Server
                 });
 
                 //每隔五分钟记录roaddata   更新roaddatarecord
-                  ThreadPool.QueueUserWorkItem((a) =>
+                ThreadPool.QueueUserWorkItem((a) =>
                 {
 
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
@@ -435,6 +435,52 @@ namespace PCServer.Server
                             }
 
                             Thread.Sleep(1000*60*3);
+                        }
+                    }
+                });
+
+                //每隔1分钟读取mqServerData  更新mqServerData
+                ThreadPool.QueueUserWorkItem((a) => 
+                {
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var IMQServerData = serviceScope.ServiceProvider.GetService<IMQServerDataRepository>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+
+                        while (true)
+                        {
+                            var YEAR = System.DateTime.Now.Year.ToString();
+                            var MONTH = System.DateTime.Now.Month.ToString("00");
+                            var DAY = System.DateTime.Now.Day.ToString("00");
+                            var HH = System.DateTime.Now.Hour.ToString("00");
+                            string path = YEAR+MONTH+DAY+HH+"txt";
+
+                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            List<string> strList = ftpClient.DownloadToListStr(path);
+                            if (strList.Count!=0)
+                            {
+                                for (int i = 0; i < strList.Count; i++)
+                                {
+                                    JsonMQServerDataContruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonMQServerDataContruct>(strList[i]);
+                                    var query = IMQServerData.Find(p => p.dsnum == data.dsnum && p.mtype == data.mtype && p.time == data.time);
+                                    if (query==null)
+                                    {
+                                        IMQServerData.Add(new MQServerData {
+                                            commRmk = data.commRmk,
+                                            dsnum = data.dsnum,
+                                            foreignld = data.foreignld,
+                                            mtype = data.mtype,
+                                            projectId = data.projectId,
+                                            time = data.time,
+                                            userId = data.userId,
+                                            topicType = data.topicType,
+                                            timeStamp = data.timeStamp
+                                        });
+                                    }
+                                }
+                            }
+                            Thread.Sleep(1000 * 60);
                         }
                     }
                 });

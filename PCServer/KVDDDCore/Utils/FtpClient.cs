@@ -61,7 +61,25 @@ namespace KVDDDCore.Utils
                 string json = reader.ReadToEnd();
                 return json;
         }
-
+        public List<string> DownloadToListStr(string remoteFile)
+        {
+            List<string> list = new List<string>();
+            var ftpRequest = (FtpWebRequest)FtpWebRequest.Create(host + "/" + remoteFile);
+            ftpRequest.Credentials = new NetworkCredential(user, pass);
+            ftpRequest.UseBinary = true;
+            ftpRequest.UsePassive = true;
+            ftpRequest.KeepAlive = true;
+            ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
+            var ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+            var ftpStream = ftpResponse.GetResponseStream();
+            var reader = new StreamReader(ftpStream);
+            while (!reader.EndOfStream)
+            {
+                list.Add(reader.ReadLine());
+            }
+            reader.Close();
+            return list;
+        }
         //    FileStream localFileStream = new FileStream(localFile, FileMode.Create);
         //    byte[] byteBuffer = new byte[bufferSize];
         //    int bytesRead = ftpStream.Read(byteBuffer, 0, bufferSize);

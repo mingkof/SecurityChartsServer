@@ -26,7 +26,7 @@ namespace MQClient
             //通过工厂构建连接
             IConnection connection = factory.CreateConnection("baiyulan", "baiyulan123");
             //这个是连接的客户端名称标识
-            connection.ClientId = "MokaiTest1";
+            connection.ClientId = "MokaiTest2";
             //启动连接，监听的话要主动启动连接
             connection.Start();
             //通过连接创建一个会话
@@ -84,7 +84,7 @@ namespace MQClient
         {
             label.Text += string.Format(@"接收到:{0}{1}", message.Text, Environment.NewLine);
         }
-
+        
 
         void ShowLable(Label label, ITextMessage msg)
         {
