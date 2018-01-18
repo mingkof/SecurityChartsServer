@@ -18,6 +18,35 @@ namespace KVDDDCore.Utils
             return (int)(time - Get1970UtcTime()).TotalSeconds;
         }
 
+
+        public static int ConvertToTimeStampNowByZero()
+        {
+            DateTime time = DateTime.Now.AddHours(-8);
+
+            DateTime nt = new DateTime(time.Year, time.Month, time.Day);
+
+            return (int)(nt - Get1970UtcTime()).TotalSeconds;
+        }
+
+        public static int ConvertToTimeStamps(string DateStr)
+        {
+            DateTime.TryParse(DateStr, out DateTime time);
+
+            return (int)(time - Get1970UtcTime()).TotalSeconds;
+        }
+
+
+        public static int ConvertToTimeStampNowByZero(int delayDay)
+        {
+            DateTime time = DateTime.Now.AddHours(-8);
+            DateTime nt = new DateTime(time.Year, time.Month, time.Day);
+            nt = nt.AddDays(delayDay);
+
+            return (int)(nt - Get1970UtcTime()).TotalSeconds;
+        }
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -26,8 +55,9 @@ namespace KVDDDCore.Utils
         public static DateTime ConvertToDateTime(long timeStamp)
         {
             var start = Get1970UtcTime();
-            return start.AddMilliseconds(timeStamp).AddHours(8);
+            return start.AddSeconds(timeStamp).AddHours(8);
         }
+
 
     }
 }

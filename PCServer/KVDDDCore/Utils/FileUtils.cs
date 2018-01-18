@@ -23,10 +23,10 @@ namespace KVDDDCore.Utils
                 }
                 sr.Close();
             }
-            catch 
+            catch
             {
             }
- 
+
             return sb.ToString();
         }
 
