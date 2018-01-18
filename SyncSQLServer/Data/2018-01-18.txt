@@ -1,0 +1,4 @@
+﻿{"sn":"4B41B36B","type":"1","count":"19","timeStamp":1516273573}
+{"sn":"4B41B36B","type":"0","count":"7","timeStamp":1516273574}
+{"sn":"4B41B36B","type":"1","count":"19","timeStamp":1516273634}
+{"sn":"4B41B36B","type":"0","count":"7","timeStamp":1516273634}

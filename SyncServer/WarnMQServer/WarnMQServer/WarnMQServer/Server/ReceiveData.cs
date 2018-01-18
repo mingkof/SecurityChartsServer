@@ -122,7 +122,8 @@ namespace WarnMQServer
                         string oriDataStr = queue5.Dequeue();
                         stringList.Add(oriDataStr);
                     }
-                    Console.WriteLine("dataProcessing------");
+                    Console.WriteLine(DateTime.Now.ToString());
+                    Console.WriteLine("update data");
                     FileUtils.WriteFile(path, stringList, true, Encoding.UTF8);
                     Thread.Sleep(1000*5);
                 }

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportInfo", "ExportInfo\ExportInfo.csproj", "{41F4A72E-438F-4259-820C-E81F7FAF8533}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlDB", "SqlDB\SqlDB.csproj", "{B7BBDF4B-7C6F-42F7-9536-8EA476928B6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{41F4A72E-438F-4259-820C-E81F7FAF8533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41F4A72E-438F-4259-820C-E81F7FAF8533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41F4A72E-438F-4259-820C-E81F7FAF8533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7BBDF4B-7C6F-42F7-9536-8EA476928B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7BBDF4B-7C6F-42F7-9536-8EA476928B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7BBDF4B-7C6F-42F7-9536-8EA476928B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7BBDF4B-7C6F-42F7-9536-8EA476928B6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {627B0154-D521-41CF-9E30-064F5ED95F18}
 	EndGlobalSection
 EndGlobal

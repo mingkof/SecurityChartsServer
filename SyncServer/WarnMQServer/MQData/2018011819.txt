@@ -1,0 +1,23 @@
+﻿{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A07","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 07:03:01","userId":"","topicType":"4","timeStamp":1516273554}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 06:33:24","userId":"","topicType":"4","timeStamp":1516273562}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 07:04:33","userId":"","topicType":"5","timeStamp":1516273565}
+{"commRmk":"ZL0745 59M1F加压风机SP-01控制 非火警故障已清除","dsnum":"N005L08M033","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 05:36:48","userId":"","topicType":"4","timeStamp":1516273565}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 07:05:36","userId":"","topicType":"5","timeStamp":1516273568}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A02","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 05:00:26","userId":"","topicType":"4","timeStamp":1516273581}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 07:07:25","userId":"","topicType":"5","timeStamp":1516273581}
+{"commRmk":"B1F-2#变电所开路","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 05:00:29","userId":"","topicType":"3","timeStamp":1516273588}
+{"commRmk":"上海国金中心地库15号消防主机 系统初始化 火警故障已清除","dsnum":"N015","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 06:57:32","userId":"","topicType":"4","timeStamp":1516273581}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A07","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 07:03:01","userId":"","topicType":"4","timeStamp":1516273594}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 07:07:59","userId":"","topicType":"5","timeStamp":1516273595}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 06:33:24","userId":"","topicType":"4","timeStamp":1516273594}
+{"commRmk":"ZL0745 59M1F加压风机SP-01控制 非火警故障已清除","dsnum":"N005L08M033","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 05:36:48","userId":"","topicType":"4","timeStamp":1516273605}
+{"commRmk":"上海国金中心地库15号消防主机 系统初始化 火警故障已清除","dsnum":"N015","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 06:57:32","userId":"","topicType":"4","timeStamp":1516273621}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 07:08:29","userId":"","topicType":"5","timeStamp":1516273624}
+{"commRmk":"B1F-2#变电所开路","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 05:00:29","userId":"","topicType":"3","timeStamp":1516273628}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 06:33:24","userId":"","topicType":"4","timeStamp":1516273626}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A10","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 05:00:29","userId":"","topicType":"4","timeStamp":1516273631}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A07","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 07:03:01","userId":"","topicType":"4","timeStamp":1516273634}
+{"commRmk":"ZL0745 59M1F加压风机SP-01控制 非火警故障已清除","dsnum":"N005L08M033","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 05:36:48","userId":"","topicType":"4","timeStamp":1516273645}
+{"commRmk":"Zone Z999 Z999 59M1F加压风机SP-01监视 非火警故障已清除","dsnum":"N005L08M034","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 05:36:48","userId":"","topicType":"4","timeStamp":1516273652}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 06:33:24","userId":"","topicType":"4","timeStamp":1516273659}
+{"commRmk":"上海国金中心地库15号消防主机 系统初始化 火警故障已清除","dsnum":"N015","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 06:57:32","userId":"","topicType":"4","timeStamp":1516273661}

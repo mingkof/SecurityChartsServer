@@ -1,1 +1,320 @@
-﻿
+﻿{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:23:30","userId":"","topicType":"3","timeStamp":1516265253}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:23:38","userId":"","topicType":"4","timeStamp":1516265254}
+{"commRmk":"机房层              消火栓稳压泵1号故障(智能)监视模块反馈","dsnum":"N002L13.118","foreignld":null,"mtype":"2","projectId":"23","time":"2018-01-18 01:56:18","userId":"","topicType":"5","timeStamp":1516265255}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:23:38","userId":"","topicType":"3","timeStamp":1516265260}
+{"commRmk":"Zone Z999 Z999 排烟风机SEF-ST-R-01监视 非火警故障已清除","dsnum":"N005L08M065","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265254}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:23:55","userId":"","topicType":"4","timeStamp":1516265262}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265263}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:24:10","userId":"","topicType":"3","timeStamp":1516265271}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:24:00","userId":"","topicType":"4","timeStamp":1516265267}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:24:44","userId":"","topicType":"3","timeStamp":1516265280}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:24:29","userId":"","topicType":"4","timeStamp":1516265274}
+{"commRmk":"B1层火灾报警","dsnum":"N006L26.073","foreignld":null,"mtype":"2","projectId":"3","time":"2018-01-18 04:46:14","userId":"","topicType":"1","timeStamp":1516265285}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:25:09","userId":"","topicType":"4","timeStamp":1516265282}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:25:10","userId":"","topicType":"3","timeStamp":1516265287}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:42:14","userId":"","topicType":"4","timeStamp":1516265289}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:25:21","userId":"","topicType":"3","timeStamp":1516265295}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:25:11","userId":"","topicType":"4","timeStamp":1516265289}
+{"commRmk":"Zone Z999 Z999 排烟风机SEF-ST-R-01监视 非火警故障已清除","dsnum":"N005L08M065","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265295}
+{"commRmk":"塔楼42F08办公室401.08018.19故障报警","dsnum":"8018.19","foreignld":null,"mtype":"3","projectId":"5","time":"2018-01-18 04:47:56","userId":"","topicType":"3","timeStamp":1516265301}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:25:29","userId":"","topicType":"4","timeStamp":1516265296}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:25:54","userId":"","topicType":"4","timeStamp":1516265303}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:25:53","userId":"","topicType":"3","timeStamp":1516265302}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265304}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:46:01","userId":"","topicType":"5","timeStamp":1516265309}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:00","userId":"","topicType":"3","timeStamp":1516265309}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:13","userId":"","topicType":"4","timeStamp":1516265314}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:46:52","userId":"","topicType":"5","timeStamp":1516265311}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:47:27","userId":"","topicType":"5","timeStamp":1516265311}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:02","userId":"","topicType":"3","timeStamp":1516265313}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:48:35","userId":"","topicType":"5","timeStamp":1516265312}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:14","userId":"","topicType":"3","timeStamp":1516265320}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:15","userId":"","topicType":"4","timeStamp":1516265321}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:49:50","userId":"","topicType":"5","timeStamp":1516265313}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:16","userId":"","topicType":"3","timeStamp":1516265327}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:31","userId":"","topicType":"4","timeStamp":1516265328}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:35","userId":"","topicType":"3","timeStamp":1516265334}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:42:14","userId":"","topicType":"4","timeStamp":1516265329}
+{"commRmk":"Zone Z999 Z999 排烟风机SEF-ST-R-01监视 非火警故障已清除","dsnum":"N005L08M065","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265335}
+{"commRmk":"Zone Z999 Z999 RPF-ST-L59M1F-01风机监视 非火警故障已清除","dsnum":"N005L08M051","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265335}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:49","userId":"","topicType":"3","timeStamp":1516265342}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:36","userId":"","topicType":"4","timeStamp":1516265336}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:26:58","userId":"","topicType":"4","timeStamp":1516265343}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265344}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:10","userId":"","topicType":"3","timeStamp":1516265351}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:14","userId":"","topicType":"4","timeStamp":1516265353}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:20","userId":"","topicType":"3","timeStamp":1516265358}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:22","userId":"","topicType":"4","timeStamp":1516265360}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:37","userId":"","topicType":"3","timeStamp":1516265366}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:39","userId":"","topicType":"4","timeStamp":1516265367}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:42:14","userId":"","topicType":"4","timeStamp":1516265369}
+{"commRmk":"Zone Z999 Z999 十一栋三楼蝶阀 监控站监控信号","dsnum":"N001L02M004","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:50:58","userId":"","topicType":"5","timeStamp":1516265373}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:51","userId":"","topicType":"3","timeStamp":1516265377}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:27:45","userId":"","topicType":"4","timeStamp":1516265373}
+{"commRmk":"Zone Z999 Z999 RPF-ST-L59M1F-01风机监视 非火警故障已清除","dsnum":"N005L08M051","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265375}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:51:04","userId":"","topicType":"5","timeStamp":1516265380}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:13","userId":"","topicType":"3","timeStamp":1516265384}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:05","userId":"","topicType":"4","timeStamp":1516265378}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265384}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:28","userId":"","topicType":"3","timeStamp":1516265394}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:14","userId":"","topicType":"4","timeStamp":1516265387}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:29","userId":"","topicType":"4","timeStamp":1516265395}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:37","userId":"","topicType":"3","timeStamp":1516265401}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:47","userId":"","topicType":"4","timeStamp":1516265402}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:28:59","userId":"","topicType":"3","timeStamp":1516265408}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:42:14","userId":"","topicType":"4","timeStamp":1516265409}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:00","userId":"","topicType":"4","timeStamp":1516265410}
+{"commRmk":"ZL0969 LG1防火卷帘门控制 非火警故障已清除","dsnum":"N019L01M023","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:17","userId":"","topicType":"4","timeStamp":1516265412}
+{"commRmk":"Zone Z999 Z999 LG1防火卷帘门反馈 非火警故障已清除","dsnum":"N019L01M024","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:17","userId":"","topicType":"4","timeStamp":1516265414}
+{"commRmk":"Zone Z999 Z999 LG17区电源强切反馈 非火警故障已清除","dsnum":"N019L01M026","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:17","userId":"","topicType":"4","timeStamp":1516265414}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:03","userId":"","topicType":"3","timeStamp":1516265415}
+{"commRmk":"ZL0969 LG17区电源强切控制 非火警故障已清除","dsnum":"N019L01M027","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:17","userId":"","topicType":"4","timeStamp":1516265414}
+{"commRmk":"Zone Z999 Z999 LG17区电源强切反馈 非火警故障已清除","dsnum":"N019L01M028","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:17","userId":"","topicType":"4","timeStamp":1516265415}
+{"commRmk":"Zone Z999 Z999 LG1-7区70度防火阀反馈 非火警故障已清除","dsnum":"N019L01M029","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:17","userId":"","topicType":"4","timeStamp":1516265415}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:29","userId":"","topicType":"3","timeStamp":1516265423}
+{"commRmk":"Zone Z999 Z999 RPF-ST-L59M1F-01风机监视 非火警故障已清除","dsnum":"N005L08M051","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265416}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:08","userId":"","topicType":"4","timeStamp":1516265417}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:49","userId":"","topicType":"3","timeStamp":1516265426}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265424}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:49","userId":"","topicType":"4","timeStamp":1516265431}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:51","userId":"","topicType":"3","timeStamp":1516265437}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:55","userId":"","topicType":"4","timeStamp":1516265439}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:29:59","userId":"","topicType":"3","timeStamp":1516265445}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:00","userId":"","topicType":"4","timeStamp":1516265446}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:42:14","userId":"","topicType":"4","timeStamp":1516265449}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:14","userId":"","topicType":"3","timeStamp":1516265456}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:09","userId":"","topicType":"4","timeStamp":1516265452}
+{"commRmk":"Zone Z999 Z999 RPF-ST-L59M1F-01风机监视 非火警故障已清除","dsnum":"N005L08M051","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265456}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:18","userId":"","topicType":"3","timeStamp":1516265463}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:17","userId":"","topicType":"4","timeStamp":1516265457}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265464}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:23","userId":"","topicType":"3","timeStamp":1516265473}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:22","userId":"","topicType":"4","timeStamp":1516265467}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:30","userId":"","topicType":"3","timeStamp":1516265480}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:30","userId":"","topicType":"4","timeStamp":1516265474}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:44","userId":"","topicType":"3","timeStamp":1516265481}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:45","userId":"","topicType":"4","timeStamp":1516265483}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:55","userId":"","topicType":"3","timeStamp":1516265488}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:58","userId":"","topicType":"4","timeStamp":1516265490}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A07","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:42:27","userId":"","topicType":"3","timeStamp":1516265489}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:30:59","userId":"","topicType":"3","timeStamp":1516265496}
+{"commRmk":"Zone Z999 Z999 RPF-ST-L59M1F-01风机监视 非火警故障已清除","dsnum":"N005L08M051","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265496}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:07","userId":"","topicType":"4","timeStamp":1516265499}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:44:01","userId":"","topicType":"4","timeStamp":1516265503}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265504}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:08","userId":"","topicType":"3","timeStamp":1516265511}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:10","userId":"","topicType":"4","timeStamp":1516265512}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:34","userId":"","topicType":"3","timeStamp":1516265518}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:34","userId":"","topicType":"4","timeStamp":1516265520}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:35","userId":"","topicType":"3","timeStamp":1516265526}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:37","userId":"","topicType":"4","timeStamp":1516265527}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:52","userId":"","topicType":"4","timeStamp":1516265533}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:31:54","userId":"","topicType":"3","timeStamp":1516265536}
+{"commRmk":"Zone Z999 Z999 RPF-ST-L59M1F-01风机监视 非火警故障已清除","dsnum":"N005L08M051","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265536}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:02","userId":"","topicType":"3","timeStamp":1516265544}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:01","userId":"","topicType":"4","timeStamp":1516265538}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:44:01","userId":"","topicType":"4","timeStamp":1516265543}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265545}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:23","userId":"","topicType":"3","timeStamp":1516265553}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:04","userId":"","topicType":"4","timeStamp":1516265548}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:41","userId":"","topicType":"4","timeStamp":1516265555}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:42","userId":"","topicType":"3","timeStamp":1516265561}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:44","userId":"","topicType":"4","timeStamp":1516265562}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:46","userId":"","topicType":"3","timeStamp":1516265568}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:55","userId":"","topicType":"4","timeStamp":1516265570}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:56","userId":"","topicType":"3","timeStamp":1516265576}
+{"commRmk":"Zone Z999 Z999 RPF-ST-L59M1F-01风机监视 非火警故障已清除","dsnum":"N005L08M051","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265576}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:57","userId":"","topicType":"4","timeStamp":1516265578}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:32:56","userId":"","topicType":"3","timeStamp":1516265576}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265579}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:44:01","userId":"","topicType":"4","timeStamp":1516265583}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:33:07","userId":"","topicType":"3","timeStamp":1516265586}
+{"commRmk":"B1M-3防火分区开路","dsnum":"N001L13.165","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:29","userId":"","topicType":"3","timeStamp":1516265586}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:08","userId":"","topicType":"4","timeStamp":1516265585}
+{"commRmk":"B1F-2#变电所开路","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:36","userId":"","topicType":"3","timeStamp":1516265589}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:33:18","userId":"","topicType":"4","timeStamp":1516265587}
+{"commRmk":"故障已清除","dsnum":"N001L13.165","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:40","userId":"","topicType":"4","timeStamp":1516265592}
+{"commRmk":"B2F反馈","dsnum":"N001L03.124","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:39","userId":"","topicType":"5","timeStamp":1516265591}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:33:28","userId":"","topicType":"3","timeStamp":1516265593}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:33:49","userId":"","topicType":"4","timeStamp":1516265595}
+{"commRmk":"故障已清除","dsnum":"N001L03.124","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:42","userId":"","topicType":"4","timeStamp":1516265597}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:02","userId":"","topicType":"3","timeStamp":1516265601}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:45","userId":"","topicType":"4","timeStamp":1516265598}
+{"commRmk":"B1F-2#变电所开路","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:52","userId":"","topicType":"3","timeStamp":1516265606}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:03","userId":"","topicType":"4","timeStamp":1516265602}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:00","userId":"","topicType":"4","timeStamp":1516265608}
+{"commRmk":"B2F反馈","dsnum":"N001L03.124","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:24:48","userId":"","topicType":"5","timeStamp":1516265606}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:09","userId":"","topicType":"3","timeStamp":1516265608}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:11","userId":"","topicType":"4","timeStamp":1516265610}
+{"commRmk":"B1F-2#变电所开路","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:06","userId":"","topicType":"3","timeStamp":1516265616}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A10","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:11","userId":"","topicType":"3","timeStamp":1516265617}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:17","userId":"","topicType":"4","timeStamp":1516265616}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265619}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A11","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:11","userId":"","topicType":"3","timeStamp":1516265618}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A11","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:14","userId":"","topicType":"4","timeStamp":1516265620}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:44:01","userId":"","topicType":"4","timeStamp":1516265623}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:20","userId":"","topicType":"3","timeStamp":1516265619}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:21","userId":"","topicType":"4","timeStamp":1516265623}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A10","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:17","userId":"","topicType":"4","timeStamp":1516265625}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:23","userId":"","topicType":"3","timeStamp":1516265629}
+{"commRmk":"故障已清除","dsnum":"N001L12.179","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:22","userId":"","topicType":"4","timeStamp":1516265630}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:48","userId":"","topicType":"3","timeStamp":1516265636}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:54","userId":"","topicType":"3","timeStamp":1516265638}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:43","userId":"","topicType":"4","timeStamp":1516265630}
+{"commRmk":"故障已清除","dsnum":"N001L03.124","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:31","userId":"","topicType":"4","timeStamp":1516265637}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A10","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:25:56","userId":"","topicType":"3","timeStamp":1516265639}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:49","userId":"","topicType":"4","timeStamp":1516265638}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265639}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:51","userId":"","topicType":"3","timeStamp":1516265644}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:53","userId":"","topicType":"4","timeStamp":1516265645}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:34:59","userId":"","topicType":"3","timeStamp":1516265651}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:35:17","userId":"","topicType":"4","timeStamp":1516265653}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:35:05","userId":"","topicType":"3","timeStamp":1516265652}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265659}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:35:38","userId":"","topicType":"3","timeStamp":1516265661}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A03","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:46:11","userId":"","topicType":"3","timeStamp":1516265663}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:35:57","userId":"","topicType":"4","timeStamp":1516265663}
+{"commRmk":"复示器#13火灾显示盘离线","dsnum":"N001A13","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:47:52","userId":"","topicType":"3","timeStamp":1516265665}
+{"commRmk":"复示器#14火灾显示盘离线","dsnum":"N001A14","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:47:54","userId":"","topicType":"3","timeStamp":1516265665}
+{"commRmk":"复示器#6火灾显示盘离线","dsnum":"N001A06","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:50:48","userId":"","topicType":"3","timeStamp":1516265666}
+{"commRmk":"复示器#27火灾显示盘离线","dsnum":"N001A27","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:51:36","userId":"","topicType":"3","timeStamp":1516265666}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:36:16","userId":"","topicType":"4","timeStamp":1516265670}
+{"commRmk":"复示器#8火灾显示盘离线","dsnum":"N001A08","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:51:38","userId":"","topicType":"3","timeStamp":1516265667}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265667}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:35:59","userId":"","topicType":"3","timeStamp":1516265668}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:36:20","userId":"","topicType":"4","timeStamp":1516265677}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:36:18","userId":"","topicType":"3","timeStamp":1516265676}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265679}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:36:21","userId":"","topicType":"3","timeStamp":1516265685}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:36:46","userId":"","topicType":"4","timeStamp":1516265687}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:04","userId":"","topicType":"4","timeStamp":1516265693}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:19","userId":"","topicType":"3","timeStamp":1516265696}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265699}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:21","userId":"","topicType":"3","timeStamp":1516265705}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:20","userId":"","topicType":"4","timeStamp":1516265700}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265707}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:24","userId":"","topicType":"4","timeStamp":1516265707}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:25","userId":"","topicType":"3","timeStamp":1516265713}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:36","userId":"","topicType":"4","timeStamp":1516265715}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:35","userId":"","topicType":"3","timeStamp":1516265714}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265720}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:47","userId":"","topicType":"3","timeStamp":1516265721}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:37:59","userId":"","topicType":"4","timeStamp":1516265722}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:04","userId":"","topicType":"4","timeStamp":1516265728}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:09","userId":"","topicType":"3","timeStamp":1516265732}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:17","userId":"","topicType":"4","timeStamp":1516265735}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265739}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:18","userId":"","topicType":"3","timeStamp":1516265741}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:24","userId":"","topicType":"4","timeStamp":1516265743}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265747}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:25","userId":"","topicType":"4","timeStamp":1516265750}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:24","userId":"","topicType":"3","timeStamp":1516265748}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:46","userId":"","topicType":"3","timeStamp":1516265756}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:38:47","userId":"","topicType":"4","timeStamp":1516265757}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:39:04","userId":"","topicType":"3","timeStamp":1516265763}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265760}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:39:18","userId":"","topicType":"3","timeStamp":1516265770}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:39:10","userId":"","topicType":"4","timeStamp":1516265765}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:39:29","userId":"","topicType":"3","timeStamp":1516265774}
+{"commRmk":"机房层              消火栓稳压泵1号故障(智能)监视模块反馈","dsnum":"N002L13.118","foreignld":null,"mtype":"2","projectId":"23","time":"2018-01-18 02:57:15","userId":"","topicType":"5","timeStamp":1516265774}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:39:59","userId":"","topicType":"4","timeStamp":1516265776}
+{"commRmk":"状态:B3层L2非消电强切反馈146号","dsnum":"01040211","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:39:51","userId":"","topicType":"5","timeStamp":1516265775}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:40:01","userId":"","topicType":"3","timeStamp":1516265782}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265779}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265787}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:40:07","userId":"","topicType":"4","timeStamp":1516265783}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:57:50","userId":"","topicType":"5","timeStamp":1516265786}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:40:33","userId":"","topicType":"3","timeStamp":1516265792}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:40:15","userId":"","topicType":"4","timeStamp":1516265787}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:41:03","userId":"","topicType":"3","timeStamp":1516265800}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:41:02","userId":"","topicType":"4","timeStamp":1516265794}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 04:58:02","userId":"","topicType":"5","timeStamp":1516265797}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265800}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:41:21","userId":"","topicType":"3","timeStamp":1516265809}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:41:05","userId":"","topicType":"4","timeStamp":1516265801}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:41:26","userId":"","topicType":"4","timeStamp":1516265810}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:41:35","userId":"","topicType":"3","timeStamp":1516265816}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:41:37","userId":"","topicType":"4","timeStamp":1516265818}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:42:19","userId":"","topicType":"3","timeStamp":1516265824}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265820}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265828}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:42:24","userId":"","topicType":"4","timeStamp":1516265825}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:42:26","userId":"","topicType":"3","timeStamp":1516265831}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:42:41","userId":"","topicType":"4","timeStamp":1516265832}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:42:42","userId":"","topicType":"3","timeStamp":1516265838}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:42:43","userId":"","topicType":"4","timeStamp":1516265840}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265840}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:42:51","userId":"","topicType":"3","timeStamp":1516265847}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:09","userId":"","topicType":"4","timeStamp":1516265849}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:14","userId":"","topicType":"3","timeStamp":1516265855}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:15","userId":"","topicType":"4","timeStamp":1516265857}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:34","userId":"","topicType":"3","timeStamp":1516265862}
+{"commRmk":"ZL0653 EAF-ST-L59M1-01控制 非火警故障已清除","dsnum":"N005L08M052","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265860}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265868}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:35","userId":"","topicType":"4","timeStamp":1516265864}
+{"commRmk":"故障:2层2区旋转楼梯卷帘门控制L2回151","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:35","userId":"","topicType":"3","timeStamp":1516265870}
+{"commRmk":"ZL0653 EAF-ST-L59M1-02控制 非火警故障已清除","dsnum":"N005L08M053","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265871}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:40","userId":"","topicType":"3","timeStamp":1516265871}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:42","userId":"","topicType":"4","timeStamp":1516265873}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:43:44","userId":"","topicType":"3","timeStamp":1516265879}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265880}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:13","userId":"","topicType":"3","timeStamp":1516265888}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:03","userId":"","topicType":"4","timeStamp":1516265882}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:15","userId":"","topicType":"3","timeStamp":1516265895}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:14","userId":"","topicType":"4","timeStamp":1516265890}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:18","userId":"","topicType":"4","timeStamp":1516265897}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:19","userId":"","topicType":"3","timeStamp":1516265903}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:24","userId":"","topicType":"4","timeStamp":1516265904}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265908}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:36","userId":"","topicType":"3","timeStamp":1516265910}
+{"commRmk":"ZL0653 EAF-ST-L59M1-02控制 非火警故障已清除","dsnum":"N005L08M053","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265911}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:55","userId":"","topicType":"3","timeStamp":1516265917}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:53","userId":"","topicType":"4","timeStamp":1516265911}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265920}
+{"commRmk":"故障消除 ","dsnum":"02060151","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:56","userId":"","topicType":"4","timeStamp":1516265921}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:45:18","userId":"","topicType":"3","timeStamp":1516265930}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:44:58","userId":"","topicType":"4","timeStamp":1516265924}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:45:19","userId":"","topicType":"4","timeStamp":1516265931}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:45:31","userId":"","topicType":"3","timeStamp":1516265937}
+{"commRmk":"ZL0989 LG1消控室超高水位报警 非火警故障已清除","dsnum":"N019L01M100","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:42","userId":"","topicType":"4","timeStamp":1516265938}
+{"commRmk":"Zone Z820 Z820 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D061","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265939}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:45:40","userId":"","topicType":"4","timeStamp":1516265939}
+{"commRmk":"Zone Z820 Z820 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D062","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265939}
+{"commRmk":"Zone Z820 Z820 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D063","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265939}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 05:00:07","userId":"","topicType":"5","timeStamp":1516265937}
+{"commRmk":"Zone Z820 Z820 LG17区新风机房感温探测器 无效应答","dsnum":"N019L01D001","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:55","userId":"","topicType":"3","timeStamp":1516265941}
+{"commRmk":"Zone Z820 Z820 LG17区新风机房感温探测器 无效应答","dsnum":"N019L01D002","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:55","userId":"","topicType":"3","timeStamp":1516265942}
+{"commRmk":"Zone Z820 Z820 LG17区新风机房感温探测器 无效应答","dsnum":"N019L01D003","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:55","userId":"","topicType":"3","timeStamp":1516265942}
+{"commRmk":"Zone Z820 Z820 LG17区新风机房感温探测器 无效应答","dsnum":"N019L01D004","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:55","userId":"","topicType":"3","timeStamp":1516265942}
+{"commRmk":"Zone Z820 Z820 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D064","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265939}
+{"commRmk":"Zone Z820 Z820 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D065","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265940}
+{"commRmk":"Zone Z822 Z822 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D066","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265940}
+{"commRmk":"Zone Z822 Z822 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D067","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265940}
+{"commRmk":"Zone Z820 Z820 LG17区新风机房感温探测器 无效应答","dsnum":"N019L01D006","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:55","userId":"","topicType":"3","timeStamp":1516265942}
+{"commRmk":"Zone Z820 Z820 LG27区机动车坡道感温 无效应答","dsnum":"N019L01D007","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:55","userId":"","topicType":"3","timeStamp":1516265943}
+{"commRmk":"Zone Z820 Z820 LG27区机动车坡道感温 无效应答","dsnum":"N019L01D008","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:55","userId":"","topicType":"3","timeStamp":1516265943}
+{"commRmk":"Zone Z820 Z820 LGI7区停车库感温探测器 火警故障已清除","dsnum":"N019L01D060","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:49","userId":"","topicType":"4","timeStamp":1516265940}
+{"commRmk":"Zone Z822 Z822 LGI7区车道感温探测器 火警故障已清除","dsnum":"N019L01D068","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:50","userId":"","topicType":"4","timeStamp":1516265941}
+{"commRmk":"Zone Z822 Z822 LGI7区车道感温探测器 火警故障已清除","dsnum":"N019L01D069","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:50","userId":"","topicType":"4","timeStamp":1516265941}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 05:00:24","userId":"","topicType":"5","timeStamp":1516265949}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:47:00","userId":"","topicType":"3","timeStamp":1516265944}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265948}
+{"commRmk":"Zone Z822 Z822 LGI7区车道感温探测器 火警故障已清除","dsnum":"N019L01D095","foreignld":null,"mtype":"1","projectId":"1","time":"2018-01-18 03:20:52","userId":"","topicType":"4","timeStamp":1516265941}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:47:05","userId":"","topicType":"4","timeStamp":1516265946}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:47:06","userId":"","topicType":"3","timeStamp":1516265952}
+{"commRmk":"ZL0653 EAF-ST-L59M1-02控制 非火警故障已清除","dsnum":"N005L08M053","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265951}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:47:10","userId":"","topicType":"4","timeStamp":1516265953}
+{"commRmk":"Zone Z999 Z999 一栋十五层气体故障 激活","dsnum":"N003L10M049","foreignld":null,"mtype":"1","projectId":"4","time":"2018-01-18 05:00:41","userId":"","topicType":"5","timeStamp":1516265960}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:47:49","userId":"","topicType":"3","timeStamp":1516265961}
+{"commRmk":"火灾显示盘故障已清除","dsnum":"N006A06","foreignld":null,"mtype":"2","projectId":"72","time":"2018-01-13 04:26:03","userId":"","topicType":"4","timeStamp":1516265960}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:47:54","userId":"","topicType":"3","timeStamp":1516265968}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:47:53","userId":"","topicType":"4","timeStamp":1516265962}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:48:10","userId":"","topicType":"3","timeStamp":1516265976}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:48:09","userId":"","topicType":"4","timeStamp":1516265970}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:48:11","userId":"","topicType":"4","timeStamp":1516265977}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:48:12","userId":"","topicType":"3","timeStamp":1516265983}
+{"commRmk":"故障消除 ","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:48:29","userId":"","topicType":"4","timeStamp":1516265984}
+{"commRmk":"火灾显示盘离线","dsnum":"N006A05","foreignld":null,"mtype":"2","projectId":"18","time":"2018-01-18 04:52:35","userId":"","topicType":"3","timeStamp":1516265988}
+{"commRmk":"状态:B3层5区非消防电  强切 反馈L5回156","dsnum":"01050406","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:48:30","userId":"","topicType":"5","timeStamp":1516265991}
+{"commRmk":"故障:B2层1区水流指示器L1回241","dsnum":"02020241","foreignld":null,"mtype":"10","projectId":"47","time":"2018-01-18 04:48:52","userId":"","topicType":"3","timeStamp":1516265991}
+{"commRmk":"ZL0653 EAF-ST-L59M1-02控制 非火警故障已清除","dsnum":"N005L08M053","foreignld":null,"mtype":"1","projectId":"8","time":"2018-01-18 04:17:34","userId":"","topicType":"4","timeStamp":1516265991}

@@ -46,7 +46,7 @@ namespace SHSecurityContext.DBContext
         public DbSet<KakouTop> KakouTop { get; set; }
         public DbSet<RoadDataRecord> RoadDataRecord { get; set; }
         public DbSet<MQServerData> MQServerData { get; set; }
-
+        public DbSet<HongWaiPeopleData> HongWaiPeopleData { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //    => optionsBuilder

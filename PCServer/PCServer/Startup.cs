@@ -67,6 +67,7 @@ namespace PCServer
             services.AddScoped<IKaKouTopRepository, KaKouTopRepository>();
             services.AddScoped<IRoadDataRecordRepository, RoadDataRecordRepository>();
             services.AddScoped<IMQServerDataRepository, MQServerDataRepository>();
+            services.AddScoped<IHongWaiPeopleDataRepositoy, HongWaiPeopleDataRepositoy>();
 
             var conn = Configuration.GetConnectionString("DefaultConnection");
 
