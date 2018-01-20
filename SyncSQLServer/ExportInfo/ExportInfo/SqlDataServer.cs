@@ -17,13 +17,20 @@ namespace ExportInfo
     {
 
         static List<string> li = new List<string>();
-        static string Path = @"E:\MKProjects\MKSecurityCharts\SecurityChartsServer\SyncSQLServer\Data\";
+        //static string Path = @"E:\MKProjects\MKSecurityCharts\SecurityChartsServer\SyncSQLServer\Data\";
+        static string Path = Environment.CurrentDirectory + "/Data/";
         static List<string> snType = new List<string>() { "4B41B36B" };
+
 
         static List<string> dataList = new List<string>();
         public SqlDataServer()
         {
+            if (!System.IO.Directory.Exists(Path))
+                System.IO.Directory.CreateDirectory(Path);
+
             StartServer();
+
+            Console.WriteLine("已启动服务-定时读取人数计数SqlServer");
             Console.ReadLine();
         }
 
@@ -37,20 +44,23 @@ namespace ExportInfo
             string filePath = Path + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
 
             Console.WriteLine(dateNow);
-            Console.WriteLine("update data");
+            Console.WriteLine("正在读取人数计数-SqlServer");
 
             for (int i = 0; i < snType.Count; i++)
             {
-                var upCount = sql.QueryValue("SELECT COUNT(*) FROM ut_datalist_2018 WHERE sn=" + "'" + snType[i] + "'" + " AND " + "up=1" + " AND " + "dt_data>=" + "'" + today + "'" + " And " + "dt_data<=" + "'" + dateNow + "'", null);
-                ProcessData(snType[i], "1", upCount.ToString());
+                var upCount = sql.QueryValue("SELECT SUM(up) FROM ut_datalist_2018 WHERE sn=" + "'" + snType[i] + "'" + " AND " + "dt_data>=" + "'" + today + "'" + " And " + "dt_data<=" + "'" + dateNow + "'", null);
+
+                if(upCount != null)
+                    ProcessData(snType[i], "1", upCount.ToString());
 
             }
             sql.DoEnsureClose();
             sql = new DatabaseSql(strConn);
             for (int i = 0; i < snType.Count; i++)
             {
-                var downCount = sql.QueryValue("SELECT COUNT(*) FROM ut_datalist_2018 WHERE sn=" + "'" + snType[i] + "'" + " AND " + "down=1" + " AND " + "dt_data>=" + "'" + today + "'" + " And " + "dt_data<=" + "'" + dateNow + "'", null);
-                ProcessData(snType[i], "0", downCount.ToString());
+                var downCount = sql.QueryValue("SELECT SUM(up) FROM ut_datalist_2018 WHERE sn=" + "'" + snType[i] + "'" + " AND " + "dt_data>=" + "'" + today + "'" + " And " + "dt_data<=" + "'" + dateNow + "'", null);
+                if(downCount != null)
+                    ProcessData(snType[i], "0", downCount.ToString());
             }
             sql.DoEnsureClose();
 
@@ -101,7 +111,7 @@ namespace ExportInfo
             {
                 while (true)
                 {
-                    QuerySQL(@"10.1.30.246\SQLEXPRESS", "iDTKdata", "sa", "P@ssw0rd");
+                    QuerySQL(@"localhost", "iDTKdata", "sa", "JingAn110");
                     Thread.Sleep(1000 * 60);
                 }
             });

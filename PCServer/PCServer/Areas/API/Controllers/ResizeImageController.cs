@@ -14,6 +14,12 @@ namespace MKServerWeb.Controllers
 {
     public class ResizeImageController : Controller
     {
+        //IHostingEnvironment _host;
+
+        //public ResizeImageController (IHostingEnvironment host)
+        //{
+        //    _host = host;
+        //}
 
         //[Route("resize/{*imagePath}")]
         //public async Task<IActionResult> ResizeImage(
@@ -53,6 +59,19 @@ namespace MKServerWeb.Controllers
                 );
 
             return Content(result);
+        }
+
+
+        //[FromServices]IHostingEnvironment host
+        [HttpGet("testimg")]
+        public async Task<IActionResult> TestImg()
+        {
+            //var a = host.ContentRootPath;
+            //var b = host.WebRootPath;
+
+            
+
+            return Ok();
         }
 
         [HttpGet]

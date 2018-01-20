@@ -1,4 +1,5 @@
 ﻿using KVDDDCore.Utils;
+using Microsoft.AspNetCore.NodeServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -55,10 +56,22 @@ namespace PCServer.Server
                 ReadCameraData();
 
                 var IPoliceGpsRepo = serviceScope.ServiceProvider.GetService<IPoliceGpsRepository>();
+
+                if (isPublishGongAn)
+                {
+                    var nodeServices = serviceScope.ServiceProvider.GetService<INodeServices>();
+                    var configRepo = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                    var systicketRepo = serviceScope.ServiceProvider.GetService<ISysTicketresRepository>();
+
+                    NodeServer.SyncPoliceData(nodeServices, configRepo);
+                    NodeServer.InitTicketResultData(nodeServices, systicketRepo, configRepo);
+                }
             }
 
-            if(isPublishGongAn)
+            if (isPublishGongAn)
             {
+       
+
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
@@ -484,6 +497,97 @@ namespace PCServer.Server
                         }
                     }
                 });
+                //每隔1分钟读取 ftp hongwaiPeopleData 更新hongwaiPeopleData
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var IMQServerData = serviceScope.ServiceProvider.GetService<IMQServerDataRepository>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+
+                        while (true)
+                        {
+                            var YEAR = System.DateTime.Now.Year.ToString();
+                            var MONTH = System.DateTime.Now.Month.ToString("00");
+                            var DAY = System.DateTime.Now.Day.ToString("00");
+                            var HH = System.DateTime.Now.Hour.ToString("00");
+
+                            string path = YEAR + MONTH + DAY + HH + "txt";
+
+                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            List<string> strList = ftpClient.DownloadToListStr(path);
+                            if (strList.Count != 0)
+                            {
+                                
+                            }
+                            Thread.Sleep(1000 * 60 *3);
+                        }
+                    }
+                });
+
+                //每隔1分钟读取 ftp人脸识别信息 更新hongwaiPeopleData
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var IFaceAlarmData = serviceScope.ServiceProvider.GetService<IFaceAlarmDataRepositoy>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+
+                        while (true)
+                        {
+                            var YEAR = System.DateTime.Now.Year.ToString();
+                            var MONTH = System.DateTime.Now.Month.ToString("00");
+                            var DAY = System.DateTime.Now.Day.ToString("00");
+                            var HH = System.DateTime.Now.Hour.ToString("00");
+
+                            string path = "AlarmData";
+
+                            
+                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            List<string> strList = ftpClient.DownloadDirToListStr(path);
+                            if (strList.Count != 0)
+                            {
+                                for (int i = 0; i < strList.Count; i++)
+                                {
+                                    try
+                                    {
+                                        JsonFaceStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonFaceStruct>(strList[i]);
+                                        var query = IFaceAlarmData.Find(p => p.alarmId == data.alarmId);
+                                        if (query == null)
+                                        {
+                                            List<string> list = new List<string>();
+                                            for (int m = 0; m < data.humans.Count; m++)
+                                            {
+                                                list.Add(data.humans[m].humanId);
+                                            }
+                                            string matchString = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+                                            IFaceAlarmData.Add(new FaceAlarmData
+                                            {
+                                                alarmTime = data.alarmTime,
+                                                timeStamp = TimeUtils.ConvertToTimeStamps(data.alarmTime),
+                                                cameraName = data.cameraName,
+                                                position = "上海火车站",
+                                                alarmId = data.alarmId,
+                                                humanId = data.humanId,
+                                                humanName = data.humanName,
+                                                matchHumanList = matchString
+                                            });
+                                        }
+                                    }
+                                    catch 
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            Thread.Sleep(1000 * 60 * 5);
+                        }
+                    }
+                });
+
+                
 
             }
             //读取配置

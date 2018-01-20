@@ -48,6 +48,28 @@ namespace SHSecurityContext.Migrations
                     b.ToTable("db_jjds");
                 });
 
+            modelBuilder.Entity("SHSecurityModels.FaceAlarmData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("alarmId");
+
+                    b.Property<string>("alarmTime");
+
+                    b.Property<string>("cameraId");
+
+                    b.Property<string>("facePicUrl");
+
+                    b.Property<string>("position");
+
+                    b.Property<int>("timeStamp");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FaceAlarmData");
+                });
+
             modelBuilder.Entity("SHSecurityModels.HongWaiPeopleData", b =>
                 {
                     b.Property<int>("key")

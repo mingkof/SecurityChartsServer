@@ -16,6 +16,8 @@ namespace ExportInfo
         static void Main(string[] args)
         {
             new SqlDataServer();
+
+            Console.ReadLine();
         }
     }
 }

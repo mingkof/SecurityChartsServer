@@ -142,13 +142,16 @@ namespace SHSecurityServer.Controllers
         {
             FtpClient ftpClient = new FtpClient(RealDataUrlConfig.ip, RealDataUrlConfig.username, RealDataUrlConfig.userpassword);
 
-            var res = ftpClient.Download(path);
+            var res = ftpClient.DownloadToStr(path);
 
             if (res != null)
                 return Ok(res);
             else
                 return Ok("数据为空");
         }
+
+        
+
     }
 
     //public class RealDataUrl

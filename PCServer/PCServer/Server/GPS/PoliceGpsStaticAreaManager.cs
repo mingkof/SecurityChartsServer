@@ -1,4 +1,5 @@
 ﻿using KVDDDCore.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using SHSecurityContext.IRepositorys;
 using SHSecurityModels;
 using System;
@@ -31,8 +32,6 @@ namespace PCServer.Server.GPS
 
     public class PoliceGpsStaticAreaManager
     {
-        IPoliceGPSAreaStaticRepository _police_area_static_repo;
-
         public PoliceGpsStaticAreaConfig AreaConfig = new PoliceGpsStaticAreaConfig();
 
         public Dictionary<string, KPoint[]> Areas = new Dictionary<string, KPoint[]>();
@@ -40,8 +39,6 @@ namespace PCServer.Server.GPS
 
         public void InitAreaConfig(IPoliceGPSAreaStaticRepository police_area_static_repo)
         {
-            _police_area_static_repo = police_area_static_repo;
-
             Areas.Clear();
 
             for (int i = 0; i < AreaConfig.data.Count; i++)
@@ -119,61 +116,70 @@ namespace PCServer.Server.GPS
         {
             return Task.Run(() =>
             {
-                var find = _police_area_static_repo.FindList(p => p.PoliceId == value.PoliceID && p.Year == value.Year && p.Month == value.Month && p.Day == value.Day && p.HH == value.HH, "", false);
+
+                using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                {
+                    var police_area_static_repo = serviceScope.ServiceProvider.GetService<IPoliceGPSAreaStaticRepository>();
+
+                var find = police_area_static_repo.FindList(p => p.PoliceId == value.PoliceID && p.Year == value.Year && p.Month == value.Month && p.Day == value.Day && p.HH == value.HH, "", false);
 
                 //计算区域
                 var areas = CheckInAreaByGps(value.GPS_X, value.GPS_Y);
 
-                if(areas ==null || areas.Count <= 0)
+                if (areas == null || areas.Count <= 0)
                 {
-                    if(find != null)
+                    if (find != null && find.Count() > 0)
                     {
                         var findQita = find.Select(p => p.AreaName == "其他");
-                        if(findQita == null)
+                        if (findQita == null && findQita.Count() <= 0)
                         {
-                            AddPoliceAreaStatic("其他", value);
+                            AddPoliceAreaStatic(police_area_static_repo,"其他", value);
                         }
                         else
                         {
                             //不处理
                         }
 
-                    } else
+                    }
+                    else
                     {
-                        AddPoliceAreaStatic("其他", value);
+                        AddPoliceAreaStatic(police_area_static_repo, "其他", value);
                         return;
                     }
-                } else
+                }
+                else
                 {
                     for (int i = 0; i < areas.Count; i++)
                     {
                         string areaName = areas[i];
 
-                        if (find != null)
+                        if (find != null  && find.Count() > 0)
                         {
                             var findSelectArea = find.Select(p => p.AreaName == areaName);
 
                             if (findSelectArea == null)
                             {
-                                AddPoliceAreaStatic(areaName, value);
+                                AddPoliceAreaStatic(police_area_static_repo, areaName, value);
                             }
                             else
                             {
                                 //不处理
                             }
-                        } else
+                        }
+                        else
                         {
-                            AddPoliceAreaStatic(areaName, value);
+                            AddPoliceAreaStatic(police_area_static_repo, areaName, value);
                         }
                     }
 
                 }
 
+                }
             });
         }
 
 
-        void AddPoliceAreaStatic(string area, PoliceGPS value)
+        void AddPoliceAreaStatic(IPoliceGPSAreaStaticRepository _police_area_static_repo,string area, PoliceGPS value)
         {
             _police_area_static_repo.Add(new PoliceGPSAreaStatic()
             {

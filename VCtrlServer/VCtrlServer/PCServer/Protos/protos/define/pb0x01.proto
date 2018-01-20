@@ -1,0 +1,22 @@
+syntax = "proto3";
+package onlineproto;
+
+import "common.proto";
+
+
+// 游戏登陆请求
+message cs_0x0100_game_login {
+    string token = 1;
+    string open_id = 2;
+}
+
+// 游戏登陆返回
+message sc_0x0100_game_login {
+    G_Player player = 1; //玩家数据
+    int32 gold = 2; //金币
+    int32 volume = 3; //点卷
+    int32 diamonds = 4; //钻石
+    int64 time = 5; //服务器当前时间戳
+    int32 check_code = 6; //校验码
+}
+

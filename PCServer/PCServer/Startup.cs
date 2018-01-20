@@ -1,5 +1,5 @@
-﻿//#define PUBLISH_GONGAN
-#define AT_COMPANY
+﻿#define PUBLISH_GONGAN
+//#define AT_COMPANY
 
 using System;
 using System.Collections.Generic;
@@ -68,6 +68,7 @@ namespace PCServer
             services.AddScoped<IRoadDataRecordRepository, RoadDataRecordRepository>();
             services.AddScoped<IMQServerDataRepository, MQServerDataRepository>();
             services.AddScoped<IHongWaiPeopleDataRepositoy, HongWaiPeopleDataRepositoy>();
+            services.AddScoped<IFaceAlarmDataRepositoy, FaceAlarmDataRepositoy>();
 
             var conn = Configuration.GetConnectionString("DefaultConnection");
 
@@ -211,14 +212,13 @@ namespace PCServer
             PCServerMain.Instance = new PCServerEntry();
             PCServerMain.Instance.Init(isPublishGongAn);
 
-#if PUBLISH_GONGAN
-            //如果是在公安内部系统中运行
-            if (isPublishGongAn)
-            {
-                NodeServer.SyncPoliceData(nodeServices, configRepo);
-                NodeServer.InitTicketResultData(nodeServices, systicketRepo, configRepo);
-            }
-#endif
+//#if PUBLISH_GONGAN
+//            //如果是在公安内部系统中运行
+//            if (isPublishGongAn)
+//            {
+
+//            }
+//#endif
 
 #if AT_COMPANY
             // 用于在公司测试生成数据

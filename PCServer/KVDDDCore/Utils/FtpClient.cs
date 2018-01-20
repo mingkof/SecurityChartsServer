@@ -17,6 +17,7 @@ namespace KVDDDCore.Utils
         //private StreamReader reader = null;
 
         //private int bufferSize = 2048;
+        private List<string> deadDir = new List<string>();
 
         public FtpClient(string hostIP, string userName, string password)
         {
@@ -41,7 +42,7 @@ namespace KVDDDCore.Utils
                 //string json = reader.ReadToEnd();
                 //return json;
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }
@@ -49,6 +50,8 @@ namespace KVDDDCore.Utils
 
         public string DownloadToStr(string remoteFile)
         {
+            try
+            {
                 var ftpRequest = (FtpWebRequest)FtpWebRequest.Create(host + "/" + remoteFile);
                 ftpRequest.Credentials = new NetworkCredential(user, pass);
                 ftpRequest.UseBinary = true;
@@ -60,26 +63,86 @@ namespace KVDDDCore.Utils
                 var reader = new StreamReader(ftpStream);
                 string json = reader.ReadToEnd();
                 return json;
+            }
+            catch
+            {
+                return "";
+            }
+      
         }
         public List<string> DownloadToListStr(string remoteFile)
         {
-            List<string> list = new List<string>();
-            var ftpRequest = (FtpWebRequest)FtpWebRequest.Create(host + "/" + remoteFile);
-            ftpRequest.Credentials = new NetworkCredential(user, pass);
-            ftpRequest.UseBinary = true;
-            ftpRequest.UsePassive = true;
-            ftpRequest.KeepAlive = true;
-            ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
-            var ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
-            var ftpStream = ftpResponse.GetResponseStream();
-            var reader = new StreamReader(ftpStream);
-            while (!reader.EndOfStream)
+            try
             {
-                list.Add(reader.ReadLine());
+                List<string> list = new List<string>();
+                var ftpRequest = (FtpWebRequest)FtpWebRequest.Create(host + "/" + remoteFile);
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
+                var ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                var ftpStream = ftpResponse.GetResponseStream();
+                var reader = new StreamReader(ftpStream);
+                while (!reader.EndOfStream)
+                {
+                    list.Add(reader.ReadLine());
+                }
+                reader.Close();
+                return list;
             }
-            reader.Close();
-            return list;
+            catch
+            {
+                return new List<string>();
+            }
+       
         }
+
+        /// <summary>
+        /// 读取人脸识别数据
+        /// </summary>
+        /// <param name="remoteFile"></param>
+        /// <returns></returns>
+        public List<string> DownloadDirToListStr(string remoteFile)
+        {
+            try
+            {
+                List<string> dirlist = new List<string>();
+                List<string> jsonList = new List<string>();
+                var ftpRequest = (FtpWebRequest)FtpWebRequest.Create(host + "/" + remoteFile);
+                ftpRequest.Credentials = new NetworkCredential(user, pass);
+                ftpRequest.UseBinary = true;
+                ftpRequest.UsePassive = true;
+                ftpRequest.KeepAlive = true;
+                ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
+                var ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                var ftpStream = ftpResponse.GetResponseStream();
+                var reader = new StreamReader(ftpStream);
+                while (!reader.EndOfStream)
+                {
+                    dirlist.Add(reader.ReadLine());
+                }
+                reader.Close();
+
+                for (int i = 0; i < dirlist.Count; i++)
+                {
+                    if (deadDir.Contains(dirlist[i]))
+                        continue;
+                    deadDir.Add(dirlist[i]);
+                    string dataStr= DownloadToStr(dirlist[i] + "/data.json");
+                    if (dataStr != null)
+                        jsonList.Add(dataStr);
+                }
+                return jsonList;
+            }
+            catch
+            {
+                return new List<string>();
+            }
+        }
+
+
+
         //    FileStream localFileStream = new FileStream(localFile, FileMode.Create);
         //    byte[] byteBuffer = new byte[bufferSize];
         //    int bytesRead = ftpStream.Read(byteBuffer, 0, bufferSize);

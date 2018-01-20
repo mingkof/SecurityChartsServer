@@ -1,0 +1,4 @@
+class AgentRunContent {
+}
+class TaskStruct {
+}

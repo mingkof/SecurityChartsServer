@@ -18,8 +18,11 @@ namespace WarnMQServer
 
         public ReceiveData()
         {
+            Console.WriteLine("已启用读取ActiveMQ数据服务 !");
+
             InitConsumer();
             ProcessData();
+
             Console.ReadLine();
         }
 
@@ -56,36 +59,50 @@ namespace WarnMQServer
             string msg = ((ITextMessage)message).Text.ToString();
             msg = ConvertJsonData(msg, "1");
             queue1.Enqueue(msg);
+
+            Console.WriteLine("接受到消息:" + msg);
         }
         static void consumer_Listener2(IMessage message)
         {
             string msg = ((ITextMessage)message).Text.ToString();
             msg = ConvertJsonData(msg, "2");
             queue2.Enqueue(msg);
+
+            Console.WriteLine("接受到消息:" + msg);
         }
         static void consumer_Listener3(IMessage message)
         {
             string msg = ((ITextMessage)message).Text.ToString();
             msg = ConvertJsonData(msg, "3");
             queue3.Enqueue(msg);
+
+            Console.WriteLine("接受到消息:" + msg);
         }
         static void consumer_Listener4(IMessage message)
         {
             string msg = ((ITextMessage)message).Text.ToString();
             msg = ConvertJsonData(msg, "4");
             queue4.Enqueue(msg);
+
+            Console.WriteLine("接受到消息:" + msg);
         }
         static void consumer_Listener5(IMessage message)
         {
             string msg = ((ITextMessage)message).Text.ToString();
             msg = ConvertJsonData(msg, "5");
             queue5.Enqueue(msg);
+
+            Console.WriteLine("接受到消息:" + msg);
         }
 
         static void ProcessData()
         {
             ThreadPool.QueueUserWorkItem((a) => 
             {
+                var pathBase = System.IO.Path.Combine(Environment.CurrentDirectory, "MQData/");
+                if (!System.IO.Directory.Exists(pathBase))
+                    System.IO.Directory.CreateDirectory(pathBase);
+
                 while (true)
                 {
                     var YEAR = System.DateTime.Now.Year.ToString();
@@ -93,7 +110,12 @@ namespace WarnMQServer
                     var DAY = System.DateTime.Now.Day.ToString("00");
                     var HH = System.DateTime.Now.Hour.ToString("00");
                     string fileName = YEAR + MONTH + DAY + HH;
-                    string path = @"E:\MKProjects\MKSecurityCharts\SecurityChartsServer\SyncServer\WarnMQServer\MQData\" + fileName + ".txt";
+
+
+                    string path = pathBase + fileName + ".txt";
+
+                    //string path = @"E:\MKProjects\MKSecurityCharts\SecurityChartsServer\SyncServer\WarnMQServer\MQData\" + fileName + ".txt";
+
                     List<string> stringList = FileUtils.ReadFileToList(path);
                     if (stringList == null)
                         stringList = new List<string>();
@@ -123,7 +145,7 @@ namespace WarnMQServer
                         stringList.Add(oriDataStr);
                     }
                     Console.WriteLine(DateTime.Now.ToString());
-                    Console.WriteLine("update data");
+                    Console.WriteLine("检测新消息写入文件");
                     FileUtils.WriteFile(path, stringList, true, Encoding.UTF8);
                     Thread.Sleep(1000*5);
                 }

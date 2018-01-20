@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html, #allmap {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #l-map {
+            height: 300px;
+            width: 100%;
+        }
+
+        #r-result {
+            width: 100%;
+            font-size: 14px;
+            line-height: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=91a73a33c8964682fdba3f89dc96f279
+
+"></script>
+    <title>本地搜索的数据接口</title>
+</head>
+<body>
+    <div id="r-result"></div>
+</body>
+</html>
+<script type="text/javascript">
+  	var pageIndex;
+	var options = {
+		onSearchComplete: function(results){
+			// 判断状态是否正确
+			if (local.getStatus() == BMAP_STATUS_SUCCESS){
+				var s = [];
+              	pageIndex = results.getPageIndex();
+              	var pageCount = results.getNumPages();
+              	s.push(pageIndex + "/" + pageCount + " " + results.getCurrentNumPois());
+				for (var i = 0; i < results.getCurrentNumPois(); i ++){
+					s.push(results.getPoi(i).title + ", " + results.getPoi(i).address);
+				}
+				document.getElementById("r-result").innerHTML = s.join("<br/>");
+              	if (pageIndex < pageCount) {
+              		local.gotoPage(pageIndex + 1);
+              	}
+			}
+          	else {
+               local.gotoPage(pageIndex + 1);
+          	}
+		},
+      pageCapacity:50
+	};
+	var pStart = new BMap.Point(121.47262,31.231992);
+	var pEnd = new BMap.Point(121.486274,31.245454);
+	var bs = new BMap.Bounds(pStart,pEnd);   //自己规定范围
+	var local = new BMap.LocalSearch(new BMap.Point(121.479806,31.239156), options);
+	local.searchInBounds("交通设施", bs);
+</script>
