@@ -63,6 +63,19 @@ namespace KVDDDCore.Utils
         }
 
 
+        public static Stream ReadFileToStream(string path)
+        {
+            // 打开文件   
+            FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            // 读取文件的 byte[]   
+            byte[] bytes = new byte[fileStream.Length];
+            fileStream.Read(bytes, 0, bytes.Length);
+            fileStream.Close();
+            // 把 byte[] 转换成 Stream   
+            Stream stream = new MemoryStream(bytes);
+            return stream;
+        }
+
         //写
         public static void WriteFile(string path, string content)
         {

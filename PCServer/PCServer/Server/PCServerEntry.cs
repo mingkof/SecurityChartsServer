@@ -315,8 +315,8 @@ namespace PCServer.Server
                                         {
                                             //降序排列
                                             topList = topList.OrderByDescending(p => p.Value).ToList();
-                                            // Logmng.Logger.Trace(topList[topList.Count-1].Value+"     ---    "+kakou.Value);
-                                            if (topList[topList.Count-1].Value<kakou.Value)
+                                            var qu = IKaKouTop.Find(p => p.SBBHID == kakou.SBBHID);
+                                            if (topList[topList.Count-1].Value<kakou.Value&&qu==null)
                                             {
                                                 topList.RemoveAt(topList.Count - 1);
                                                 topList.Add(kakou);

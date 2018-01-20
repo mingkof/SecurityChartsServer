@@ -28,6 +28,19 @@ namespace SHSecurityServer.Controllers
             _faceAlarmData = faceAlarmData;
             RealDataUrlConfig = config.Value;
         }
+
+        [HttpGet("GetTodayCount")]
+        public IActionResult GetTodayCount()
+        {
+            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            var count = _faceAlarmData.Count(p => p.timeStamp > todayStamp);
+            return Ok(new
+            {
+                res = count
+            });
+        }
+
         /// <summary>
         /// 分页获取人脸识别信息
         /// </summary>
@@ -58,7 +71,8 @@ namespace SHSecurityServer.Controllers
             Stream stream =null;
             if (type==0)
             {
-                stream = ftpClient.Download("AlarmData/" + alarmId + "/pics/9f28d5b36adc48f69b3fff19f2f3eeb7_face.png");
+                //stream = ftpClient.Download("AlarmData/" + alarmId + "/pics/9f28d5b36adc48f69b3fff19f2f3eeb7_face.png");
+                stream = FileUtils.ReadFileToStream("static/baidu.jpg");
             }
             else if (type == 1)
             {
