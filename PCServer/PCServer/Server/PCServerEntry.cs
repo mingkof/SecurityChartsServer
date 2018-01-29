@@ -18,6 +18,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PCServer.Server
 {
@@ -27,19 +28,24 @@ namespace PCServer.Server
 
         //WifiDataAreas 信息
         public WifiDataAreaStruct WifiDataAreas = new WifiDataAreaStruct();
+
+        public SHSecuritySysContext dbContext = null;
+
+        public Dictionary<string, List<string>> wifiConfigDic = new Dictionary<string, List<string>>();
+
         //卡口排名
         public int topCount = 5;
         List<KakouTop> topList = new List<KakouTop>();
         public async void Init(bool isPublishGongAn = false)
         {
-           ReadConfig_WifiDataAreas();
-            
+            ReadConfig_WifiDataAreas();
+            ReadConfig_WifiLocationConfig();
             test();
 
             using (var serviceScope = ServiceLocator.Instance.CreateScope())
             {
                 //获取Context
-                var dbContext = serviceScope.ServiceProvider.GetService<SHSecuritySysContext>();
+                 dbContext = serviceScope.ServiceProvider.GetService<SHSecuritySysContext>();
 
                 //自动迁移
                 await new DbInitializer().InitializeAsync(dbContext);
@@ -263,7 +269,7 @@ namespace PCServer.Server
                                         var MONTH = System.DateTime.Now.Month.ToString("00");
                                         var DAY = System.DateTime.Now.Day.ToString("00");
                                         var HH = System.DateTime.Now.Hour.ToString("00");
-                                        if (curMinute>=52&&curMinute<=1)
+                                        if (curMinute>=52||curMinute<=1)
                                         {
                                             
                                             var queryHis=IKaKouDataJinHistory.Find(p=>p.SBBHID==item.SBBH&&p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY&&p.HH==HH);
@@ -338,7 +344,7 @@ namespace PCServer.Server
                         }
                     }
                 });
-                 //每隔1分钟，读取ftp文件Travio.json，更新traviodata
+                 //每隔1分钟，读取ftp文件抓拍 Travio.json，更新traviodata
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
 
@@ -467,7 +473,7 @@ namespace PCServer.Server
                             var MONTH = System.DateTime.Now.Month.ToString("00");
                             var DAY = System.DateTime.Now.Day.ToString("00");
                             var HH = System.DateTime.Now.Hour.ToString("00");
-                            string path = YEAR+MONTH+DAY+HH+"txt";
+                            string path = YEAR+MONTH+DAY+HH+".txt";
 
                             FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
                             List<string> strList = ftpClient.DownloadToListStr(path);
@@ -497,12 +503,12 @@ namespace PCServer.Server
                         }
                     }
                 });
-                //每隔1分钟读取 ftp hongwaiPeopleData 更新hongwaiPeopleData
+                //每隔1分钟读取 ftp  sqlserver hongwaiPeopleData 更新hongwaiPeopleData
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
                     {
-                        var IMQServerData = serviceScope.ServiceProvider.GetService<IMQServerDataRepository>();
+                        var Ihongwaipeople = serviceScope.ServiceProvider.GetService<IHongWaiPeopleDataRepositoy>();
 
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
@@ -513,13 +519,38 @@ namespace PCServer.Server
                             var DAY = System.DateTime.Now.Day.ToString("00");
                             var HH = System.DateTime.Now.Hour.ToString("00");
 
-                            string path = YEAR + MONTH + DAY + HH + "txt";
+                            string path = YEAR + MONTH + DAY + ".txt";
 
                             FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
                             List<string> strList = ftpClient.DownloadToListStr(path);
-                            if (strList.Count != 0)
+                            if (strList.Count!=0)
                             {
-                                
+                                int timeNow = TimeUtils.ConvertToTimeStampNow();
+                                for (int i = 0; i < strList.Count; i++)
+                                {
+                                    HongWaiPeopleData data = Newtonsoft.Json.JsonConvert.DeserializeObject<HongWaiPeopleData>(strList[i]);
+                                    var query = Ihongwaipeople.Find(p => p.sn == data.sn && p.type == data.type&&p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY);
+                                    if (query != null)
+                                    {
+                                        query = new HongWaiPeopleData
+                                        {
+                                            count = data.count
+                                        };
+                                        Ihongwaipeople.Update(query);
+                                    }
+                                    else
+                                    {
+                                        Ihongwaipeople.Add(new HongWaiPeopleData {
+                                            sn=data.sn,
+                                            count=data.count,
+                                            type=data.type,
+                                            timeStamp=timeNow,
+                                            Year=YEAR,
+                                            Month=MONTH,
+                                            Day=DAY
+                                        });
+                                    }
+                                }
                             }
                             Thread.Sleep(1000 * 60 *3);
                         }
@@ -534,6 +565,7 @@ namespace PCServer.Server
                         var IFaceAlarmData = serviceScope.ServiceProvider.GetService<IFaceAlarmDataRepositoy>();
 
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+                        var hostingEnv = serviceScope.ServiceProvider.GetService<IHostingEnvironment>();
 
                         while (true)
                         {
@@ -542,17 +574,19 @@ namespace PCServer.Server
                             var DAY = System.DateTime.Now.Day.ToString("00");
                             var HH = System.DateTime.Now.Hour.ToString("00");
 
-                            string path = "AlarmData";
-
+                            string path = hostingEnv.WebRootPath+ @"\FaceAlarmData\AlarmData";
                             
                             FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
-                            List<string> strList = ftpClient.DownloadDirToListStr(path);
+                            //List<string> strList = FileUtils.ReadDirChild(@"\\38.104.104.4\FaceAlarmData\AlarmData", "data.json");
+                            List<string> strList = FileUtils.ReadDirChild(path, "data.json");
                             if (strList.Count != 0)
                             {
                                 for (int i = 0; i < strList.Count; i++)
                                 {
                                     try
                                     {
+                                        if (string.IsNullOrEmpty(strList[i]))
+                                            continue;
                                         JsonFaceStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonFaceStruct>(strList[i]);
                                         var query = IFaceAlarmData.Find(p => p.alarmId == data.alarmId);
                                         if (query == null)
@@ -809,8 +843,35 @@ namespace PCServer.Server
             WifiDataAreas = Newtonsoft.Json.JsonConvert.DeserializeObject<WifiDataAreaStruct>(content);
         }
 
+        void ReadConfig_WifiLocationConfig()
+        {
+            try
+            {
+                List<WifiConfig> configList = new List<WifiConfig>();
+                wifiConfigDic["南广场"] = new List<string>();
+                wifiConfigDic["北广场"] = new List<string>();
+                string file = "static/WifiConfig.json";
+                var content = KVDDDCore.Utils.FileUtils.ReadFile(file);
+                configList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WifiConfig>>(content);
+                for (int i = 0; i < configList.Count; i++)
+                {
+                    if (configList[i].Locate == "南广场")
+                    {
+                        wifiConfigDic["南广场"].Add(configList[i].id);
+                    }
+                    else if (configList[i].Locate == "北广场")
+                    {
+                        wifiConfigDic["北广场"].Add(configList[i].id);
+                    }
+                }
+            }
+            catch
+            {
 
-
+                throw;
+            }
+            
+        }
     }
 
 
@@ -822,13 +883,21 @@ namespace PCServer.Server
     {
         public int id { get; set; }
         public string name { get; set; }
-        public List<string> ids { get; set; }
+        public List<string> ids = new List<string>();
+        public Dictionary<int, int> history = new Dictionary<int, int>();
     }
 
 
     public class WifiDataAreaStruct
     {
         public List<WifiDataAreaItemStruct> data = new List<WifiDataAreaItemStruct>();
+
+    }
+
+    public class WifiConfig
+    {
+        public string id;
+        public string Locate;
     }
 
 }

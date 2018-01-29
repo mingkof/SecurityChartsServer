@@ -198,7 +198,11 @@ namespace SHSecurityServer.Controllers
             return Ok(res);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create([FromBody]sys_110warningdb value)
         {
@@ -216,7 +220,10 @@ namespace SHSecurityServer.Controllers
         }
 
 
-
+        /// <summary>
+        /// 清空110警情数据
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete("clearall")]
         //[Route("/api/110warn/clearall")]
         public IActionResult ClearAll()
@@ -229,7 +236,11 @@ namespace SHSecurityServer.Controllers
             return Ok();
         }
 
-
+        /// <summary>
+        /// 根据报警电话获取警情信息
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
         [HttpGet("phonelist/{phone}")]
         public IActionResult HourCount(string phone)
         {
@@ -243,7 +254,11 @@ namespace SHSecurityServer.Controllers
                 array = query
             });
         }
-
+        /// <summary>
+        /// 根据关键词获取110警情列表
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
         [HttpGet("cmsearch/{word}")]
         public IActionResult CmSearch(string word)
         {
@@ -258,7 +273,10 @@ namespace SHSecurityServer.Controllers
             });
         }
 
-
+        /// <summary>
+        /// 获取今日每小时的警情数据
+        /// </summary>
+        /// <returns></returns>
         private async Task<Dictionary<int, int>> GetHourCount()
         {
             string nowYear = System.DateTime.Now.Year.ToString();

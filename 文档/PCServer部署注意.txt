@@ -1,0 +1,11 @@
+在静安公安中后期的部署要注意:
+
+部署不删:
+
+1. Node文件夹
+2. node_modules文件夹
+3. static 文件夹， 检查文件是否全
+4. wwwroot文件夹 ，不要删。
+5. wwwroot/dist 替换。
+6. appsettings.json不删。
+7. runtime文件夹不删。

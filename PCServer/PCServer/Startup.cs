@@ -1,5 +1,5 @@
-﻿//#define PUBLISH_GONGAN
-#define AT_COMPANY
+﻿#define PUBLISH_GONGAN
+//#define AT_COMPANY
 
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog.Extensions.Logging;
 using MKServerWeb.Model.RealData;
 using PCServer.Server;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace PCServer
 {
@@ -69,6 +70,7 @@ namespace PCServer
             services.AddScoped<IMQServerDataRepository, MQServerDataRepository>();
             services.AddScoped<IHongWaiPeopleDataRepositoy, HongWaiPeopleDataRepositoy>();
             services.AddScoped<IFaceAlarmDataRepositoy, FaceAlarmDataRepositoy>();
+            services.AddScoped<IPeopleCountConfigRepositoy, PeopleCountConfigRepositoy>();
 
             var conn = Configuration.GetConnectionString("DefaultConnection");
 
@@ -80,9 +82,26 @@ namespace PCServer
             //{
             //});
 
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new Info { Title = "SHSecuritySys API", Version = "v1" });
+            //});
+
+            //> 安装Swagger中间件
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "SHSecuritySys API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "SHSecuritySys API",
+                    Version = "v1",
+                    Description = "静安公安服务器WebAPI",
+                    TermsOfService = "None",
+                    License = new License { Name = "License", Url = "" }
+                });
+
+                c.IncludeXmlComments(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath,
+                    "API.XML"));
+                c.DescribeAllEnumsAsStrings();
             });
 
             services.Configure<RealDataUrl>(this.Configuration.GetSection("RealDataUrl"));

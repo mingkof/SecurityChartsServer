@@ -62,5 +62,7 @@ namespace SHSecurityContext.Base
         /// <param name="isAsc">是否升序</param>
         /// <returns></returns>
         IQueryable<T> FindPageList(int pageIndex, int pageSize, out int totalRecord, Expression<Func<T, bool>> whereLamdba, string orderName, bool isAsc);
+
+        IQueryable<T> FromSql(string sql);
     }
 }

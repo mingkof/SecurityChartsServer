@@ -48,6 +48,9 @@ namespace SHSecurityContext.DBContext
         public DbSet<MQServerData> MQServerData { get; set; }
         public DbSet<HongWaiPeopleData> HongWaiPeopleData { get; set; }
         public DbSet<FaceAlarmData> FaceAlarmData { get; set; }
+
+
+        public DbSet<sys_PeopleCountConfig> PeopleCountConfig { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //    => optionsBuilder
         // .UseMySql(@"Server=127.0.0.1;database=SHSecuritySys;uid=strike2014;pwd=strike@2014;");

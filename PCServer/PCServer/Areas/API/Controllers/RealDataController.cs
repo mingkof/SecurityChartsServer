@@ -24,7 +24,10 @@ namespace SHSecurityServer.Controllers
             _logger = logger;
             RealDataUrlConfig = config.Value;
         }
-
+        /// <summary>
+        /// 获取天气信息
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("weather", Name = "GetWeatherData")]
         public IActionResult GetWeatherData()
         {
@@ -57,7 +60,10 @@ namespace SHSecurityServer.Controllers
             }
             return Ok(weatherData);
         }
-
+        /// <summary>
+        /// 获取交通信息
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("traffic", Name = "GetTrafficData")]
         public IActionResult GetTrafficData()
         {
@@ -136,7 +142,11 @@ namespace SHSecurityServer.Controllers
             //return Ok(tampData);
             //}
         }
-
+        /// <summary>
+        /// 获取FTP服务器下文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         [HttpGet("ftp/{path}", Name = "FtpTest")]
         public IActionResult FtpTest(string path)
         {

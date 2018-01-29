@@ -26,7 +26,10 @@ namespace SHSecurityServer.Controllers
             _kakoudatajin = kakoudata;
             _kakouTop = kakouTop;
         }
-
+        /// <summary>
+        /// 获取历史所有卡口记录
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("getkakoudata/")]
         public IActionResult GetKaKouData()
         {
@@ -42,7 +45,7 @@ namespace SHSecurityServer.Controllers
             }
         }
         /// <summary>
-        /// 获取卡口流量top 
+        /// 获取卡口流量top5 
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetKakouTop5Data/")]
@@ -58,6 +61,43 @@ namespace SHSecurityServer.Controllers
             }
             return BadRequest();
         }
+        /// <summary>
+        /// 获取当前车流进出统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetCarCount")]
+        public IActionResult GetCarCount()
+        {
+            var inQueryCount = 0;
+            var outQueryCount = 0;
 
+            var inQuery = _kakoudatajin.FindList(p => p.pass_or_out == "0", "", false);
+
+            var outQuery = _kakoudatajin.FindList(p => p.pass_or_out == "1", "", false);
+
+            try
+            {
+                if (inQuery != null)
+                {
+                    inQueryCount = inQuery.Sum(p => int.Parse(p.Count));
+                }
+                if (outQuery != null)
+                {
+                    outQueryCount = outQuery.Sum(p => int.Parse(p.Count));
+                }
+            }
+            catch 
+            {
+
+                throw;
+            }
+            
+            return Ok(new {
+                res=new {
+                    inCount=inQueryCount,
+                    outCount=outQueryCount
+                }
+            });
+        }
     }
  }

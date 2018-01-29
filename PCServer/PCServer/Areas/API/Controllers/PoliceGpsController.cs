@@ -47,7 +47,10 @@ namespace SHSecurityServer.Controllers
                 PoliceArray = list
             });
         }
-
+        /// <summary>
+        /// 获取在岗警力数量
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("onlineCount")]
         public IActionResult GetOnlineCount()
         {
@@ -63,7 +66,10 @@ namespace SHSecurityServer.Controllers
             });
         }
 
-
+        /// <summary>
+        /// 获取今日静安总警力
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("totalCount")]
         public IActionResult GetTotalCount()
         {
@@ -81,7 +87,11 @@ namespace SHSecurityServer.Controllers
             });
         }
 
-        //设置今日静安总警力
+        /// <summary>
+        /// 设置今日静安总警力
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
         [HttpPost("setTotalCount/{count}")]
         public IActionResult SetTotalCount(int count)
         {

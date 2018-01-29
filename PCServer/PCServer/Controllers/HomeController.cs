@@ -20,10 +20,13 @@ namespace MKServerWeb.Controllers
             _logger = logger;
         }
 
-
         public IActionResult Index()
         {
-            //return View();
+            return View();
+        }
+
+        public IActionResult swagger()
+        {
             return Redirect("/swagger/");
         }
 

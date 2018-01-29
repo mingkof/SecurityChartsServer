@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using MKServerWeb.Model.RealData;
 using KVDDDCore.Utils;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace SHSecurityServer.Controllers
 {
@@ -21,14 +22,19 @@ namespace SHSecurityServer.Controllers
     {
         private readonly ILogger _logger;
         private readonly IFaceAlarmDataRepositoy _faceAlarmData;
+        private readonly IHostingEnvironment _hostingEnv;
         private RealDataUrl RealDataUrlConfig;
-        public FaceAlarmDataController(IFaceAlarmDataRepositoy faceAlarmData,ILogger<FaceAlarmDataController> logger, IOptions<RealDataUrl> config)
+        public FaceAlarmDataController(IFaceAlarmDataRepositoy faceAlarmData, IHostingEnvironment hostingEnv, ILogger<FaceAlarmDataController> logger, IOptions<RealDataUrl> config)
         {
             _logger = logger;
             _faceAlarmData = faceAlarmData;
             RealDataUrlConfig = config.Value;
+            _hostingEnv = hostingEnv;
         }
-
+        /// <summary>
+        /// 获取今日人脸识别重点人员报警次数
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetTodayCount")]
         public IActionResult GetTodayCount()
         {
@@ -42,7 +48,7 @@ namespace SHSecurityServer.Controllers
         }
 
         /// <summary>
-        /// 分页获取人脸识别信息
+        /// 分页获取重点人员人脸识别信息
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
@@ -52,14 +58,14 @@ namespace SHSecurityServer.Controllers
         {
             string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
             int todayStamp = TimeUtils.ConvertToTimeStamps(today);
-            var list = _faceAlarmData.FindPageList(pageIndex, pageSize, out int totalSize,p=>p.timeStamp > todayStamp, "", true);
+            var list = _faceAlarmData.FindPageList(pageIndex, pageSize, out int totalSize,p=>p.timeStamp > todayStamp,"timeStamp", true);
             return Ok(new {
                 res=list
             });
         }
 
         /// <summary>
-        /// 获取人脸识别照片
+        /// 获取重点人员人脸识别照片
         /// </summary>
         /// <param name="alarmId">人脸识别告警ID</param>
         /// <param name="type"> 0 : 全景  1：脸部</param>
@@ -67,16 +73,21 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetAlarmHumanImg/{type}/{alarmId}")]
         public IActionResult GetAlarmHumanImg(int type, string alarmId)
         {
-            FtpClient ftpClient = new FtpClient(RealDataUrlConfig.ip, RealDataUrlConfig.username, RealDataUrlConfig.userpassword);
+            string path = _hostingEnv.WebRootPath + @"\FaceAlarmData\AlarmData\" + alarmId + @"\pics\" ;
             Stream stream =null;
+            var query= _faceAlarmData.Find(p => p.alarmId == alarmId);
+
+            string id = "";
+            if (query != null)
+                id = query.humanId;
             if (type==0)
             {
-                //stream = ftpClient.Download("AlarmData/" + alarmId + "/pics/9f28d5b36adc48f69b3fff19f2f3eeb7_face.png");
-                stream = FileUtils.ReadFileToStream("static/baidu.jpg");
+                stream = FileUtils.ReadFileToStream(path + id + "_face.png");
+                //stream = FileUtils.ReadFileToStream("static/baidu.jpg");
             }
             else if (type == 1)
             {
-                stream = ftpClient.Download("AlarmData/" + alarmId + "/pics/9f28d5b36adc48f69b3fff19f2f3eeb7_bkg.png");
+                stream = FileUtils.ReadFileToStream(path + id + "_bkg.png");
             }
             if (stream != null)
                 return File(stream, "image/png");
@@ -85,23 +96,25 @@ namespace SHSecurityServer.Controllers
         }
 
         /// <summary>
-        /// 获取匹配人脸的照片
+        /// 获取重点人员匹配人脸的照片
         /// </summary>
         /// <param name="alarmId"></param>
-        /// <param name="fileName"></param>
+        /// <param name="humanid"></param>
         /// <returns></returns>
         [HttpGet("GetAlarmFatchHumanImg/{alarmId}/{humanid}")]
         public IActionResult GetAlarmFatchHumanImg(string alarmId, string humanid)
         {
-            FtpClient ftpClient = new FtpClient(RealDataUrlConfig.ip, RealDataUrlConfig.username, RealDataUrlConfig.userpassword);
-            var stream = ftpClient.Download("AlarmData/" + alarmId + "/pics/humans/"+ humanid + "/"+humanid+"_face.png");
+            var stream = FileUtils.ReadFileToStream(_hostingEnv.WebRootPath + @"\FaceAlarmData\AlarmData\"+ alarmId + @"\pics\humans\"+ humanid + @"\"+humanid+"_face.png");
             if (stream != null)
                 return File(stream, "image/png");
             else
                 return null;
         }
-
-
+        /// <summary>
+        /// 获取重点人员匹配人员列表
+        /// </summary>
+        /// <param name="alarmId"></param>
+        /// <returns></returns>
         [HttpGet("GetAlarmFatchHumanNameList/{alarmId}")]
         public IActionResult GetAlarmFatchHumanNameList(string alarmId)
         {

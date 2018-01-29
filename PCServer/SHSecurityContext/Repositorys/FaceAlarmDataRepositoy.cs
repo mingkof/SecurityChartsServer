@@ -18,4 +18,12 @@ namespace SHSecurityContext.Repositorys
         }
     }
     
+
+         public class PeopleCountConfigRepositoy : BaseRepository<sys_PeopleCountConfig>, IPeopleCountConfigRepositoy
+    {
+        public PeopleCountConfigRepositoy(SHSecuritySysContext context)
+        {
+            nContext = context;
+        }
+    }
 }

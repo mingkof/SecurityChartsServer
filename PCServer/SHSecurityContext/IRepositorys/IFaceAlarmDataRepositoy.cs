@@ -12,5 +12,8 @@ namespace SHSecurityContext.IRepositorys
     {
 
     }
-    
+    public interface IPeopleCountConfigRepositoy :IBaseRepository<sys_PeopleCountConfig>
+    {
+
+    }
 }

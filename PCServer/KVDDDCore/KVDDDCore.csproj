@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="NPOI.Core.Extension" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SHSecurityModels\SHSecurityModels.csproj" />
   </ItemGroup>
 
 </Project>

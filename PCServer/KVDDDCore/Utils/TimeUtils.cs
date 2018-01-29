@@ -45,7 +45,15 @@ namespace KVDDDCore.Utils
             return (int)(nt - Get1970UtcTime()).TotalSeconds;
         }
 
+        public static int ConvertToTimeStampByZero(string DateStr,int delayDay = 0)
+        {
+            var dt =  DateTime.TryParse(DateStr, out DateTime time);
 
+            DateTime nt = new DateTime(time.Year, time.Month, time.Day);
+            nt = nt.AddDays(delayDay);
+
+            return (int)(nt - Get1970UtcTime()).TotalSeconds;
+        }
 
         /// <summary>
         /// 

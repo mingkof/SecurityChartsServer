@@ -80,7 +80,10 @@ namespace SHSecurityServer.Controllers
             return Ok();
         }
 
-
+        /// <summary>
+        /// 清楚所有数据
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete("clearall", Name = "ClearAll")]
         //[Route("/api/wifitb/clearall")]
         public IActionResult ClearAll()

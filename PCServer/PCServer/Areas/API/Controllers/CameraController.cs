@@ -13,6 +13,9 @@ using System.Numerics;
 
 namespace SHSecurityServer.Controllers
 {
+    /// <summary>
+    /// 摄像头API
+    /// </summary>
     [Produces("application/json")]
     [Route("api/cameras")]
     public class CameraController : Controller
@@ -29,6 +32,11 @@ namespace SHSecurityServer.Controllers
             _sysConfig = sysConfig;
         }
 
+        /// <summary>
+        /// 获取所有摄像头的列表
+        /// </summary>
+        /// <returns>res=List(sys_cameras)</returns>
+
         [HttpGet("list")]
         public IActionResult GetList()
         {
@@ -39,7 +47,11 @@ namespace SHSecurityServer.Controllers
                 res = list
             });
         }
-
+        /// <summary>
+        /// 根据id获取camera信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("getcamera/{id}")]
         public IActionResult GetCamera(string id)
         {

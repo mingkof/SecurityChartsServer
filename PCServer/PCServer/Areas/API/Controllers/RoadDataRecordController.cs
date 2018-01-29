@@ -24,7 +24,11 @@ namespace SHSecurityServer.Controllers
             _roadDataRecord = roadDataRecord;
         }
 
-        //根据路名获取其24之内的平均交通指数
+        /// <summary>
+        /// 根据路名获取其24之内的平均交通指数
+        /// </summary>
+        /// <param name="roadName"></param>
+        /// <returns></returns>
         [HttpGet("GetTodayHoursAvgData/{roadName}/")]
         public IActionResult GetTodayHoursAvgData(string roadName)
         {
@@ -58,7 +62,11 @@ namespace SHSecurityServer.Controllers
                 res=HoursToData
             });
         }
-        //获取最新的道路信息
+        /// <summary>
+        /// 获取最新的道路信息
+        /// </summary>
+        /// <param name="roadName"></param>
+        /// <returns></returns>
         [HttpGet("GetRoadRealData/{roadName}/")]
         public IActionResult GetRoadRealData(string roadName)
         {

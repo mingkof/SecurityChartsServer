@@ -22,7 +22,13 @@ namespace SHSecurityServer.Controllers
             _logger = logger;
             _traviodata = traviodata;
         }
-
+        /// <summary>
+        /// 获取某年某月某日 抓拍 数量
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
         [HttpGet("GetDayCount/{year}/{month}/{day}")]
         public IActionResult GetDayCount(string year,string month,string day)
         {

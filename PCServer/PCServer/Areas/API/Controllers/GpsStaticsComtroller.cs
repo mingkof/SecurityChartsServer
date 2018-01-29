@@ -55,7 +55,12 @@ namespace SHSecurityServer.Controllers
         //        res = str
         //    });
         //}
-
+        /// <summary>
+        /// 获取时间范围内区域警力统计
+        /// </summary>
+        /// <param name="TimeStart"></param>
+        /// <param name="TimeEnd"></param>
+        /// <returns></returns>
         [HttpGet("GetCount")]
         public IActionResult GetCount(int TimeStart, int TimeEnd) {
 

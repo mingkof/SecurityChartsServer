@@ -7,6 +7,7 @@ namespace KVDDDCore.Utils
 {
     public class FileUtils
     {
+        private static List<string> readedDirName = new List<string>();
         public static string ReadFile(Stream stream)
         {
             if (stream == null)
@@ -46,6 +47,42 @@ namespace KVDDDCore.Utils
             return sb.ToString();
         }
 
+        public static List<string> ReadDirChild(string path,string fileName)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            List<string> resList = new List<string>();
+            DirectoryInfo root = new DirectoryInfo(path);
+
+            try
+            {
+                foreach (var item in root.GetDirectories())
+                {
+                    if (readedDirName.Contains(item.Name))
+                        continue;
+                    string childDir = item.Name;
+                    string filePath = path + @"\" + childDir + @"\" + fileName;
+
+                    string dataStr = ReadFile(filePath);
+                    if (dataStr != null)
+                    {
+                        resList.Add(dataStr);
+                    }
+                    readedDirName.Add(childDir);
+                }
+            }
+            catch
+            {
+
+                return new List<string>();
+            }
+            
+            return resList;
+        }
+
+
         public static List<string> ReadFileToList(string filePath)
         {
             if (!File.Exists(filePath))
@@ -65,15 +102,24 @@ namespace KVDDDCore.Utils
 
         public static Stream ReadFileToStream(string path)
         {
-            // 打开文件   
-            FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            // 读取文件的 byte[]   
-            byte[] bytes = new byte[fileStream.Length];
-            fileStream.Read(bytes, 0, bytes.Length);
-            fileStream.Close();
-            // 把 byte[] 转换成 Stream   
-            Stream stream = new MemoryStream(bytes);
-            return stream;
+            try
+            {
+                // 打开文件   
+                FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                // 读取文件的 byte[]   
+                byte[] bytes = new byte[fileStream.Length];
+                fileStream.Read(bytes, 0, bytes.Length);
+                fileStream.Close();
+                // 把 byte[] 转换成 Stream   
+                Stream stream = new MemoryStream(bytes);
+                return stream;
+            }
+            catch 
+            {
+
+                return null;
+            }
+          
         }
 
         //写

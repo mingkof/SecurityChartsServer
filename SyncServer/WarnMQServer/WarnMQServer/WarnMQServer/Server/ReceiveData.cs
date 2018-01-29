@@ -20,6 +20,7 @@ namespace WarnMQServer
         {
             Console.WriteLine("已启用读取ActiveMQ数据服务 !");
 
+            Console.WriteLine(TimeUtils.ConvertToTimeStamps("2018-01-24 13:05:00"));
             InitConsumer();
             ProcessData();
 
@@ -162,7 +163,8 @@ namespace WarnMQServer
         {
             JsonMQServerDataContruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonMQServerDataContruct>(oriDataStr);
             res.topicType = topicType;
-            res.timeStamp = TimeUtils.ConvertToTimeStampNow();
+
+            res.timeStamp = TimeUtils.ConvertToTimeStamps(res.time);
             string processedData = Newtonsoft.Json.JsonConvert.SerializeObject(res);
             return processedData;
         }

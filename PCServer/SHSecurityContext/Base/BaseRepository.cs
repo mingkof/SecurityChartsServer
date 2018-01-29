@@ -124,6 +124,10 @@ namespace SHSecurityContext.Base
             return nContext.Set<T>().Select(whereLamdba).Max();
         }
 
+        public IQueryable<T> FromSql(string sql)
+        {
+            return nContext.Set<T>().FromSql(sql);
+        }
 
     }
 }

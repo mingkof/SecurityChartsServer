@@ -21,12 +21,19 @@ namespace SHSecurityServer.Controllers
             _logger = logger;
             _hongwaidata = hongwaidata;
         }
-
+        /// <summary>
+        /// 根据设备编号获取其进出信息
+        /// </summary>
+        /// <param name="sn"></param>
+        /// <returns></returns>
         [HttpGet("GetSnCountData/{sn}")]
         public IActionResult GetSnCountData(string sn)
         {
             string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
             int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            //string nowYear = System.DateTime.Now.Year.ToString();
+            //string nowMonth = System.DateTime.Now.Month.ToString("00");
+            //string nowDay = System.DateTime.Now.Day.ToString("00");
             var query = _hongwaidata.FindList(p => p.sn == sn && p.timeStamp >= todayStamp,"",false);
             return Ok(new {
                 res = query
