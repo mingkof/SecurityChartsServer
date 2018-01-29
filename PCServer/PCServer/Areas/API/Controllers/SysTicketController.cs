@@ -74,7 +74,6 @@ namespace MKServerWeb.Controllers
             int todayStamp = TimeUtils.ConvertToTimeStamps(today);
             var query = _sysTicketresRepository.FindPageList(pageIndex, pageSize, out int totalSize, p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp, "", false);
 
-
             return Ok(new {
                 res=query
             });

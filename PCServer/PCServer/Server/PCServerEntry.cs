@@ -124,11 +124,10 @@ namespace PCServer.Server
                         
                         while (true)
                         {
+                            Logmng.Logger.Trace("ThreadPool=1-----------正在读取：resultAll.json");
                             FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
 
                             string str = ftpClient.DownloadToStr(path);
-
-                            
                             if (!string.IsNullOrEmpty(str))
                             {
                                     JsonWifiDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonWifiDataStruct>(str);
@@ -215,7 +214,6 @@ namespace PCServer.Server
                     }
                 });
 
-
                  //每隔1分钟，读取ftp文件KaKouData.json，更新kakoudatajin和kakoudatajinhistory表.
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
@@ -230,6 +228,7 @@ namespace PCServer.Server
                         string path = "KaKouData.json";
                         while(true)
                         {
+                            Logmng.Logger.Trace("ThreadPool=2-----------正在读取：KaKouData.json");
                             FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
                             // Logmng.Logger.Trace("q11111111111111111111");
                             string str = ftpClient.DownloadToStr(path);
@@ -344,6 +343,7 @@ namespace PCServer.Server
                         }
                     }
                 });
+
                  //每隔1分钟，读取ftp文件抓拍 Travio.json，更新traviodata
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
@@ -357,6 +357,7 @@ namespace PCServer.Server
                         string path = "AllTravioInfo.json";
                         while(true)
                         {
+                            Logmng.Logger.Trace("ThreadPool=3-----------正在读取：AllTravioInfo.json");
                             FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
                             string str = ftpClient.DownloadToStr(path);
                             if(!string.IsNullOrEmpty(str))
@@ -403,6 +404,7 @@ namespace PCServer.Server
                         RealDataUrl RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>().Value;
                         while(true)
                         {
+                            Logmng.Logger.Trace("ThreadPool=4-----------正在读取：AllTravioInfo.json");
                             int timeNow=TimeUtils.ConvertToTimeStampNow();
                             var model = WebClientUls.GetString(RealDataConfig.TrafficUrl);
                             var modelRoadTop = WebClientUls.GetString(RealDataConfig.RoadUrl);
@@ -469,13 +471,14 @@ namespace PCServer.Server
 
                         while (true)
                         {
+                            Logmng.Logger.Trace("ThreadPool=5-----------正在读取：ftp MQ物联报警数据");
                             var YEAR = System.DateTime.Now.Year.ToString();
                             var MONTH = System.DateTime.Now.Month.ToString("00");
                             var DAY = System.DateTime.Now.Day.ToString("00");
                             var HH = System.DateTime.Now.Hour.ToString("00");
-                            string path = YEAR+MONTH+DAY+HH+".txt";
+                            string path = "receive/rcwj/" + "wulian_" + YEAR +MONTH+DAY+HH+".txt";
 
-                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            FtpClient ftpClient = new FtpClient("ftp://10.15.55.15:32121/", "zbfjrcwj", "zbfjrcwj");
                             List<string> strList = ftpClient.DownloadToListStr(path);
                             if (strList.Count!=0)
                             {
@@ -503,6 +506,7 @@ namespace PCServer.Server
                         }
                     }
                 });
+
                 //每隔1分钟读取 ftp  sqlserver hongwaiPeopleData 更新hongwaiPeopleData
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
@@ -514,28 +518,27 @@ namespace PCServer.Server
 
                         while (true)
                         {
+                            Logmng.Logger.Trace("ThreadPool=6-----------正在读取：ftp 红外报警数据");
                             var YEAR = System.DateTime.Now.Year.ToString();
                             var MONTH = System.DateTime.Now.Month.ToString("00");
                             var DAY = System.DateTime.Now.Day.ToString("00");
                             var HH = System.DateTime.Now.Hour.ToString("00");
 
-                            string path = YEAR + MONTH + DAY + ".txt";
+                            string path = "receive/rcwj/" + "hongwai_" + YEAR+"-" + MONTH + "-" + DAY + ".txt";
 
-                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            FtpClient ftpClient = new FtpClient("ftp://10.15.55.15:32121/", "zbfjrcwj", "zbfjrcwj");
                             List<string> strList = ftpClient.DownloadToListStr(path);
                             if (strList.Count!=0)
                             {
                                 int timeNow = TimeUtils.ConvertToTimeStampNow();
                                 for (int i = 0; i < strList.Count; i++)
                                 {
-                                    HongWaiPeopleData data = Newtonsoft.Json.JsonConvert.DeserializeObject<HongWaiPeopleData>(strList[i]);
+                                    JosnHongWaiStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JosnHongWaiStruct>(strList[i]);
                                     var query = Ihongwaipeople.Find(p => p.sn == data.sn && p.type == data.type&&p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY);
                                     if (query != null)
                                     {
-                                        query = new HongWaiPeopleData
-                                        {
-                                            count = data.count
-                                        };
+                                        query.count = data.count;
+
                                         Ihongwaipeople.Update(query);
                                     }
                                     else
@@ -552,12 +555,12 @@ namespace PCServer.Server
                                     }
                                 }
                             }
-                            Thread.Sleep(1000 * 60 *3);
+                            Thread.Sleep(1000 * 60 *1);
                         }
                     }
                 });
 
-                //每隔1分钟读取 ftp人脸识别信息 更新hongwaiPeopleData
+                //每隔1分钟读取 ftp人脸识别信息 更新FaceAlarmData
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
@@ -569,6 +572,7 @@ namespace PCServer.Server
 
                         while (true)
                         {
+                            Logmng.Logger.Trace("ThreadPool=7-----------正在读取：ftp人脸识别信息");
                             var YEAR = System.DateTime.Now.Year.ToString();
                             var MONTH = System.DateTime.Now.Month.ToString("00");
                             var DAY = System.DateTime.Now.Day.ToString("00");
@@ -621,13 +625,9 @@ namespace PCServer.Server
                     }
                 });
 
-                
-
             }
-            //读取配置
-            ReadConfig_PoliceGpsStaticAreas();
-
-
+            //弃用  服务器不用分析区域 改为api设置  读取配置
+            //ReadConfig_PoliceGpsStaticAreas();
 
 
             return;

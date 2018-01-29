@@ -227,7 +227,7 @@ namespace PCServer.Server.GPSSocket
 
 
             //统计更新区域内警员人次的历史记录
-            PCServerMain.Instance.PoliceGpsStaticAreaManager.UpdatePoliceAreaStatic(tamp);
+            //PCServerMain.Instance.PoliceGpsStaticAreaManager.UpdatePoliceAreaStatic(tamp);
 
 
 

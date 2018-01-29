@@ -31,10 +31,10 @@ namespace SHSecurityServer.Controllers
         {
             string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
             int todayStamp = TimeUtils.ConvertToTimeStamps(today);
-            //string nowYear = System.DateTime.Now.Year.ToString();
-            //string nowMonth = System.DateTime.Now.Month.ToString("00");
-            //string nowDay = System.DateTime.Now.Day.ToString("00");
-            var query = _hongwaidata.FindList(p => p.sn == sn && p.timeStamp >= todayStamp,"",false);
+            string nowYear = System.DateTime.Now.Year.ToString();
+            string nowMonth = System.DateTime.Now.Month.ToString("00");
+            string nowDay = System.DateTime.Now.Day.ToString("00");
+            var query = _hongwaidata.FindList(p => p.sn == sn && p.Year == nowYear&&p.Month==nowMonth&&p.Day==nowDay,"",false);
             return Ok(new {
                 res = query
             });

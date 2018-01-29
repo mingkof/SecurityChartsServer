@@ -73,26 +73,36 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetAlarmHumanImg/{type}/{alarmId}")]
         public IActionResult GetAlarmHumanImg(int type, string alarmId)
         {
-            string path = _hostingEnv.WebRootPath + @"\FaceAlarmData\AlarmData\" + alarmId + @"\pics\" ;
-            Stream stream =null;
+            string path = "/FaceAlarmData/AlarmData/" + alarmId + "/pics/";
+            //Stream stream =null;
             var query= _faceAlarmData.Find(p => p.alarmId == alarmId);
 
             string id = "";
             if (query != null)
                 id = query.humanId;
+
+            string imgUrl = "";
+
             if (type==0)
             {
-                stream = FileUtils.ReadFileToStream(path + id + "_face.png");
+                imgUrl = path + id + "_face.png";
+                //stream = FileUtils.ReadFileToStream(path + id + "_face.png");
                 //stream = FileUtils.ReadFileToStream("static/baidu.jpg");
             }
             else if (type == 1)
             {
-                stream = FileUtils.ReadFileToStream(path + id + "_bkg.png");
+                imgUrl = path + id + "_bkg.png";
+                //stream = FileUtils.ReadFileToStream(path + id + "_bkg.png");
             }
-            if (stream != null)
-                return File(stream, "image/png");
-            else
-                return null;
+
+            return Ok(new
+            {
+                res = imgUrl
+            });
+            //if (stream != null)
+            //    return File(stream, "image/png");
+            //else
+            //    return null;
         }
 
         /// <summary>
@@ -104,11 +114,18 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetAlarmFatchHumanImg/{alarmId}/{humanid}")]
         public IActionResult GetAlarmFatchHumanImg(string alarmId, string humanid)
         {
-            var stream = FileUtils.ReadFileToStream(_hostingEnv.WebRootPath + @"\FaceAlarmData\AlarmData\"+ alarmId + @"\pics\humans\"+ humanid + @"\"+humanid+"_face.png");
-            if (stream != null)
-                return File(stream, "image/png");
-            else
-                return null;
+            //var stream = FileUtils.ReadFileToStream(_hostingEnv.WebRootPath + @"\FaceAlarmData\AlarmData\"+ alarmId + @"\pics\humans\"+ humanid + @"\"+humanid+"_face.png");
+            //if (stream != null)
+            //    return File(stream, "image/png");
+            //else
+            //    return null;
+
+            string imgUrl = "";
+            imgUrl = "/FaceAlarmData/AlarmData/" + alarmId + "/pics/humans/" + humanid + "/" + humanid + "_face.png";
+            return Ok(new
+            {
+                res = imgUrl
+            });
         }
         /// <summary>
         /// 获取重点人员匹配人员列表

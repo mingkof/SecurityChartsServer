@@ -128,12 +128,14 @@ namespace SHSecurityServer.Controllers
             string nowDay = DayNow.Day.ToString("00");
             string nowHour = DayNow.Hour.ToString("00");
 
-            List<string> areas = PCServerMain.Instance.PoliceGpsStaticAreaManager.Areas.Keys.ToList();
+            //List<string> areas = PCServerMain.Instance.PoliceGpsStaticAreaManager.Areas.Keys.ToList();
+            List<string> areas = new List<string>() { "火车站入口", "北广场东南", "北广场西", "北广场东北", "其它" };
             List<int> count = new List<int>();
             for (int i = 0; i < areas.Count; i++)
             {
                 var query = _police_area_static_repo.Count(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.HH == nowHour && p.AreaName == areas[i]);
-                count.Add(new Random().Next(0, 20));
+                //count.Add(new Random().Next(0, 20));
+                count.Add(query);
             }
 
             return Ok(new
@@ -160,6 +162,50 @@ namespace SHSecurityServer.Controllers
             return Ok(new {
                 res =query
                 });
+        }
+        /// <summary>
+        /// 设置警员所在区域
+        /// </summary>
+        /// <param name="list">警员id列表</param>
+        /// <param name="areaName">区域名：火车站入口  北广场东南  北广场西  北广场东北  其它</param>
+        /// <returns></returns>
+        [HttpPost("SetPoliceGpsArea/{list}/{areaName}")]
+        public IActionResult SetPoliceGpsArea(List<string> list,string areaName)
+        {
+            var DayNow = DateTime.Now;
+            string nowYear = DayNow.Year.ToString();
+            string nowMonth = DayNow.Month.ToString("00");
+            string nowDay = DayNow.Day.ToString("00");
+            string nowHour= DayNow.Hour.ToString("00");
+
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                var query = _police_area_static_repo.Find(p => p.PoliceId == list[i]&&p.Year==nowDay&&p.Month==nowMonth&&p.Day==nowDay&&p.HH== nowHour);
+                if (query!=null)
+                {
+                    query.AreaName = areaName;
+                    query.Year = nowDay;
+                    query.Month = nowMonth;
+                    query.Day = nowDay;
+                    _police_area_static_repo.Update(query);
+                }
+                else
+                {
+                    _police_area_static_repo.Add(new PoliceGPSAreaStatic {
+                        PoliceId=list[i],
+                        AreaName = areaName,
+                        Year = nowYear,
+                        Month = nowMonth,
+                        Day = nowDay,
+                        HH=nowHour
+                    });
+                }
+
+            }
+
+
+            return Ok();
         }
     }
 }

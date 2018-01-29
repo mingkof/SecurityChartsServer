@@ -22,13 +22,13 @@ namespace SHSecurityServer.Controllers
 
     [Produces("application/json")]
     [Route("api/gpstatics")]
-    public class GpsStaticsComtroller : Controller
+    public class GpsStaticsController : Controller
     {
         private readonly ILogger _logger;
         private readonly ISys110WarningRepository _sys110warnRepository;
         private readonly IPoliceGpsRepository _policeGps;
         private readonly IGpsGridRepository _gpsGrid;
-        public GpsStaticsComtroller(ISys110WarningRepository sys110warnRepos, IPoliceGpsRepository policeGps, IGpsGridRepository gpsGrid, ILogger<GpsStaticsComtroller> logger)
+        public GpsStaticsController(ISys110WarningRepository sys110warnRepos, IPoliceGpsRepository policeGps, IGpsGridRepository gpsGrid, ILogger<GpsStaticsController> logger)
         {
             _logger = logger;
             _policeGps = policeGps;
@@ -103,6 +103,5 @@ namespace SHSecurityServer.Controllers
                 res = list
             });
         }
-
     }
 }

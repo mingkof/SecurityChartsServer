@@ -74,10 +74,14 @@ namespace SHSecurityServer.Controllers
 
             if (query!=null)
             {
-                var result=query.ToList()[0];
-                 return Ok(new {
-                        res=result
+                if (query.ToList().Count!=0)
+                {
+                    var result = query.ToList()[0];
+                    return Ok(new
+                    {
+                        res = result
                     });
+                }
             }
 
             return BadRequest();

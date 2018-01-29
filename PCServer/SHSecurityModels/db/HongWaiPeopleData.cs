@@ -17,4 +17,15 @@ namespace SHSecurityModels
         public string Month { get; set; }
         public string Day { get; set; }
     }
+
+    public class JosnHongWaiStruct
+    {
+        public string sn;
+        public string type;
+        public string count;
+        public int timeStamp;
+        public string Year;
+        public string Month;
+        public string Day;
+    }
 }
