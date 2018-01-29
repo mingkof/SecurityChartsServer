@@ -22,12 +22,15 @@ namespace SHSecurityServer.Controllers
     {
         private readonly ILogger _logger;
         private readonly IFaceAlarmDataRepositoy _faceAlarmData;
+        private readonly ISysTicketresRepository _sysTicketresRepository;
+
         private readonly IHostingEnvironment _hostingEnv;
         private RealDataUrl RealDataUrlConfig;
-        public FaceAlarmDataController(IFaceAlarmDataRepositoy faceAlarmData, IHostingEnvironment hostingEnv, ILogger<FaceAlarmDataController> logger, IOptions<RealDataUrl> config)
+        public FaceAlarmDataController(IFaceAlarmDataRepositoy faceAlarmData, ISysTicketresRepository sysTicketresRepository, IHostingEnvironment hostingEnv, ILogger<FaceAlarmDataController> logger, IOptions<RealDataUrl> config)
         {
             _logger = logger;
             _faceAlarmData = faceAlarmData;
+            _sysTicketresRepository = sysTicketresRepository;
             RealDataUrlConfig = config.Value;
             _hostingEnv = hostingEnv;
         }
@@ -48,6 +51,20 @@ namespace SHSecurityServer.Controllers
         }
 
         /// <summary>
+        /// 获取历史所有人脸识报警次数
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetHistoryAllCount")]
+        public IActionResult GetHistoryAllCount()
+        {
+            var count = _faceAlarmData.Count(p =>true);
+            return Ok(new
+            {
+                res = count
+            });
+        }
+
+        /// <summary>
         /// 分页获取重点人员人脸识别信息
         /// </summary>
         /// <param name="pageIndex"></param>
@@ -58,7 +75,7 @@ namespace SHSecurityServer.Controllers
         {
             string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
             int todayStamp = TimeUtils.ConvertToTimeStamps(today);
-            var list = _faceAlarmData.FindPageList(pageIndex, pageSize, out int totalSize,p=>p.timeStamp > todayStamp,"timeStamp", true);
+            var list = _faceAlarmData.FindPageList(pageIndex, pageSize, out int totalSize,p=>p.timeStamp > todayStamp,"timeStamp", false);
             return Ok(new {
                 res=list
             });
@@ -68,7 +85,7 @@ namespace SHSecurityServer.Controllers
         /// 获取重点人员人脸识别照片
         /// </summary>
         /// <param name="alarmId">人脸识别告警ID</param>
-        /// <param name="type"> 0 : 全景  1：脸部</param>
+        /// <param name="type"> 0 : 脸部  1：全景</param>
         /// <returns></returns>
         [HttpGet("GetAlarmHumanImg/{type}/{alarmId}")]
         public IActionResult GetAlarmHumanImg(int type, string alarmId)
@@ -111,8 +128,8 @@ namespace SHSecurityServer.Controllers
         /// <param name="alarmId"></param>
         /// <param name="humanid"></param>
         /// <returns></returns>
-        [HttpGet("GetAlarmFatchHumanImg/{alarmId}/{humanid}")]
-        public IActionResult GetAlarmFatchHumanImg(string alarmId, string humanid)
+        [HttpGet("GetAlarmMatchHumanImg/{alarmId}/{humanid}")]
+        public IActionResult GetAlarmMatchHumanImg(string alarmId, string humanid)
         {
             //var stream = FileUtils.ReadFileToStream(_hostingEnv.WebRootPath + @"\FaceAlarmData\AlarmData\"+ alarmId + @"\pics\humans\"+ humanid + @"\"+humanid+"_face.png");
             //if (stream != null)
@@ -146,8 +163,94 @@ namespace SHSecurityServer.Controllers
             {
                 res = list
             });
-
         }
+        /// <summary>
+        /// 获取今日 车辆报警 人脸识别报警  客运报警的数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAlarmTodayCount")]
+        public IActionResult GetAlarmTodayCount()
+        {
+            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            var faceCount = _faceAlarmData.Count(p => p.timeStamp >= todayStamp);
+            var ticketCount= _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp);
+            var carCount = 556;
+            return Ok(new {
+                faceAlarmCount=faceCount,
+                ticketAlarmCount=ticketCount,
+                carAlarmCount=carCount
+            });
+        }
+
+        /// <summary>
+        /// 获取历史所有 车辆报警 人脸识别报警  客运报警的数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetHistoryAlarmCount")]
+        public IActionResult GetHistoryAlarmCount()
+        {
+            var faceCount = _faceAlarmData.Count(p => true);
+            var ticketCount = _sysTicketresRepository.Count(p => true);
+            var carCount = 1556;
+            return Ok(new
+            {
+                faceHistoryCount = faceCount,
+                ticketHistoryCount = ticketCount,
+                carHistoryCount = carCount
+            });
+        }
+
+
+        /// <summary>
+        /// 获取 月累计  月平均 车辆报警 人脸识别报警  客运报警的数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetMonthAlarmCount")]
+        public IActionResult GetMonthAlarmCount()
+        {
+            var monthInt = DateTime.Now.Month;
+
+            var year = DateTime.Now.Year.ToString();
+            var month = DateTime.Now.Month.ToString("00");
+            var day = DateTime.Now.Day.ToString("00");
+
+            var faceMonthCount = _faceAlarmData.Count(p => p.Year == year && p.Month == month);
+
+            var faceAvgCount =0 ;
+            for (int i = 1; i <= monthInt; i++)
+            {
+                var count = _faceAlarmData.Count(p => p.Year == year && p.Month == i.ToString("00"));
+                faceAvgCount += count;
+            }
+            faceAvgCount = faceAvgCount / monthInt;
+
+
+            int monthStamp = TimeUtils.ConvertToTimeStamps(DateTime.Now.ToString("yyyy-MM")+"-01 00:00:00");
+
+            var ticketMonthCount = _sysTicketresRepository.Count(p=> TimeUtils.ConvertToTimeStamps(p.TicketDate) > monthStamp);
+
+            var ticketAvgCount = 0;
+            var yearStr = year + "-01-01 00:00:00";
+            int yearStamp = TimeUtils.ConvertToTimeStamps(yearStr);
+            for (int i = 1; i <= monthInt; i++)
+            {
+                var count = _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > yearStamp);
+                ticketAvgCount += count;
+            }
+            ticketAvgCount = ticketAvgCount / monthInt;
+
+
+            return Ok(new MonthAlarmResult{
+                faceMonthCount=faceMonthCount,
+                faceAvgCount=faceAvgCount,
+                ticketMonthCount=ticketMonthCount,
+                ticketAvgCount=ticketAvgCount,
+                carMonthCount=5000,
+                carAvgCount=5000
+        });
+        }
+
 
     }
  } 

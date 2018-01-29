@@ -19,6 +19,9 @@ namespace SHSecurityModels
         public string humanId { get; set; }//人员id
         public string humanName{ get; set; }//人员id
         public string matchHumanList { get; set; }//匹配人员id信息
+        public string Year { get; set; }
+        public string Month { get; set; }
+        public string Day { get; set; }
 
     }
 
@@ -69,6 +72,17 @@ namespace SHSecurityModels
     public class MatchSring
     {
         public List<string> list = new List<string>();
+    }
+
+
+    public class MonthAlarmResult
+    {
+        public int faceMonthCount;
+        public int faceAvgCount;
+        public int ticketMonthCount;
+        public int ticketAvgCount;
+        public int carMonthCount;
+        public int carAvgCount;
     }
 
 }

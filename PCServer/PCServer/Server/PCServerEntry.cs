@@ -610,7 +610,10 @@ namespace PCServer.Server
                                                 alarmId = data.alarmId,
                                                 humanId = data.humanId,
                                                 humanName = data.humanName,
-                                                matchHumanList = matchString
+                                                matchHumanList = matchString,
+                                                Year=YEAR,
+                                                Month=MONTH,
+                                                Day=DAY
                                             });
                                         }
                                     }
@@ -867,10 +870,7 @@ namespace PCServer.Server
             }
             catch
             {
-
-                throw;
             }
-            
         }
     }
 

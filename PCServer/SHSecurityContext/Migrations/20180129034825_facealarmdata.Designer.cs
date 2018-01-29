@@ -11,7 +11,7 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    [Migration("20180119073656_facealarmdata")]
+    [Migration("20180129034825_facealarmdata")]
     partial class facealarmdata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,23 +54,27 @@ namespace SHSecurityContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Day");
+
+                    b.Property<string>("Month");
+
+                    b.Property<string>("Year");
+
                     b.Property<string>("alarmId");
 
                     b.Property<string>("alarmTime");
 
                     b.Property<string>("cameraName");
 
-                    b.Property<string>("facePicUrl");
-
-                    b.Property<string>("position");
-
-                    b.Property<int>("timeStamp");
-
                     b.Property<string>("humanId");
 
                     b.Property<string>("humanName");
 
                     b.Property<string>("matchHumanList");
+
+                    b.Property<string>("position");
+
+                    b.Property<int>("timeStamp");
 
                     b.HasKey("Id");
 
@@ -81,6 +85,12 @@ namespace SHSecurityContext.Migrations
                 {
                     b.Property<int>("key")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Day");
+
+                    b.Property<string>("Month");
+
+                    b.Property<string>("Year");
 
                     b.Property<string>("count");
 
@@ -421,6 +431,17 @@ namespace SHSecurityContext.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("gps_grid");
+                });
+
+            modelBuilder.Entity("SHSecurityModels.sys_PeopleCountConfig", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("Content");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PeopleCountConfig");
                 });
 
             modelBuilder.Entity("SHSecurityModels.sys_ticketres", b =>

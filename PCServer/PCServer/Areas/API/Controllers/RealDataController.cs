@@ -155,9 +155,9 @@ namespace SHSecurityServer.Controllers
             var res = ftpClient.DownloadToStr(path);
 
             if (res != null)
-                return Ok(res);
+                return Content(res);
             else
-                return Ok("数据为空");
+                return Content("数据为空");
         }
 
         

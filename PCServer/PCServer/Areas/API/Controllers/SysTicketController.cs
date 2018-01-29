@@ -27,7 +27,19 @@ namespace MKServerWeb.Controllers
             _sysTicketresRepository = sysTicketresRepository;
         }
 
-
+        /// <summary>
+        /// 获取历史所有购票报警记录数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetHistoryCount")]
+        public IActionResult GetHistoryCount()
+        {
+            var count = _sysTicketresRepository.Count(p => true);
+            return Ok(new
+            {
+                res = count
+            });
+        }
         /// <summary>
         /// 获取历史所有购票报警记录列表
         /// </summary>

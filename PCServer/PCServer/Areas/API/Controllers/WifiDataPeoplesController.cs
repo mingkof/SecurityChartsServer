@@ -101,6 +101,97 @@ namespace SHSecurityServer.Controllers
                 res = HoursToCount
             });
         }
+
+        /// <summary>
+        ///  获取当天24小时内,南北客流量统计
+        /// </summary>
+        /// <param name="sn">南北  南0 北1</param>
+        /// <returns></returns>
+        [HttpGet("GetSNPassengerCount/{sn}")]
+        public IActionResult GetSNPassengerCount(int  sn)
+        {
+            var area = PCServerMain.Instance.WifiDataAreas.data.Where(p => p.id == 1).FirstOrDefault();
+            if (area == null)
+            {
+                return BadRequest(new { message = "Cant Find AreaID!" });
+            }
+
+            var YEAR = System.DateTime.Now.Year.ToString();
+            var MONTH = System.DateTime.Now.Month.ToString("00");
+            var DAY = System.DateTime.Now.Day.ToString("00");
+            var HHInt = DateTime.Now.Hour;
+
+            var HH = HHInt.ToString("00");
+            var MM = System.DateTime.Now.Minute.ToString("00");
+            var SS = System.DateTime.Now.Second.ToString("00");
+
+            Dictionary<string, int> HoursToCount = new Dictionary<string, int>();
+            var wifiConfig = PCServerMain.Instance.wifiConfigDic;
+
+            for (int i = 0; i <= HHInt; i++)
+            {
+                bool shouldQuery = true;
+                var count = 0;
+
+                //判断缓存
+                //if (i != HHInt)
+                //{
+                //    if (area.history.ContainsKey(i))
+                //    {
+                //        count = area.history[i];
+                //    }
+                //    else
+                //    {
+                //        shouldQuery = true;
+                //    }
+                //}
+                //else
+                //{
+                //    shouldQuery = true;
+                //}
+                IQueryable<wifidata_peoples_history> qlist = null;
+                if (shouldQuery)
+                {
+                    string hhformat = i.ToString("00");
+                    if (sn==0)
+                    {
+                        qlist = _wifidata_history.FindList(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == hhformat && wifiConfig["南广场"].Contains(p.WifiID), "", false);
+                    }
+                    else if (sn==1)
+                    {
+                        qlist = _wifidata_history.FindList(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == hhformat && wifiConfig["北广场"].Contains(p.WifiID), "", false);
+                    }
+
+                    if (qlist != null)
+                    {
+                        count = qlist.Sum(p => p.Count);
+                    }
+                }
+
+                HoursToCount.Add("H" + i, count);
+
+                //if (shouldQuery)
+                //{
+                //    if (area.history.ContainsKey(i))
+                //    {
+                //        area.history[i] = count;
+                //    }
+                //    else
+                //    {
+                //        area.history.Add(i, count);
+                //    }
+                //}
+            }
+
+            return Ok(new
+            {
+                res = HoursToCount
+            });
+        }
+
+
+
+
         /// <summary>
         /// 获取南北广场客流量
         /// </summary>

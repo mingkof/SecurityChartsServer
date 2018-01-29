@@ -53,6 +53,12 @@ namespace SHSecurityContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Day");
+
+                    b.Property<string>("Month");
+
+                    b.Property<string>("Year");
+
                     b.Property<string>("alarmId");
 
                     b.Property<string>("alarmTime");
