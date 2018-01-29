@@ -126,6 +126,7 @@ namespace SHSecurityServer.Controllers
             var SS = System.DateTime.Now.Second.ToString("00");
 
             Dictionary<string, int> HoursToCount = new Dictionary<string, int>();
+            List<int> countList = new List<int>();
             var wifiConfig = PCServerMain.Instance.wifiConfigDic;
 
             for (int i = 0; i <= HHInt; i++)
@@ -168,7 +169,7 @@ namespace SHSecurityServer.Controllers
                     }
                 }
 
-                HoursToCount.Add("H" + i, count);
+                countList.Add(new Random().Next(0,500));
 
                 //if (shouldQuery)
                 //{
@@ -185,7 +186,7 @@ namespace SHSecurityServer.Controllers
 
             return Ok(new
             {
-                res = HoursToCount
+                res = countList
             });
         }
 
@@ -218,8 +219,8 @@ namespace SHSecurityServer.Controllers
 
             return Ok(new {
                 res=new {
-                    southCount=sCount,
-                    northCount=nCount
+                    southCount= sCount,
+                    northCount= nCount
                 }
             });
         }
