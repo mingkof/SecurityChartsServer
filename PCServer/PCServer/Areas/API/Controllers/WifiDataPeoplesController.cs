@@ -133,23 +133,6 @@ namespace SHSecurityServer.Controllers
             {
                 bool shouldQuery = true;
                 var count = 0;
-
-                //判断缓存
-                //if (i != HHInt)
-                //{
-                //    if (area.history.ContainsKey(i))
-                //    {
-                //        count = area.history[i];
-                //    }
-                //    else
-                //    {
-                //        shouldQuery = true;
-                //    }
-                //}
-                //else
-                //{
-                //    shouldQuery = true;
-                //}
                 IQueryable<wifidata_peoples_history> qlist = null;
                 if (shouldQuery)
                 {
@@ -169,19 +152,8 @@ namespace SHSecurityServer.Controllers
                     }
                 }
 
-                countList.Add(new Random().Next(0,500));
-
-                //if (shouldQuery)
-                //{
-                //    if (area.history.ContainsKey(i))
-                //    {
-                //        area.history[i] = count;
-                //    }
-                //    else
-                //    {
-                //        area.history.Add(i, count);
-                //    }
-                //}
+                //countList.Add(new Random().Next(0,500));
+                countList.Add(count);
             }
 
             return Ok(new
