@@ -41,8 +41,9 @@ namespace ExportInfo
             DatabaseSql sql = new DatabaseSql(strConn);
             string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
             string dateNow = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            string filePath = Path + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-
+            string fileName = "hongwai_" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
+            string filePath = Path +  fileName;
+            dataList = new List<string>();
             Console.WriteLine(dateNow);
             Console.WriteLine("正在读取人数计数-SqlServer");
 
@@ -58,14 +59,21 @@ namespace ExportInfo
             sql = new DatabaseSql(strConn);
             for (int i = 0; i < snType.Count; i++)
             {
-                var downCount = sql.QueryValue("SELECT SUM(up) FROM ut_datalist_2018 WHERE sn=" + "'" + snType[i] + "'" + " AND " + "dt_data>=" + "'" + today + "'" + " And " + "dt_data<=" + "'" + dateNow + "'", null);
+                var downCount = sql.QueryValue("SELECT SUM(down) FROM ut_datalist_2018 WHERE sn=" + "'" + snType[i] + "'" + " AND " + "dt_data>=" + "'" + today + "'" + " And " + "dt_data<=" + "'" + dateNow + "'", null);
                 if(downCount != null)
                     ProcessData(snType[i], "0", downCount.ToString());
             }
             sql.DoEnsureClose();
 
             FileUtils.WriteFile(filePath, dataList, true, Encoding.UTF8);
+            UpLoadToFtp(filePath, fileName);
 
+        }
+
+        static void UpLoadToFtp(string localPath,string filename)
+        {
+            FtpClient ftpClient = new FtpClient("ftp://180.168.211.5:32121/", "zbfjrcwj", "zbfjrcwj");
+            ftpClient.Upload(localPath, "send/rcwj/"+filename);
         }
 
         public static void ProcessData(string sn,string type,string count)
@@ -76,41 +84,13 @@ namespace ExportInfo
             dataList.Add(dataStr);
         }
 
-
-        //public static void DataTableToJson(DataTable table)
-        //{
-        //    var JsonString = new StringBuilder();
-        //    if (table.Rows.Count > 0)
-        //    {
-        //        int nowtimeStamp = TimeUtils.ConvertToTimeStamps(DateTime.Now.ToString());
-        //        for (int i = 0; i < table.Rows.Count; i++)
-        //        {
-        //            if (TimeUtils.ConvertToTimeStamps(table.Rows[i]["dt_data"].ToString()) < nowtimeStamp)
-        //            {
-        //                var s = new JosnStruct()
-        //                {
-        //                    sn = table.Rows[i]["sn"].ToString(),
-        //                    dt_data = table.Rows[i]["dt_data"].ToString(),
-        //                    dt_upload = table.Rows[i]["dt_upload"].ToString(),
-        //                    up = Convert.ToInt32(table.Rows[i]["up"]),
-        //                    down = Convert.ToInt32(table.Rows[i]["down"]),
-        //                    timeStamp = TimeUtils.ConvertToTimeStampNow()
-        //                };
-        //                string str = Newtonsoft.Json.JsonConvert.SerializeObject(s);
-        //                li.Add(str);
-        //            }
-        //        }
-        //        FileUtils.WriteFile(TxtPath, li, true, Encoding.UTF8);
-        //    }
-        //    Console.WriteLine("read SqlServerData");
-        //}
-
         static void StartServer()
         {
             ThreadPool.QueueUserWorkItem((a) =>
             {
                 while (true)
                 {
+                    //UpLoadToFtp(@"D:\2018-security\SecurityCharts\SecurityChartsServer\SyncSQLServer\ExportInfo\ExportInfo\bin\Debug\Data\2018-01-25.txt", "2018-01-25.txt");
                     QuerySQL(@"localhost", "iDTKdata", "sa", "JingAn110");
                     Thread.Sleep(1000 * 60);
                 }

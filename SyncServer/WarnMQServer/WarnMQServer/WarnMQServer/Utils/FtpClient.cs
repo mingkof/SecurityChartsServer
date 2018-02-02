@@ -90,7 +90,6 @@ namespace KVDDDCore.Utils
             try
             {
                 Stream strm = reqFTP.GetRequestStream();
-                
                 contentLen = fs.Read(buff, 0, buffLength);
                 while (contentLen != 0)
                 {

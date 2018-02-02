@@ -88,7 +88,7 @@ namespace KVDDDCore.Utils
                 FileStream fs = myfile.Create();
                 fs.Close();
             }
-            StreamWriter sw = new StreamWriter(path, true, encode);
+            StreamWriter sw = new StreamWriter(path, false, encode);
             foreach (string item in list)
             {
                 sw.WriteLine(item);
@@ -104,7 +104,7 @@ namespace KVDDDCore.Utils
                 FileStream fs = myfile.Create();
                 fs.Close();
             }
-            StreamWriter sw = new StreamWriter(path, true, encode);
+            StreamWriter sw = new StreamWriter(path, false, encode);
             sw.Write(content);
 
             sw.Flush();

@@ -20,7 +20,6 @@ namespace WarnMQServer
         {
             Console.WriteLine("已启用读取ActiveMQ数据服务 !");
 
-            Console.WriteLine(TimeUtils.ConvertToTimeStamps("2018-01-24 13:05:00"));
             InitConsumer();
             ProcessData();
 
@@ -34,7 +33,7 @@ namespace WarnMQServer
             //通过工厂构建连接
             IConnection connection = factory.CreateConnection("baiyulan", "baiyulan123");
             //这个是连接的客户端名称标识
-            connection.ClientId = "MokaiTest2";
+            connection.ClientId = "MokaiTest1";
             //启动连接，监听的话要主动启动连接
             connection.Start();
             //通过连接创建一个会话
@@ -110,10 +109,10 @@ namespace WarnMQServer
                     var MONTH = System.DateTime.Now.Month.ToString("00");
                     var DAY = System.DateTime.Now.Day.ToString("00");
                     var HH = System.DateTime.Now.Hour.ToString("00");
-                    string fileName = YEAR + MONTH + DAY + HH;
+                    string fileName = "wulian_" + YEAR + MONTH + DAY + HH + ".txt";
 
 
-                    string path = pathBase + fileName + ".txt";
+                    string path = pathBase + fileName;
 
                     //string path = @"E:\MKProjects\MKSecurityCharts\SecurityChartsServer\SyncServer\WarnMQServer\MQData\" + fileName + ".txt";
 
@@ -148,9 +147,17 @@ namespace WarnMQServer
                     Console.WriteLine(DateTime.Now.ToString());
                     Console.WriteLine("检测新消息写入文件");
                     FileUtils.WriteFile(path, stringList, true, Encoding.UTF8);
+                    UpLoadToFtp(path, fileName);
                     Thread.Sleep(1000*5);
                 }
             });
+        }
+
+
+        static void UpLoadToFtp(string localPath,string filename)
+        {
+            FtpClient ftpClient = new FtpClient("ftp://180.168.211.5:32121/", "zbfjrcwj", "zbfjrcwj");
+            ftpClient.Upload(localPath, "send/rcwj/"+ filename);
         }
 
         /// <summary>
