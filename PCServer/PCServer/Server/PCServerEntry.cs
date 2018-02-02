@@ -32,7 +32,7 @@ namespace PCServer.Server
         public SHSecuritySysContext dbContext = null;
 
         public Dictionary<string, List<string>> wifiConfigDic = new Dictionary<string, List<string>>();
-
+        public Dictionary<string, List<string>> kakouConfigDic = new Dictionary<string, List<string>>();
         //卡口排名
         public int topCount = 5;
         List<KakouTop> topList = new List<KakouTop>();
@@ -40,6 +40,7 @@ namespace PCServer.Server
         {
             ReadConfig_WifiDataAreas();
             ReadConfig_WifiLocationConfig();
+            ReadConfig_KakouConfig();
             test();
 
             using (var serviceScope = ServiceLocator.Instance.CreateScope())
@@ -239,27 +240,28 @@ namespace PCServer.Server
                                 if(res!=null)
                                 {
                                     int timeNow=TimeUtils.ConvertToTimeStampNow();
-                                    for(int m = 0;m<res.JinArray.Count;m++)
+                                    for (int m = 0; m < res.ChuArray.Count; m++)
                                     {
-                                        var item=res.JinArray[m];
-                                        var query=IKaKouDataJin.Find(p=>p.SBBHID==item.SBBH);
-                                        if(query==null)
+                                        var item = res.ChuArray[m];
+                                        var query = IKaKouDataJin.Find(p => p.SBBHID == item.SBBH);
+                                        if (query == null)
                                         {
-                                            IKaKouDataJin.Add(new kakoudata_jin(){
-                                                SBBHID=item.SBBH,
-                                                SBMC=item.SBMC,
-                                                XSFX=item.XSFX,
-                                                Count=item.Count,
-                                                pass_or_out=item.pass_or_out,
-                                                Timestamp=timeNow
+                                            IKaKouDataJin.Add(new kakoudata_jin()
+                                            {
+                                                SBBHID = item.SBBH,
+                                                SBMC = item.SBMC,
+                                                XSFX = item.XSFX,
+                                                Count = item.Count,
+                                                pass_or_out = item.pass_or_out,
+                                                Timestamp = timeNow
                                             });
                                         }
                                         else
                                         {
-                                            query.XSFX=item.XSFX;
-                                            query.Count=item.Count;
-                                            query.pass_or_out=item.pass_or_out;
-                                            query.Timestamp=timeNow;
+                                            query.XSFX = item.XSFX;
+                                            query.Count = item.Count;
+                                            query.pass_or_out = item.pass_or_out;
+                                            query.Timestamp = timeNow;
                                             IKaKouDataJin.Update(query);
                                         }
 
@@ -268,74 +270,129 @@ namespace PCServer.Server
                                         var MONTH = System.DateTime.Now.Month.ToString("00");
                                         var DAY = System.DateTime.Now.Day.ToString("00");
                                         var HH = System.DateTime.Now.Hour.ToString("00");
-                                        if (curMinute>=52||curMinute<=1)
+                                        if (curMinute >= 52 || curMinute <= 1)
                                         {
-                                            
-                                            var queryHis=IKaKouDataJinHistory.Find(p=>p.SBBHID==item.SBBH&&p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY&&p.HH==HH);
 
-                                            if (queryHis==null)
+                                            var queryHis = IKaKouDataJinHistory.Find(p => p.SBBHID == item.SBBH && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == HH);
+
+                                            if (queryHis == null)
                                             {
-                                                IKaKouDataJinHistory.Add(new kakoudata_jin_history(){
-                                                    Year=YEAR,
-                                                    Month=MONTH,
-                                                    Day=DAY,
-                                                    HH=HH,
-                                                    SBBHID=item.SBBH,
-                                                    SBMC=item.SBMC,
-                                                    XSFX=item.XSFX,
-                                                    Count=item.Count,
-                                                    pass_or_out=item.pass_or_out,
+                                                IKaKouDataJinHistory.Add(new kakoudata_jin_history()
+                                                {
+                                                    Year = YEAR,
+                                                    Month = MONTH,
+                                                    Day = DAY,
+                                                    HH = HH,
+                                                    SBBHID = item.SBBH,
+                                                    SBMC = item.SBMC,
+                                                    XSFX = item.XSFX,
+                                                    Count = item.Count,
+                                                    pass_or_out = item.pass_or_out,
+                                                });
+                                            }
+                                        }
+                                    }
+                                    for (int m = 0; m < res.JinArray.Count; m++)
+                                    {
+                                        var item = res.JinArray[m];
+                                        var query = IKaKouDataJin.Find(p => p.SBBHID == item.SBBH);
+                                        if (query == null)
+                                        {
+                                            IKaKouDataJin.Add(new kakoudata_jin()
+                                            {
+                                                SBBHID = item.SBBH,
+                                                SBMC = item.SBMC,
+                                                XSFX = item.XSFX,
+                                                Count = item.Count,
+                                                pass_or_out = item.pass_or_out,
+                                                Timestamp = timeNow
+                                            });
+                                        }
+                                        else
+                                        {
+                                            query.XSFX = item.XSFX;
+                                            query.Count = item.Count;
+                                            query.pass_or_out = item.pass_or_out;
+                                            query.Timestamp = timeNow;
+                                            IKaKouDataJin.Update(query);
+                                        }
+
+                                        var curMinute = System.DateTime.Now.Minute;
+                                        var YEAR = System.DateTime.Now.Year.ToString();
+                                        var MONTH = System.DateTime.Now.Month.ToString("00");
+                                        var DAY = System.DateTime.Now.Day.ToString("00");
+                                        var HH = System.DateTime.Now.Hour.ToString("00");
+                                        if (curMinute >= 52 || curMinute <= 1)
+                                        {
+
+                                            var queryHis = IKaKouDataJinHistory.Find(p => p.SBBHID == item.SBBH && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == HH);
+
+                                            if (queryHis == null)
+                                            {
+                                                IKaKouDataJinHistory.Add(new kakoudata_jin_history()
+                                                {
+                                                    Year = YEAR,
+                                                    Month = MONTH,
+                                                    Day = DAY,
+                                                    HH = HH,
+                                                    SBBHID = item.SBBH,
+                                                    SBMC = item.SBMC,
+                                                    XSFX = item.XSFX,
+                                                    Count = item.Count,
+                                                    pass_or_out = item.pass_or_out,
                                                 });
                                             }
                                         }
 
-                                        //记录卡口top5
-                                        KakouTop kakou = new KakouTop()
-                                        {
-                                            SBBHID = item.SBBH,
-                                            Value=int.Parse(item.Count),
-                                            Year= YEAR,
-                                            Month=MONTH,
-                                            Day=DAY,
-                                            Timestamp=timeNow
-                                        };
-                                        //判断是否超过5
-                                        if (topList.Count < topCount)
-                                        {
-                                        
-                                            topList.Add(kakou);
-                                            if (topList.Count == topCount)
-                                            {
-                                                var queryList = IKaKouTop.FindList(p => true, "",false);
-                                                if(queryList != null){
-                                                    IKaKouTop.RemoveRange(queryList);
-                                                }
-                                                for(int i=0; i<topList.Count;i++)
-                                                {
-                                                    IKaKouTop.Add(topList[i]);
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //降序排列
-                                            topList = topList.OrderByDescending(p => p.Value).ToList();
-                                            var qu = IKaKouTop.Find(p => p.SBBHID == kakou.SBBHID);
-                                            if (topList[topList.Count-1].Value<kakou.Value&&qu==null)
-                                            {
-                                                topList.RemoveAt(topList.Count - 1);
-                                                topList.Add(kakou);
-                                                var queryList = IKaKouTop.FindList(p => true, "",false);
-                                                if(queryList != null){
-                                                    IKaKouTop.RemoveRange(queryList);
-                                                }
-                                                for(int i=0; i<topList.Count;i++)
-                                                {
-                                                    IKaKouTop.Add(topList[i]);
-                                                }
-                                            }
-                                           
-                                        }
+                                        ////记录卡口top5
+                                        //KakouTop kakou = new KakouTop()
+                                        //{
+                                        //    SBBHID = item.SBBH,
+                                        //    Value = int.Parse(item.Count),
+                                        //    Year = YEAR,
+                                        //    Month = MONTH,
+                                        //    Day = DAY,
+                                        //    Timestamp = timeNow
+                                        //};
+                                        ////判断是否超过5
+                                        //if (topList.Count < topCount)
+                                        //{
+
+                                        //    topList.Add(kakou);
+                                        //    if (topList.Count == topCount)
+                                        //    {
+                                        //        var queryList = IKaKouTop.FindList(p => true, "", false);
+                                        //        if (queryList != null)
+                                        //        {
+                                        //            IKaKouTop.RemoveRange(queryList);
+                                        //        }
+                                        //        for (int i = 0; i < topList.Count; i++)
+                                        //        {
+                                        //            IKaKouTop.Add(topList[i]);
+                                        //        }
+                                        //    }
+                                        //}
+                                        //else
+                                        //{
+                                        //    //降序排列
+                                        //    topList = topList.OrderByDescending(p => p.Value).ToList();
+                                        //    var qu = IKaKouTop.Find(p => p.SBBHID == kakou.SBBHID);
+                                        //    if (topList[topList.Count - 1].Value < kakou.Value && qu == null)
+                                        //    {
+                                        //        topList.RemoveAt(topList.Count - 1);
+                                        //        topList.Add(kakou);
+                                        //        var queryList = IKaKouTop.FindList(p => true, "", false);
+                                        //        if (queryList != null)
+                                        //        {
+                                        //            IKaKouTop.RemoveRange(queryList);
+                                        //        }
+                                        //        for (int i = 0; i < topList.Count; i++)
+                                        //        {
+                                        //            IKaKouTop.Add(topList[i]);
+                                        //        }
+                                        //    }
+
+                                        //}
                                     }
                                 }
                             }
@@ -404,7 +461,7 @@ namespace PCServer.Server
                         RealDataUrl RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>().Value;
                         while(true)
                         {
-                            Logmng.Logger.Trace("ThreadPool=4-----------正在读取：AllTravioInfo.json");
+                            Logmng.Logger.Trace("ThreadPool=4-----------正在读取：roaddata");
                             int timeNow=TimeUtils.ConvertToTimeStampNow();
                             var model = WebClientUls.GetString(RealDataConfig.TrafficUrl);
                             var modelRoadTop = WebClientUls.GetString(RealDataConfig.RoadUrl);
@@ -513,6 +570,8 @@ namespace PCServer.Server
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
                     {
                         var Ihongwaipeople = serviceScope.ServiceProvider.GetService<IHongWaiPeopleDataRepositoy>();
+                        var IhongwaiHistoryPeople = serviceScope.ServiceProvider.GetService<IHongWaiPeopleHistoryDataRepositoy>();
+
 
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
@@ -523,6 +582,8 @@ namespace PCServer.Server
                             var MONTH = System.DateTime.Now.Month.ToString("00");
                             var DAY = System.DateTime.Now.Day.ToString("00");
                             var HH = System.DateTime.Now.Hour.ToString("00");
+                            var MM = System.DateTime.Now.Minute.ToString("00");
+                            var nowM = System.DateTime.Now.Minute;
 
                             string path = "receive/rcwj/" + "hongwai_" + YEAR+"-" + MONTH + "-" + DAY + ".txt";
 
@@ -538,6 +599,7 @@ namespace PCServer.Server
                                     if (query != null)
                                     {
                                         query.count = data.count;
+                                        query.timeStamp = data.timeStamp;
 
                                         Ihongwaipeople.Update(query);
                                     }
@@ -553,6 +615,26 @@ namespace PCServer.Server
                                             Day=DAY
                                         });
                                     }
+                                    if (nowM>56)
+                                    {
+                                        var queryHistory = IhongwaiHistoryPeople.Find(p => p.sn == data.sn && p.type == data.type && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.Hour == HH && p.Minute == MM);
+                                        if (queryHistory == null)
+                                        {
+                                            IhongwaiHistoryPeople.Add(new HongWaiPeopleHistoryData
+                                            {
+                                                sn = data.sn,
+                                                count = data.count,
+                                                type = data.type,
+                                                timeStamp = timeNow,
+                                                Year = YEAR,
+                                                Month = MONTH,
+                                                Day = DAY,
+                                                Hour = HH,
+                                                Minute = MM,
+                                            });
+                                        }
+                                    }
+                                    
                                 }
                             }
                             Thread.Sleep(1000 * 60 *1);
@@ -560,7 +642,7 @@ namespace PCServer.Server
                     }
                 });
 
-                //每隔1分钟读取 ftp人脸识别信息 更新FaceAlarmData
+                //每隔5分钟读取 ftp人脸识别信息 更新FaceAlarmData
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
@@ -606,7 +688,7 @@ namespace PCServer.Server
                                                 alarmTime = data.alarmTime,
                                                 timeStamp = TimeUtils.ConvertToTimeStamps(data.alarmTime),
                                                 cameraName = data.cameraName,
-                                                position = "上海火车站",
+                                                position = data.humans[0].listLibName,
                                                 alarmId = data.alarmId,
                                                 humanId = data.humanId,
                                                 humanName = data.humanName,
@@ -627,6 +709,76 @@ namespace PCServer.Server
                         }
                     }
                 });
+
+                //每隔5分钟读取 车辆识别信息 更新表caralarmdata
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var ICarAlarmData = serviceScope.ServiceProvider.GetService<ICarAlarmDataRepositoy>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+                        var hostingEnv = serviceScope.ServiceProvider.GetService<IHostingEnvironment>();
+
+                        while (true)
+                        {
+                            //2018-1-30-12-53-55_沪AFB883_共和新路延长路(高清)
+                            Logmng.Logger.Trace("ThreadPool=8-----------正在读取：车辆识别信息");
+                            var YEAR = System.DateTime.Now.Year.ToString();
+                            var MONTH = System.DateTime.Now.Month.ToString("00");
+                            var DAY = System.DateTime.Now.Day.ToString("00");
+                            var HH = System.DateTime.Now.Hour.ToString("00");
+
+                            string path = hostingEnv.WebRootPath + @"\CarAlarmData\CheLiangShiBieData";
+
+                            List<string> strList = FileUtils.ReadFileChild(path);
+                            int timeStampNow = TimeUtils.ConvertToTimeStampNow();
+                            if (strList.Count != 0)
+                            {
+                                for (int i = 0; i < strList.Count; i++)
+                                {
+                                    try
+                                    {
+                                        var dataStr = strList[i].Split('_');
+                                        var timeStr = dataStr[0].Split('-');
+                                        var Year = timeStr[0];
+                                        var Month = timeStr[1];
+                                        var Day = timeStr[2];
+
+                                        //var alarmTime = Year + "-" + Month + "-" + Day + " " + timeStr[3] + ":" + timeStr[4] + ":" + timeStr[5];
+                                        var alarmTime = dataStr[0];
+                                        var plateID = dataStr[1];
+                                        var position = dataStr[2];
+                                        var query = ICarAlarmData.Find(p => p.alarmTime == alarmTime && p.plateId == plateID);
+
+                                        if (query==null)
+                                        {
+                                            query = new CarAlarmData
+                                            {
+                                                Positon= position,
+                                                alarmTime= alarmTime,
+                                                plateId=plateID,
+                                                Year=Year,
+                                                Month=Month,
+                                                Day=Day,
+                                                timeStamp= timeStampNow
+                                            };
+                                            ICarAlarmData.Add(query);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            Thread.Sleep(1000 * 60 * 5);
+                        }
+                    }
+                });
+
+
+
 
             }
             //弃用  服务器不用分析区域 改为api设置  读取配置
@@ -872,6 +1024,32 @@ namespace PCServer.Server
             {
             }
         }
+        void ReadConfig_KakouConfig()
+        {
+            try
+            {
+                List<KaKouConfig> configList = new List<KaKouConfig>();
+                kakouConfigDic["南广场"] = new List<string>();
+                kakouConfigDic["北广场"] = new List<string>();
+                string file = "static/KaKouConfig.json";
+                var content = KVDDDCore.Utils.FileUtils.ReadFile(file);
+                configList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<KaKouConfig>>(content);
+                for (int i = 0; i < configList.Count; i++)
+                {
+                    if (configList[i].locate == "南广场")
+                    {
+                        kakouConfigDic["南广场"].Add(configList[i].id.Split('.')[0]);
+                    }
+                    else if (configList[i].locate == "北广场")
+                    {
+                        kakouConfigDic["北广场"].Add(configList[i].id.Split('.')[0]);
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
     }
 
 
@@ -899,5 +1077,13 @@ namespace PCServer.Server
         public string id;
         public string Locate;
     }
-
+    public class KaKouConfig
+    {
+        public string id;
+        public string name;
+        public string lang;
+        public string lat;
+        public string owner;
+        public string locate;
+    }
 }

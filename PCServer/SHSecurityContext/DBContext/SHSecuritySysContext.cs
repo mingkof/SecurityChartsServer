@@ -48,6 +48,10 @@ namespace SHSecurityContext.DBContext
         public DbSet<MQServerData> MQServerData { get; set; }
         public DbSet<HongWaiPeopleData> HongWaiPeopleData { get; set; }
         public DbSet<FaceAlarmData> FaceAlarmData { get; set; }
+        public DbSet<sys_policearea> sys_policearea { get; set; }
+        public DbSet<sys_policeareahistory> sys_policeareahistory { get; set; }
+        public DbSet<CarAlarmData> CarAlarmData { get; set; }
+        public DbSet<HongWaiPeopleHistoryData> HongWaiPeopleHistoryData { get; set; }
 
 
         public DbSet<sys_PeopleCountConfig> PeopleCountConfig { get; set; }

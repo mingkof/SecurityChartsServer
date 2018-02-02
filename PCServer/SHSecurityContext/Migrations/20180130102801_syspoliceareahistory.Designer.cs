@@ -11,38 +11,15 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    partial class SHSecuritySysContextModelSnapshot : ModelSnapshot
+    [Migration("20180130102801_syspoliceareahistory")]
+    partial class syspoliceareahistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
-
-            modelBuilder.Entity("SHSecurityModels.CarAlarmData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Day");
-
-                    b.Property<string>("Month");
-
-                    b.Property<string>("Positon");
-
-                    b.Property<string>("Year");
-
-                    b.Property<string>("alarmTime");
-
-                    b.Property<string>("plateId");
-
-                    b.Property<int>("timeStamp");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarAlarmData");
-                });
 
             modelBuilder.Entity("SHSecurityModels.db_jjd", b =>
                 {
@@ -126,34 +103,6 @@ namespace SHSecurityContext.Migrations
                     b.HasKey("key");
 
                     b.ToTable("HongWaiPeopleData");
-                });
-
-            modelBuilder.Entity("SHSecurityModels.HongWaiPeopleHistoryData", b =>
-                {
-                    b.Property<int>("key")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Day");
-
-                    b.Property<string>("Hour");
-
-                    b.Property<string>("Minute");
-
-                    b.Property<string>("Month");
-
-                    b.Property<string>("Year");
-
-                    b.Property<string>("count");
-
-                    b.Property<string>("sn");
-
-                    b.Property<int>("timeStamp");
-
-                    b.Property<string>("type");
-
-                    b.HasKey("key");
-
-                    b.ToTable("HongWaiPeopleHistoryData");
                 });
 
             modelBuilder.Entity("SHSecurityModels.kakoudata_jin", b =>

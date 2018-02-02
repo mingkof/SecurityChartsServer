@@ -19,5 +19,7 @@ namespace SHSecurityModels
         public string TicketDate { get; set; }
         public string TicketTime { get; set; }
         public string CheckTime { get; set; }
+        public string CheckInName { get; set; }
+
     }
 }

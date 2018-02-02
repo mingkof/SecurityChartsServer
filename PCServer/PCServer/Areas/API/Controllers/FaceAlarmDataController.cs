@@ -23,15 +23,17 @@ namespace SHSecurityServer.Controllers
         private readonly ILogger _logger;
         private readonly IFaceAlarmDataRepositoy _faceAlarmData;
         private readonly ISysTicketresRepository _sysTicketresRepository;
+        private readonly ICarAlarmDataRepositoy _carAlarmData;
 
         private readonly IHostingEnvironment _hostingEnv;
         private RealDataUrl RealDataUrlConfig;
-        public FaceAlarmDataController(IFaceAlarmDataRepositoy faceAlarmData, ISysTicketresRepository sysTicketresRepository, IHostingEnvironment hostingEnv, ILogger<FaceAlarmDataController> logger, IOptions<RealDataUrl> config)
+        public FaceAlarmDataController(IFaceAlarmDataRepositoy faceAlarmData, ICarAlarmDataRepositoy carAlarmData, ISysTicketresRepository sysTicketresRepository, IHostingEnvironment hostingEnv, ILogger<FaceAlarmDataController> logger, IOptions<RealDataUrl> config)
         {
             _logger = logger;
             _faceAlarmData = faceAlarmData;
             _sysTicketresRepository = sysTicketresRepository;
             RealDataUrlConfig = config.Value;
+            _carAlarmData = carAlarmData;
             _hostingEnv = hostingEnv;
         }
         /// <summary>
@@ -173,9 +175,21 @@ namespace SHSecurityServer.Controllers
         {
             string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
             int todayStamp = TimeUtils.ConvertToTimeStamps(today);
-            var faceCount = _faceAlarmData.Count(p => p.timeStamp >= todayStamp);
-            var ticketCount= _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp);
-            var carCount = 556;
+            var month = DateTime.Now.Month.ToString("00");
+            var day = DateTime.Now.Day.ToString("00");
+            var faceCount = 0;
+            var ticketCount = 0;
+            var carCount = 0;
+            try
+            {
+                 faceCount = _faceAlarmData.Count(p => p.timeStamp >= todayStamp);
+                 ticketCount = _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp);
+                 carCount = _carAlarmData.Count(p =>true);
+            }
+            catch 
+            {
+            }
+           
             return Ok(new {
                 faceAlarmCount=faceCount,
                 ticketAlarmCount=ticketCount,
@@ -192,7 +206,7 @@ namespace SHSecurityServer.Controllers
         {
             var faceCount = _faceAlarmData.Count(p => true);
             var ticketCount = _sysTicketresRepository.Count(p => true);
-            var carCount = 1556;
+            var carCount = _carAlarmData.Count(p => true);
             return Ok(new
             {
                 faceHistoryCount = faceCount,
@@ -241,14 +255,24 @@ namespace SHSecurityServer.Controllers
             ticketAvgCount = ticketAvgCount / monthInt;
 
 
+            var cartMonthCount = _carAlarmData.Count(p => true);
+            var carAvgCount = 0;
+            for (int i = 1; i <= monthInt; i++)
+            {
+                var count = _carAlarmData.Count(p =>true);
+                carAvgCount += count;
+            }
+            carAvgCount = carAvgCount / monthInt;
+
+
             return Ok(new MonthAlarmResult{
                 faceMonthCount=faceMonthCount,
                 faceAvgCount=faceAvgCount,
                 ticketMonthCount=ticketMonthCount,
                 ticketAvgCount=ticketAvgCount,
-                carMonthCount=5000,
-                carAvgCount=5000
-        });
+                carMonthCount= cartMonthCount,
+                carAvgCount= carAvgCount
+            });
         }
 
 

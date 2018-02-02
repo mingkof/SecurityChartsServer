@@ -294,7 +294,24 @@ namespace SHSecurityServer.Controllers
             return hourCounts;
         }
 
+        [HttpGet("GetTotalAlarmCount")]
+        public IActionResult GetTotalAlarmCount()
+        {
+            string nowYear = System.DateTime.Now.Year.ToString();
+            string nowMonth = System.DateTime.Now.Month.ToString("00");
+            string nowDay = System.DateTime.Now.Day.ToString("00");
 
+            var tCount = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay&&p.CJDW=="站区治安派出所");
+            var aCount = _sys110warnRepository.Count(p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay && p.CJDW == "站区治安派出所" && (p.FKAY1.Contains("报警类")));
+
+
+            return Ok(
+                new {
+                    toatlCount= tCount,
+                    alarmCount= aCount
+                }
+                );
+        }
 
 
     }

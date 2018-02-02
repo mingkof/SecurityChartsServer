@@ -44,6 +44,7 @@ namespace SHSecurityModels
     public class JsonKaKouDataStruct
     {
         public List<JsonKaKouDataItemStruct> JinArray = new List<JsonKaKouDataItemStruct>();
+        public List<JsonKaKouDataItemStruct> ChuArray = new List<JsonKaKouDataItemStruct>();
     }
     public class JsonKaKouDataItemStruct
     {

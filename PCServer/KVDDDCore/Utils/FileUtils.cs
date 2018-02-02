@@ -8,6 +8,7 @@ namespace KVDDDCore.Utils
     public class FileUtils
     {
         private static List<string> readedDirName = new List<string>();
+        private static List<string> readedFileName = new List<string>();
         public static string ReadFile(Stream stream)
         {
             if (stream == null)
@@ -75,14 +76,36 @@ namespace KVDDDCore.Utils
             }
             catch
             {
-
-                return new List<string>();
             }
             
             return resList;
         }
 
+        public static List<string> ReadFileChild(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            List<string> resList = new List<string>();
+            DirectoryInfo root = new DirectoryInfo(path);
 
+            try
+            {
+                foreach (var item in root.GetFileSystemInfos())
+                {
+                    if (readedFileName.Contains(item.Name))
+                        continue;
+                    resList.Add(Path.GetFileNameWithoutExtension(item.Name));
+                    readedFileName.Add(item.Name);
+                }
+            }
+            catch
+            {
+            }
+
+            return resList;
+        }
         public static List<string> ReadFileToList(string filePath)
         {
             if (!File.Exists(filePath))

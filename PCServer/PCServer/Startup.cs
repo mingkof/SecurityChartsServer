@@ -1,5 +1,5 @@
-﻿//#define PUBLISH_GONGAN
-#define AT_COMPANY
+﻿#define PUBLISH_GONGAN
+//#define AT_COMPANY
 
 using System;
 using System.Collections.Generic;
@@ -71,6 +71,12 @@ namespace PCServer
             services.AddScoped<IHongWaiPeopleDataRepositoy, HongWaiPeopleDataRepositoy>();
             services.AddScoped<IFaceAlarmDataRepositoy, FaceAlarmDataRepositoy>();
             services.AddScoped<IPeopleCountConfigRepositoy, PeopleCountConfigRepositoy>();
+            services.AddScoped<ISysPoliceAreaRepository, SysPoliceAreaRepository>();
+            services.AddScoped<ISysPoliceAreaHistoryRepository, SysPoliceAreaHistoryRepository>();
+            services.AddScoped<ICarAlarmDataRepositoy, CarAlarmDataRepositoy>();
+            services.AddScoped<IHongWaiPeopleHistoryDataRepositoy, HongWaiPeopleDataHistoryRepositoy>();
+
+
 
             var conn = Configuration.GetConnectionString("DefaultConnection");
 

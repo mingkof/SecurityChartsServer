@@ -10,6 +10,7 @@ using System.Linq;
 using Microsoft.AspNetCore.NodeServices;
 using PCServer.Server.GPS;
 using PCServer;
+using KVDDDCore.Utils;
 
 namespace SHSecurityServer.Controllers
 {
@@ -21,11 +22,16 @@ namespace SHSecurityServer.Controllers
         private readonly IPoliceGpsRepository _policeGps;
         private readonly ISysConfigRepository _configRepo;
         private readonly IPoliceGPSAreaStaticRepository _police_area_static_repo;
-        public PoliceGpsController(IPoliceGpsRepository policeGps, ILogger<PoliceGpsController> logger, ISysConfigRepository configRepo, IPoliceGPSAreaStaticRepository police_area_static_repo)
+        private readonly ISysPoliceAreaHistoryRepository _police_area_history;
+        private readonly ISysPoliceAreaRepository _police_area;
+
+        public PoliceGpsController(IPoliceGpsRepository policeGps, ISysPoliceAreaRepository police_area, ISysPoliceAreaHistoryRepository police_area_history, ILogger<PoliceGpsController> logger, ISysConfigRepository configRepo, IPoliceGPSAreaStaticRepository police_area_static_repo)
         {
             _logger = logger;
             _policeGps = policeGps;
             _configRepo = configRepo;
+            _police_area_history = police_area_history;
+            _police_area = police_area;
             _police_area_static_repo = police_area_static_repo;
         }
 
@@ -54,12 +60,13 @@ namespace SHSecurityServer.Controllers
         [HttpGet("onlineCount")]
         public IActionResult GetOnlineCount()
         {
-            string nowYear = System.DateTime.Now.Year.ToString();
-            string nowMonth = System.DateTime.Now.Month.ToString("00");
-            string nowDay = System.DateTime.Now.Day.ToString("00");
-
-            var count = _policeGps.Count(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay);
-
+            var query = _police_area.Find(p => p.AreaName=="火车站整体");
+            var count = 0;
+            if (query!=null)
+            {
+                int.TryParse(query.Count,out int num);
+                count = num;
+            }
             return Ok(new
             {
                 res = count
@@ -115,35 +122,45 @@ namespace SHSecurityServer.Controllers
         }
 
         /// <summary>
-        /// 获取不同区域在今日某小时的警力数，用于警力分布图表
+        /// 获取当前警力分布数据
         /// </summary>
-        /// <param name="hour">传入小时</param>
         /// <returns></returns>
-        [HttpGet("GetAreaTodayHourPoliceCount/{hour}")]
-        public IActionResult GetAreaTodayHourPoliceCount(int hour)
+        [HttpGet("GetAreaTodayHourPoliceCount/")]
+        public IActionResult GetAreaTodayHourPoliceCount()
         {
             var DayNow = DateTime.Now;
             string nowYear = DayNow.Year.ToString();
             string nowMonth = DayNow.Month.ToString("00");
             string nowDay = DayNow.Day.ToString("00");
             string nowHour = DayNow.Hour.ToString("00");
-
-            //List<string> areas = PCServerMain.Instance.PoliceGpsStaticAreaManager.Areas.Keys.ToList();
-            List<string> areas = new List<string>() { "火车站入口", "北广场东南", "北广场西", "北广场东北", "其它" };
-            List<int> count = new List<int>();
-            for (int i = 0; i < areas.Count; i++)
+            try
             {
-                var query = _police_area_static_repo.Count(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.HH == nowHour && p.AreaName == areas[i]);
-                //count.Add(new Random().Next(0, 20));
-                count.Add(query);
+                List<string> areas = new List<string>() { "北广场东北", "北广场东南", "北广场西", "南广场", "其他" };
+                List<int> count = new List<int>();
+                for (int i = 0; i < areas.Count; i++)
+                {
+                    var query = _police_area.Find(p => p.AreaName == areas[i]);
+                    //count.Add(new Random().Next(0, 20));
+                    if (query != null)
+                    {
+                        int.TryParse(query.Count, out int num);
+                        count.Add(num);
+                    }
+                    else
+                    {
+                        count.Add(0);
+                    }
+                }
+                return Ok(new
+                {
+                    areas = areas,
+                    counts = count
+                });
             }
-
-            return Ok(new
+            catch 
             {
-                hour = hour,
-                areas = areas,
-                counts = count
-            });
+            }
+            return BadRequest();
         }
         /// <summary>
         /// 获取每小时的在岗警力
@@ -153,6 +170,7 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetHourCount/{hour}")]
         public IActionResult GetHourCount(string hour)
         {
+            
             var DayNow = DateTime.Now;
             string nowYear = DayNow.Year.ToString();
             string nowMonth = DayNow.Month.ToString("00");
@@ -169,42 +187,65 @@ namespace SHSecurityServer.Controllers
         /// <param name="list">警员id列表</param>
         /// <param name="areaName">区域名：火车站入口  北广场东南  北广场西  北广场东北  其它</param>
         /// <returns></returns>
-        [HttpPost("SetPoliceGpsArea/{list}/{areaName}")]
-        public IActionResult SetPoliceGpsArea(List<string> list,string areaName)
+        [HttpPost("SetPoliceGpsArea/{count}/{areaName}")]
+        public IActionResult SetPoliceGpsArea(int count,string areaName)
         {
+            var timeStamp = TimeUtils.ConvertToTimeStampNow();
             var DayNow = DateTime.Now;
             string nowYear = DayNow.Year.ToString();
             string nowMonth = DayNow.Month.ToString("00");
             string nowDay = DayNow.Day.ToString("00");
             string nowHour= DayNow.Hour.ToString("00");
+            string nowMinute = DayNow.Minute.ToString("00");
+            string nowSecond = DayNow.Second.ToString("00");
 
-
-            for (int i = 0; i < list.Count; i++)
+            try
             {
-                var query = _police_area_static_repo.Find(p => p.PoliceId == list[i]&&p.Year==nowDay&&p.Month==nowMonth&&p.Day==nowDay&&p.HH== nowHour);
-                if (query!=null)
+                var query = _police_area.Find(p => p.AreaName == areaName);
+                if (query == null)
                 {
-                    query.AreaName = areaName;
-                    query.Year = nowDay;
-                    query.Month = nowMonth;
-                    query.Day = nowDay;
-                    _police_area_static_repo.Update(query);
+                    query = new sys_policearea
+                    {
+                        AreaName = areaName,
+                        Count = count.ToString(),
+                        TimeStamp = timeStamp
+                    };
+                    _police_area.Add(query);
                 }
                 else
                 {
-                    _police_area_static_repo.Add(new PoliceGPSAreaStatic {
-                        PoliceId=list[i],
+                    query.Count = count.ToString();
+                    query.TimeStamp = timeStamp;
+                    _police_area.Update(query);
+                }
+
+                var queryHistory = _police_area_history.Find(p => p.TimeStamp == timeStamp);
+                if (queryHistory == null)
+                {
+                    queryHistory = new sys_policeareahistory
+                    {
                         AreaName = areaName,
+                        Count = count.ToString(),
+                        TimeStamp = timeStamp,
                         Year = nowYear,
                         Month = nowMonth,
                         Day = nowDay,
-                        HH=nowHour
-                    });
+                        Hour = nowHour,
+                        Minute = nowMinute,
+                        Second = nowSecond
+                    };
+                    _police_area_history.Add(queryHistory);
                 }
-
+                else
+                {
+                    queryHistory.Count = count.ToString();
+                    _police_area_history.Update(queryHistory);
+                }
             }
-
-
+            catch 
+            {
+            }
+          
             return Ok();
         }
     }

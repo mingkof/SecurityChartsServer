@@ -11,14 +11,15 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    partial class SHSecuritySysContextModelSnapshot : ModelSnapshot
+    [Migration("20180131055847_201801311358")]
+    partial class _201801311358
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-                .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
 
             modelBuilder.Entity("SHSecurityModels.CarAlarmData", b =>
                 {
@@ -126,34 +127,6 @@ namespace SHSecurityContext.Migrations
                     b.HasKey("key");
 
                     b.ToTable("HongWaiPeopleData");
-                });
-
-            modelBuilder.Entity("SHSecurityModels.HongWaiPeopleHistoryData", b =>
-                {
-                    b.Property<int>("key")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Day");
-
-                    b.Property<string>("Hour");
-
-                    b.Property<string>("Minute");
-
-                    b.Property<string>("Month");
-
-                    b.Property<string>("Year");
-
-                    b.Property<string>("count");
-
-                    b.Property<string>("sn");
-
-                    b.Property<int>("timeStamp");
-
-                    b.Property<string>("type");
-
-                    b.HasKey("key");
-
-                    b.ToTable("HongWaiPeopleHistoryData");
                 });
 
             modelBuilder.Entity("SHSecurityModels.kakoudata_jin", b =>

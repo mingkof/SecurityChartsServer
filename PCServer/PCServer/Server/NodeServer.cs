@@ -246,7 +246,6 @@ namespace MKServerWeb.Server
 
                     var ticket = tlist[0];
 
-
                     //Logmng.Logger.Trace("InitTicketResultData  at 2222");
 
                     //Logmng.Logger.Trace("100: " + ticket[7]);
@@ -275,7 +274,8 @@ namespace MKServerWeb.Server
                         SeatNo = ticket[11] ?? "",//ticket.SEATNO,
                         TicketDate = ticket[12] ?? "",//ticket.CREATEDATE,
                         TicketTime = ticket[13] ?? "",//ticket.CREATETIME,
-                        CheckTime = res[5] ?? ""//res.UPDATETIME
+                        CheckTime = res[5] ?? "",//res.UPDATETIME
+                        CheckInName= ticket[17]??""
                     });
 
 
