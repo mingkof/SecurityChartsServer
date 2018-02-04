@@ -73,7 +73,7 @@ namespace SHSecurityServer.Controllers
             string nowMonth = System.DateTime.Now.Month.ToString("00");
             string nowDay = System.DateTime.Now.Day.ToString("00");
 
-            var list = _sys110warnRepository.FindPageList(pageIndex, pageSize,out int totalSize, p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay, "TIMESIGN", true);
+            var list = _sys110warnRepository.FindPageList(pageIndex, pageSize,out int totalSize, p => p.YEAR == nowYear && p.MONTH == nowMonth && p.DAY == nowDay, "TIMESIGN", false);
 
             if (list == null)
                 return BadRequest("无数据");
