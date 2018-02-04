@@ -24,18 +24,19 @@ namespace SHSecurityModels
         public string SBBHID { get; set; }
         public string SBMC { get; set; }
         public string XSFX { get; set; }
-        public string Count { get; set; }
-        public string pass_or_out { get; set; }
+        public int Count { get; set; }
+        public int pass_or_out { get; set; }
     }
 
     public class kakoudata_jin
     {
         [Key]
+        public int Id { get; set; }
         public string SBBHID { get; set; }
         public string SBMC { get; set; }
         public string XSFX { get; set; }
-        public string Count { get; set; }
-        public string pass_or_out { get; set; }
+        public int Count { get; set; }
+        public int pass_or_out { get; set; }
         public int Timestamp { get; set; }
     }
 
@@ -45,14 +46,16 @@ namespace SHSecurityModels
     {
         public List<JsonKaKouDataItemStruct> JinArray = new List<JsonKaKouDataItemStruct>();
         public List<JsonKaKouDataItemStruct> ChuArray = new List<JsonKaKouDataItemStruct>();
+        public List<JsonKaKouDataItemStruct> AllArray = new List<JsonKaKouDataItemStruct>();
+        public List<JsonKaKouDataItemStruct> TopArray = new List<JsonKaKouDataItemStruct>();
     }
     public class JsonKaKouDataItemStruct
     {
         public string SBBH { get; set; }
         public string SBMC { get; set; }
         public string XSFX { get; set; }
-        public string Count { get; set; }
-        public string pass_or_out { get; set; }
+        public int Count { get; set; }
+        public int pass_or_out { get; set; }
     }
 
 }

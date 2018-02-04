@@ -43,9 +43,14 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetTodayCount")]
         public IActionResult GetTodayCount()
         {
-            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
-            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
-            var count = _faceAlarmData.Count(p => p.timeStamp > todayStamp);
+            //string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            //int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+
+            var year = DateTime.Now.Year.ToString();
+            var month = DateTime.Now.Month.ToString("00");
+            var day = DateTime.Now.Day.ToString("00");
+
+            var count = _faceAlarmData.Count(p => p.Year == year && p.Month == month && p.Day == day);
             return Ok(new
             {
                 res = count
@@ -75,9 +80,13 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetFaceItemData/{pageIndex}/{pageSize}")]
         public IActionResult GetAlarmItemData(int pageIndex, int pageSize)
         {
-            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
-            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
-            var list = _faceAlarmData.FindPageList(pageIndex, pageSize, out int totalSize,p=>p.timeStamp > todayStamp,"timeStamp", false);
+            //string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            //int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            var year = DateTime.Now.Year.ToString();
+            var month = DateTime.Now.Month.ToString("00");
+            var day = DateTime.Now.Day.ToString("00");
+
+            var list = _faceAlarmData.FindPageList(pageIndex, pageSize, out int totalSize,p=>p.Year == year && p.Month == month && p.Day == day,"timeStamp", false);
             return Ok(new {
                 res=list
             });
@@ -173,22 +182,16 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetAlarmTodayCount")]
         public IActionResult GetAlarmTodayCount()
         {
-            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
-            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            //string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            //int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+
+            var year = DateTime.Now.Year.ToString();
             var month = DateTime.Now.Month.ToString("00");
             var day = DateTime.Now.Day.ToString("00");
-            var faceCount = 0;
-            var ticketCount = 0;
-            var carCount = 0;
-            try
-            {
-                 faceCount = _faceAlarmData.Count(p => p.timeStamp >= todayStamp);
-                 ticketCount = _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp);
-                 carCount = _carAlarmData.Count(p =>true);
-            }
-            catch 
-            {
-            }
+
+            var faceCount = _faceAlarmData.Count(p => p.Year == year && p.Month == month && p.Day == day);
+            var ticketCount = _sysTicketresRepository.Count(p => p.TicketYear == year && p.TicketMonth == month && p.TicketDay == day);
+            var carCount = _carAlarmData.Count(p => p.Year == year && p.Month == month && p.Day == day);
            
             return Ok(new {
                 faceAlarmCount=faceCount,
@@ -220,62 +223,104 @@ namespace SHSecurityServer.Controllers
         /// 获取 月累计  月平均 车辆报警 人脸识别报警  客运报警的数量
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetMonthAlarmCount")]
-        public IActionResult GetMonthAlarmCount()
+        //[HttpGet("GetMonthAlarmCount")]
+        //public IActionResult GetMonthAlarmCount()
+        //{
+        //    var monthInt = DateTime.Now.Month;
+        //    var year = DateTime.Now.Year.ToString();
+        //    var month = DateTime.Now.Month.ToString("00");
+        //    var day = DateTime.Now.Day.ToString("00");
+
+        //    //人脸-月累计数量
+        //    var faceMonthCount = _faceAlarmData.Count(p => p.Year == year && p.Month == month);
+        ////人脸-月平均数量
+        //var faceAvgCount =0 ;
+        //for (int i = 1; i <= monthInt; i++)
+        //{
+        //    var count = _faceAlarmData.Count(p => p.Year == year && p.Month == i.ToString("00"));
+        //    faceAvgCount += count;
+        //}
+        //faceAvgCount = faceAvgCount / monthInt;
+
+
+        //int monthStamp = TimeUtils.ConvertToTimeStamps(DateTime.Now.ToString("yyyy-MM")+"-01 00:00:00");
+
+        //var ticketMonthCount = _sysTicketresRepository.Count(p=> TimeUtils.ConvertToTimeStamps(p.TicketDate) > monthStamp);
+
+        //var ticketAvgCount = 0;
+        //var yearStr = year + "-01-01 00:00:00";
+        //int yearStamp = TimeUtils.ConvertToTimeStamps(yearStr);
+        //for (int i = 1; i <= monthInt; i++)
+        //{
+        //    var count = _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > yearStamp);
+        //    ticketAvgCount += count;
+        //}
+        //ticketAvgCount = ticketAvgCount / monthInt;
+
+
+        //var cartMonthCount = _carAlarmData.Count(p => true);
+        //var carAvgCount = 0;
+        //for (int i = 1; i <= monthInt; i++)
+        //{
+        //    var count = _carAlarmData.Count(p =>true);
+        //    carAvgCount += count;
+        //}
+        //carAvgCount = carAvgCount / monthInt;
+
+
+        //return Ok(new MonthAlarmResult{
+        //    faceMonthCount=faceMonthCount,
+        //    faceAvgCount=faceAvgCount,
+        //    ticketMonthCount=ticketMonthCount,
+        //    ticketAvgCount=ticketAvgCount,
+        //    carMonthCount= cartMonthCount,
+        //    carAvgCount= carAvgCount
+        //});
+        //}
+
+
+        //  
+
+        /// <summary>
+        /// 获取月累计告警数量
+        /// </summary>
+        /// <param name="type">（type: 1:车辆报警 2: 人脸识别报警  3:客运报警的数量）</param>
+        /// <param name="monthStr">月份 01，02，11格式</param>
+        /// <returns></returns>
+        [HttpGet("GetAlarmMonthTotalCount/{type}/{monthStr}")]
+        public IActionResult GetMonthAlarmCount(int type, string monthStr)
         {
-            var monthInt = DateTime.Now.Month;
-
+            int resCount = 0;
             var year = DateTime.Now.Year.ToString();
-            var month = DateTime.Now.Month.ToString("00");
-            var day = DateTime.Now.Day.ToString("00");
 
-            var faceMonthCount = _faceAlarmData.Count(p => p.Year == year && p.Month == month);
-
-            var faceAvgCount =0 ;
-            for (int i = 1; i <= monthInt; i++)
+            //人脸
+            if (type == 2)
             {
-                var count = _faceAlarmData.Count(p => p.Year == year && p.Month == i.ToString("00"));
-                faceAvgCount += count;
-            }
-            faceAvgCount = faceAvgCount / monthInt;
-
-
-            int monthStamp = TimeUtils.ConvertToTimeStamps(DateTime.Now.ToString("yyyy-MM")+"-01 00:00:00");
-
-            var ticketMonthCount = _sysTicketresRepository.Count(p=> TimeUtils.ConvertToTimeStamps(p.TicketDate) > monthStamp);
-
-            var ticketAvgCount = 0;
-            var yearStr = year + "-01-01 00:00:00";
-            int yearStamp = TimeUtils.ConvertToTimeStamps(yearStr);
-            for (int i = 1; i <= monthInt; i++)
+                //人脸-月累计数量
+                resCount = _faceAlarmData.Count(p => p.Year == year && p.Month == monthStr);
+            } else  if(type == 1)
             {
-                var count = _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > yearStamp);
-                ticketAvgCount += count;
-            }
-            ticketAvgCount = ticketAvgCount / monthInt;
+                //车辆报警-月累计
+                resCount = _carAlarmData.Count(p => p.Year == year && p.Month == monthStr);
 
-
-            var cartMonthCount = _carAlarmData.Count(p => true);
-            var carAvgCount = 0;
-            for (int i = 1; i <= monthInt; i++)
+            } else if(type == 3)
             {
-                var count = _carAlarmData.Count(p =>true);
-                carAvgCount += count;
+                //客运报警-月累计
+                resCount = _sysTicketresRepository.Count(p => p.TicketYear == year && p.TicketMonth == monthStr);
             }
-            carAvgCount = carAvgCount / monthInt;
 
 
-            return Ok(new MonthAlarmResult{
-                faceMonthCount=faceMonthCount,
-                faceAvgCount=faceAvgCount,
-                ticketMonthCount=ticketMonthCount,
-                ticketAvgCount=ticketAvgCount,
-                carMonthCount= cartMonthCount,
-                carAvgCount= carAvgCount
+            return Ok(new
+            {
+                res = resCount
             });
         }
 
 
+
+
+
+
     }
- } 
+} 
 

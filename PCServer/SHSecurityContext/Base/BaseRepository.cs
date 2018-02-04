@@ -108,11 +108,18 @@ namespace SHSecurityContext.Base
         /// <returns>排序后的IQueryable<T></returns>
         private IQueryable<T> OrderBy(IQueryable<T> source, string propertyName, bool isAsc)
         {
-            if (source == null) throw new ArgumentNullException("source", "不能为空");
+            if (source == null) 
+            {
+                //throw new ArgumentNullException("source", "不能为空");
+                return null;
+            }
             if (string.IsNullOrEmpty(propertyName)) return source;
             var _parameter = Expression.Parameter(source.ElementType);
             var _property = Expression.Property(_parameter, propertyName);
-            if (_property == null) throw new ArgumentNullException("propertyName", "属性不存在");
+            if (_property == null) { 
+                // throw new ArgumentNullException("propertyName", "属性不存在");
+                  return null;
+            }
             var _lambda = Expression.Lambda(_property, _parameter);
             var _methodName = isAsc ? "OrderBy" : "OrderByDescending";
             var _resultExpression = Expression.Call(typeof(Queryable), _methodName, new Type[] { source.ElementType, _property.Type }, source.Expression, Expression.Quote(_lambda));

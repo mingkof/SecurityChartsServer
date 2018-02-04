@@ -48,38 +48,51 @@ namespace KVDDDCore.Utils
             return sb.ToString();
         }
 
-        public static List<string> ReadDirChild(string path,string fileName)
+
+        public static string[] GetDirs(string dirPath)
         {
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(dirPath))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(dirPath);
             }
-            List<string> resList = new List<string>();
-            DirectoryInfo root = new DirectoryInfo(path);
 
-            try
-            {
-                foreach (var item in root.GetDirectories())
-                {
-                    if (readedDirName.Contains(item.Name))
-                        continue;
-                    string childDir = item.Name;
-                    string filePath = path + @"\" + childDir + @"\" + fileName;
+            var dirs = Directory.GetDirectories(dirPath);
 
-                    string dataStr = ReadFile(filePath);
-                    if (dataStr != null)
-                    {
-                        resList.Add(dataStr);
-                    }
-                    readedDirName.Add(childDir);
-                }
-            }
-            catch
-            {
-            }
-            
-            return resList;
+            return dirs;
         }
+
+        //public static List<string> ReadDirChild(string path,string fileName)
+        //{
+        //    if (!Directory.Exists(path))
+        //    {
+        //        Directory.CreateDirectory(path);
+        //    }
+        //    List<string> resList = new List<string>();
+        //    DirectoryInfo root = new DirectoryInfo(path);
+
+        //    try
+        //    {
+        //        foreach (var item in root.GetDirectories())
+        //        {
+        //            if (readedDirName.Contains(item.Name))
+        //                continue;
+        //            string childDir = item.Name;
+        //            string filePath = path + @"\" + childDir + @"\" + fileName;
+
+        //            string dataStr = ReadFile(filePath);
+        //            if (dataStr != null)
+        //            {
+        //                resList.Add(dataStr);
+        //            }
+        //            readedDirName.Add(childDir);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //    }
+
+        //    return resList;
+        //}
 
         public static List<string> ReadFileChild(string path)
         {

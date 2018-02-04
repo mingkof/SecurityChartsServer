@@ -129,29 +129,21 @@ namespace SHSecurityServer.Controllers
             List<int> countList = new List<int>();
             var wifiConfig = PCServerMain.Instance.wifiConfigDic;
 
+            IQueryable<wifidata_peoples_history> qlist = null;
+            if (sn == 0)
+            {
+                qlist = _wifidata_history.FindList(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY && wifiConfig["南广场"].Contains(p.WifiID), "", false);
+            }
+            else if (sn == 1)
+            {
+                qlist = _wifidata_history.FindList(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY && wifiConfig["北广场"].Contains(p.WifiID), "", false);
+            }
+
+            var list = qlist.ToList();
+
             for (int i = 0; i <= HHInt; i++)
             {
-                bool shouldQuery = true;
-                var count = 0;
-                IQueryable<wifidata_peoples_history> qlist = null;
-                if (shouldQuery)
-                {
-                    string hhformat = i.ToString("00");
-                    if (sn==0)
-                    {
-                        qlist = _wifidata_history.FindList(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == hhformat && wifiConfig["南广场"].Contains(p.WifiID), "", false);
-                    }
-                    else if (sn==1)
-                    {
-                        qlist = _wifidata_history.FindList(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == hhformat && wifiConfig["北广场"].Contains(p.WifiID), "", false);
-                    }
-
-                    if (qlist != null)
-                    {
-                        count = qlist.Sum(p => p.Count);
-                    }
-                }
-
+                var count = list.Where( p => p.HH == i.ToString("00")).Sum(p => p.Count);
                 //countList.Add(new Random().Next(0,500));
                 countList.Add(count);
             }

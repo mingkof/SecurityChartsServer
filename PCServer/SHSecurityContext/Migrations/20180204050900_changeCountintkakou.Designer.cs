@@ -11,9 +11,10 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    partial class SHSecuritySysContextModelSnapshot : ModelSnapshot
+    [Migration("20180204050900_changeCountintkakou")]
+    partial class changeCountintkakou
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,12 +159,10 @@ namespace SHSecurityContext.Migrations
 
             modelBuilder.Entity("SHSecurityModels.kakoudata_jin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("SBBHID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Count");
-
-                    b.Property<string>("SBBHID");
 
                     b.Property<string>("SBMC");
 
@@ -171,9 +170,9 @@ namespace SHSecurityContext.Migrations
 
                     b.Property<string>("XSFX");
 
-                    b.Property<int>("pass_or_out");
+                    b.Property<string>("pass_or_out");
 
-                    b.HasKey("Id");
+                    b.HasKey("SBBHID");
 
                     b.ToTable("KaKouDataJin");
                 });
@@ -183,7 +182,7 @@ namespace SHSecurityContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Count");
+                    b.Property<string>("Count");
 
                     b.Property<string>("Day");
 
@@ -199,7 +198,7 @@ namespace SHSecurityContext.Migrations
 
                     b.Property<string>("Year");
 
-                    b.Property<int>("pass_or_out");
+                    b.Property<string>("pass_or_out");
 
                     b.HasKey("Id");
 

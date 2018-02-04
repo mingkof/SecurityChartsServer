@@ -64,10 +64,13 @@ namespace MKServerWeb.Controllers
         [HttpGet("GetTodayList")]
         public IActionResult GetTodayList()
         {
-            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
-            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            //string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            //int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            string nowYear = System.DateTime.Now.Year.ToString();
+            string nowMonth = System.DateTime.Now.Month.ToString("00");
+            string nowDay = System.DateTime.Now.Day.ToString("00");
 
-            var query = _sysTicketresRepository.FindList(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp, "", false);
+            var query = _sysTicketresRepository.FindList(p => p.TicketYear == nowYear && p.TicketMonth == nowMonth && p.TicketDay == nowDay, "", false);
 
             return Ok(new {
                 res=query
@@ -82,9 +85,15 @@ namespace MKServerWeb.Controllers
         [HttpGet("GetToadyPageList/{pageIndex}/{pageSize}")]
         public IActionResult GetToadyPageList(int pageIndex,int pageSize)
         {
-            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
-            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
-            var query = _sysTicketresRepository.FindPageList(pageIndex, pageSize, out int totalSize, p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp, "", false);
+            //string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            //int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+
+            string nowYear = System.DateTime.Now.Year.ToString();
+            string nowMonth = System.DateTime.Now.Month.ToString("00");
+            string nowDay = System.DateTime.Now.Day.ToString("00");
+
+
+            var query = _sysTicketresRepository.FindPageList(pageIndex, pageSize, out int totalSize, p => p.TicketYear == nowYear && p.TicketMonth == nowMonth && p.TicketDay == nowDay, "", false);
 
             return Ok(new {
                 res=query
@@ -97,10 +106,14 @@ namespace MKServerWeb.Controllers
         [HttpGet("GetToadyCount")]
         public IActionResult GetToadyCount()
         {
-            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
-            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            //string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            //int todayStamp = TimeUtils.ConvertToTimeStamps(today);
 
-            var query = _sysTicketresRepository.Count(p => TimeUtils.ConvertToTimeStamps(p.TicketDate) > todayStamp);
+            string nowYear = System.DateTime.Now.Year.ToString();
+            string nowMonth = System.DateTime.Now.Month.ToString("00");
+            string nowDay = System.DateTime.Now.Day.ToString("00");
+
+            var query = _sysTicketresRepository.Count(p => p.TicketYear == nowYear && p.TicketMonth == nowMonth && p.TicketDay == nowDay);
 
             return Ok(new
             {

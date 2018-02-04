@@ -261,6 +261,13 @@ namespace MKServerWeb.Server
                     //Logmng.Logger.Trace("110: " + ticket[13]);
                     //Logmng.Logger.Trace("111: " + res[5]);
 
+
+                    //处理Ticket时间和Go时间,记录对应的年月日 方便以后进行统计
+                    DateTime.TryParse(ticket[12], out DateTime TicketDT);
+                    DateTime.TryParse(ticket[3] + " " + ticket[4], out DateTime GoDT);
+
+
+
                     ticketList.Add(new SHSecurityModels.sys_ticketres()
                     {
                         PassageName = ticket[7] ?? "",//ticket.PASSENGERNAME,
@@ -275,9 +282,14 @@ namespace MKServerWeb.Server
                         TicketDate = ticket[12] ?? "",//ticket.CREATEDATE,
                         TicketTime = ticket[13] ?? "",//ticket.CREATETIME,
                         CheckTime = res[5] ?? "",//res.UPDATETIME
-                        CheckInName= ticket[17]??""
+                        CheckInName = ticket[17] ?? "",
+                        TicketYear = TicketDT.Year.ToString(),
+                        TicketMonth = TicketDT.Month.ToString("00"),
+                        TicketDay = TicketDT.Day.ToString("00"),
+                        GoDateYear = GoDT.Year.ToString(),
+                        GoDateMonth = GoDT.Month.ToString("00"),
+                        GoDateDay = GoDT.Day.ToString("00")
                     });
-
 
 
                     //Logmng.Logger.Trace("InitTicketResultData at 222:  IN FOR AT : " + i);

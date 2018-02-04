@@ -19,11 +19,16 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace PCServer.Server
 {
     public class PCServerEntry
     {
+        //人脸识别已处理目录
+        public List<string> DoneDirsWithFace = new List<string>();
+
+
        public PoliceGpsStaticAreaManager PoliceGpsStaticAreaManager = new PoliceGpsStaticAreaManager();
 
         //WifiDataAreas 信息
@@ -46,7 +51,7 @@ namespace PCServer.Server
             using (var serviceScope = ServiceLocator.Instance.CreateScope())
             {
                 //获取Context
-                 dbContext = serviceScope.ServiceProvider.GetService<SHSecuritySysContext>();
+                dbContext = serviceScope.ServiceProvider.GetService<SHSecuritySysContext>();
 
                 //自动迁移
                 await new DbInitializer().InitializeAsync(dbContext);
@@ -60,7 +65,7 @@ namespace PCServer.Server
                 //初始化数据库数据
                 await InitDatabase(dbContext);
 
-                ReadCameraData();
+                //ReadCameraData();
 
                 var IPoliceGpsRepo = serviceScope.ServiceProvider.GetService<IPoliceGpsRepository>();
 
@@ -77,14 +82,20 @@ namespace PCServer.Server
 
             if (isPublishGongAn)
             {
-       
-
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
                     {
                         var IPoliceGpsRepo = serviceScope.ServiceProvider.GetService<IPoliceGpsRepository>();
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 0;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
 
                         //启动GPSSocket服务
                         GPSSocketClient GPSSocketClient = new GPSSocketClient();
@@ -108,7 +119,6 @@ namespace PCServer.Server
                 //GPSGridServer.Run();
 
 
-
                 //每隔1分钟，读取ftp文件resultAll.json，更新wifidatapeoples和wifidatapeopleshistory表.
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
@@ -122,7 +132,14 @@ namespace PCServer.Server
 
                         string path = "resultAll.json";
 
-                        
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 1;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
+
                         while (true)
                         {
                             Logmng.Logger.Trace("ThreadPool=1-----------正在读取：resultAll.json");
@@ -131,82 +148,83 @@ namespace PCServer.Server
                             string str = ftpClient.DownloadToStr(path);
                             if (!string.IsNullOrEmpty(str))
                             {
-                                    JsonWifiDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonWifiDataStruct>(str);
+                                JsonWifiDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonWifiDataStruct>(str);
 
-                                    // Logmng.Logger.Trace(str);
+                                // Logmng.Logger.Trace(str);
 
-                                    if(res != null)
+                                if (res != null)
+                                {
+                                    // Logmng.Logger.Trace("A5555555555  read ftp resultAll.json");
+                                    //存储到自己的数据库
+
+                                    int timeNow = TimeUtils.ConvertToTimeStampNow();
+
+                                    for (int i = 0; i < res.peopleList.Count; i++)
                                     {
-                                        // Logmng.Logger.Trace("A5555555555  read ftp resultAll.json");
-                                        //存储到自己的数据库
+                                        var item = res.peopleList[i];
 
-                                        int timeNow = TimeUtils.ConvertToTimeStampNow();
-
-                                        for (int i = 0; i < res.peopleList.Count; i++)
+                                        var query = IWifiData.Find(p => p.WifiID == item.wifiID);
+                                        if (query == null)
                                         {
-                                            var item = res.peopleList[i];
-
-                                            var query = IWifiData.Find(p => p.WifiID == item.wifiID);
-                                            if(query == null)
+                                            int areaId = 0;
+                                            for (int m = 0; m < WifiDataAreas.data.Count; m++)
                                             {
-                                                int areaId = 0;
-                                                for (int m = 0; m < WifiDataAreas.data.Count; m++)
+                                                if (WifiDataAreas.data[m].ids.Contains(item.wifiID))
                                                 {
-                                                    if(WifiDataAreas.data[m].ids.Contains(item.wifiID))
-                                                    {
-                                                        areaId = WifiDataAreas.data[m].id;
-                                                        break;
-                                                    }
+                                                    areaId = WifiDataAreas.data[m].id;
+                                                    break;
                                                 }
+                                            }
 
 
-                                                IWifiData.Add(new wifidata_peoples()
+                                            IWifiData.Add(new wifidata_peoples()
+                                            {
+                                                WifiID = item.wifiID,
+                                                Count = item.count,
+                                                Timestamp = timeNow,
+                                                AreaId = areaId
+                                            });
+                                        }
+                                        else
+                                        {
+                                            query.Count = item.count;
+                                            query.Timestamp = timeNow;
+                                            IWifiData.Update(query);
+                                        }
+
+                                        //从57分到03分 记录且记录一次
+                                        var YEAR = System.DateTime.Now.Year.ToString();
+                                        var MONTH = System.DateTime.Now.Month.ToString("00");
+                                        var DAY = System.DateTime.Now.Day.ToString("00");
+                                        var HH = System.DateTime.Now.Hour.ToString("00");
+                                        var MM = System.DateTime.Now.Minute.ToString("00");
+                                        var SS = System.DateTime.Now.Second.ToString("00");
+
+                                        var curMinute = System.DateTime.Now.Minute;
+
+                                        // Logmng.Logger.Trace("A5555555555");
+
+                                        if (curMinute >= 1 && curMinute <= 59)
+                                        {
+                                            var queryHis = IWifiDataHistory.Find(p => p.WifiID == item.wifiID && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == HH);
+                                            if (queryHis == null)
+                                            {
+                                                IWifiDataHistory.Add(new wifidata_peoples_history()
                                                 {
+                                                    Timestamp = timeNow,
                                                     WifiID = item.wifiID,
                                                     Count = item.count,
-                                                    Timestamp = timeNow,
-                                                    AreaId = areaId
+                                                    Year = YEAR,
+                                                    Month = MONTH,
+                                                    Day = DAY,
+                                                    HH = HH,
+                                                    MM = MM,
+                                                    SS = SS
                                                 });
-                                            } else
-                                            {
-                                                query.Count = item.count;
-                                                query.Timestamp = timeNow;
-                                                IWifiData.Update(query);
                                             }
-
-                                            //从57分到03分 记录且记录一次
-                                            var YEAR = System.DateTime.Now.Year.ToString();
-                                            var MONTH = System.DateTime.Now.Month.ToString("00");
-                                            var DAY = System.DateTime.Now.Day.ToString("00");
-                                            var HH = System.DateTime.Now.Hour.ToString("00");
-                                            var MM = System.DateTime.Now.Minute.ToString("00");
-                                            var SS = System.DateTime.Now.Second.ToString("00");
-
-                                            var curMinute = System.DateTime.Now.Minute;
-
-                                            // Logmng.Logger.Trace("A5555555555");
-                                            
-                                            if (curMinute >= 1 && curMinute <= 59)
-                                            {
-                                                var queryHis = IWifiDataHistory.Find(p => p.WifiID == item.wifiID && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == HH);
-                                                if(queryHis == null)
-                                                {
-                                                    IWifiDataHistory.Add(new wifidata_peoples_history()
-                                                    {
-                                                        Timestamp = timeNow,
-                                                        WifiID = item.wifiID,
-                                                        Count = item.count,
-                                                         Year = YEAR,
-                                                         Month = MONTH,
-                                                         Day = DAY,
-                                                          HH = HH,
-                                                          MM = MM,
-                                                          SS = SS
-                                                    });
-                                                }
-                                            }
-
                                         }
+
+                                    }
                                 }
                             }
 
@@ -215,7 +233,7 @@ namespace PCServer.Server
                     }
                 });
 
-                 //每隔1分钟，读取ftp文件KaKouData.json，更新kakoudatajin和kakoudatajinhistory表.
+                //每隔1分钟，读取ftp文件KaKouData.json，更新kakoudatajin和kakoudatajinhistory表.
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
 
@@ -226,24 +244,33 @@ namespace PCServer.Server
                         var IKaKouTop = serviceScope.ServiceProvider.GetService<IKaKouTopRepository>();
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 2;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
+
                         string path = "KaKouData.json";
-                        while(true)
+                        while (true)
                         {
                             Logmng.Logger.Trace("ThreadPool=2-----------正在读取：KaKouData.json");
                             FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
                             // Logmng.Logger.Trace("q11111111111111111111");
                             string str = ftpClient.DownloadToStr(path);
-                            if(!string.IsNullOrEmpty(str))
+                            if (!string.IsNullOrEmpty(str))
                             {
                                 // Logmng.Logger.Trace(str);
                                 JsonKaKouDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonKaKouDataStruct>(str);
-                                if(res!=null)
+                                if (res != null)
                                 {
-                                    int timeNow=TimeUtils.ConvertToTimeStampNow();
+                                    int timeNow = TimeUtils.ConvertToTimeStampNow();
                                     for (int m = 0; m < res.ChuArray.Count; m++)
                                     {
                                         var item = res.ChuArray[m];
-                                        var query = IKaKouDataJin.Find(p => p.SBBHID == item.SBBH);
+
+                                        var query = IKaKouDataJin.Find(p => p.SBBHID == item.SBBH && p.pass_or_out == item.pass_or_out);
                                         if (query == null)
                                         {
                                             IKaKouDataJin.Add(new kakoudata_jin()
@@ -260,7 +287,6 @@ namespace PCServer.Server
                                         {
                                             query.XSFX = item.XSFX;
                                             query.Count = item.Count;
-                                            query.pass_or_out = item.pass_or_out;
                                             query.Timestamp = timeNow;
                                             IKaKouDataJin.Update(query);
                                         }
@@ -273,7 +299,7 @@ namespace PCServer.Server
                                         if (curMinute >= 52 || curMinute <= 1)
                                         {
 
-                                            var queryHis = IKaKouDataJinHistory.Find(p => p.SBBHID == item.SBBH && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == HH);
+                                            var queryHis = IKaKouDataJinHistory.Find(p => p.SBBHID == item.SBBH && p.pass_or_out == item.pass_or_out && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.HH == HH );
 
                                             if (queryHis == null)
                                             {
@@ -295,7 +321,8 @@ namespace PCServer.Server
                                     for (int m = 0; m < res.JinArray.Count; m++)
                                     {
                                         var item = res.JinArray[m];
-                                        var query = IKaKouDataJin.Find(p => p.SBBHID == item.SBBH);
+                                        var query = IKaKouDataJin.Find(p => p.SBBHID == item.SBBH && p.pass_or_out == item.pass_or_out);
+
                                         if (query == null)
                                         {
                                             IKaKouDataJin.Add(new kakoudata_jin()
@@ -312,7 +339,6 @@ namespace PCServer.Server
                                         {
                                             query.XSFX = item.XSFX;
                                             query.Count = item.Count;
-                                            query.pass_or_out = item.pass_or_out;
                                             query.Timestamp = timeNow;
                                             IKaKouDataJin.Update(query);
                                         }
@@ -396,60 +422,71 @@ namespace PCServer.Server
                                     }
                                 }
                             }
-                            Thread.Sleep(1000*60);
+                            Thread.Sleep(1000 * 60 * 2);
                         }
                     }
                 });
 
-                 //每隔1分钟，读取ftp文件抓拍 Travio.json，更新traviodata
-                ThreadPool.QueueUserWorkItem((a) =>
-                {
+                //每隔1分钟，读取ftp文件抓拍 Travio.json，更新traviodata
+                //ThreadPool.QueueUserWorkItem((a) =>
+                //{
 
-                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
-                    {
-                        var ITravioData = serviceScope.ServiceProvider.GetService<ITravioDataRepositoy>();
+                //    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                //    {
+                //        var ITravioData = serviceScope.ServiceProvider.GetService<ITravioDataRepositoy>();
 
-                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+                //        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
-                        string path = "AllTravioInfo.json";
-                        while(true)
-                        {
-                            Logmng.Logger.Trace("ThreadPool=3-----------正在读取：AllTravioInfo.json");
-                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
-                            string str = ftpClient.DownloadToStr(path);
-                            if(!string.IsNullOrEmpty(str))
-                            {
-                                int timeNow=TimeUtils.ConvertToTimeStampNow();
-                                // Logmng.Logger.Trace(str);
-                                TraVioInfoStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<TraVioInfoStruct>(str);
-                                var count = res.NearWeekCount.nearWeekCount;
+                //        string path = "AllTravioInfo.json";
 
-                                var YEAR = System.DateTime.Now.Year.ToString();
-                                var MONTH = System.DateTime.Now.Month.ToString("00");
-                                var DAY = System.DateTime.Now.Day.ToString("00");
+                //        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                //        var kc_key = 900000 + 3;
+                //        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                //        if (queryKey != null && queryKey.valueInt == 9)
+                //        {
+                //            return;
+                //        }
 
-                                var query =ITravioData.Find(p=>p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY);
-                                if(query!=null)
-                                {
-                                    query.TodayCount=count;
-                                    query.TimeStamp=timeNow;
-                                    ITravioData.Update(query);
-                                }
-                                else
-                                {
-                                    ITravioData.Add(new traviodata(){
-                                        Year=YEAR,
-                                        Month=MONTH,
-                                        Day=DAY,
-                                        TodayCount=count,
-                                        TimeStamp=timeNow
-                                    });
-                                }
-                            }
-                            Thread.Sleep(1000*60);
-                        }
-                    }
-                });
+
+                //        while (true)
+                //        {
+                //            Logmng.Logger.Trace("ThreadPool=3-----------正在读取：AllTravioInfo.json");
+                //            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                //            string str = ftpClient.DownloadToStr(path);
+                //            if (!string.IsNullOrEmpty(str))
+                //            {
+                //                int timeNow = TimeUtils.ConvertToTimeStampNow();
+                //                // Logmng.Logger.Trace(str);
+                //                TraVioInfoStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<TraVioInfoStruct>(str);
+                //                var count = res.NearWeekCount.nearWeekCount;
+
+                //                var YEAR = System.DateTime.Now.Year.ToString();
+                //                var MONTH = System.DateTime.Now.Month.ToString("00");
+                //                var DAY = System.DateTime.Now.Day.ToString("00");
+
+                //                var query = ITravioData.Find(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY);
+                //                if (query != null)
+                //                {
+                //                    query.TodayCount = count;
+                //                    query.TimeStamp = timeNow;
+                //                    ITravioData.Update(query);
+                //                }
+                //                else
+                //                {
+                //                    ITravioData.Add(new traviodata()
+                //                    {
+                //                        Year = YEAR,
+                //                        Month = MONTH,
+                //                        Day = DAY,
+                //                        TodayCount = count,
+                //                        TimeStamp = timeNow
+                //                    });
+                //                }
+                //            }
+                //            Thread.Sleep(1000 * 60);
+                //        }
+                //    }
+                //});
 
                 //每隔五分钟记录roaddata   更新roaddatarecord
                 ThreadPool.QueueUserWorkItem((a) =>
@@ -459,66 +496,84 @@ namespace PCServer.Server
                     {
                         var IRoadDataRecord = serviceScope.ServiceProvider.GetService<IRoadDataRecordRepository>();
                         RealDataUrl RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>().Value;
-                        while(true)
+
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 4;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
                         {
-                            Logmng.Logger.Trace("ThreadPool=4-----------正在读取：roaddata");
-                            int timeNow=TimeUtils.ConvertToTimeStampNow();
-                            var model = WebClientUls.GetString(RealDataConfig.TrafficUrl);
-                            var modelRoadTop = WebClientUls.GetString(RealDataConfig.RoadUrl);
+                            return;
+                        }
 
-                            TrafficData tampData = null;
-                            if (model != null)
+                        while (true)
+                        {
+                            try
                             {
-                                // _logger.LogInformation(model["data"]["overview"]["traIndex"].ToString());
-                                tampData = new TrafficData
+                                Logmng.Logger.Trace("ThreadPool=4-----------正在读取：roaddata");
+                                int timeNow = TimeUtils.ConvertToTimeStampNow();
+                                var model = WebClientUls.GetString(RealDataConfig.TrafficUrl);
+                                var modelRoadTop = WebClientUls.GetString(RealDataConfig.RoadUrl);
+
+                                TrafficData tampData = null;
+                                if (model != null)
                                 {
-                                    TrafficDataForAll = model["data"]["overview"]["traIndex"].ToString(),
-                                    TrafficAvgSpeed = model["data"]["overview"]["avgSpeed"].ToString(),
-                                    TopsRoads = new TrafficRoadState[5]
-                                };
-                            }
-                            if (modelRoadTop != null)
-                            {
-                                for (int i = 0; i < 5; i++)
+                                    // _logger.LogInformation(model["data"]["overview"]["traIndex"].ToString());
+                                    tampData = new TrafficData
+                                    {
+                                        TrafficDataForAll = model["data"]["overview"]["traIndex"].ToString(),
+                                        TrafficAvgSpeed = model["data"]["overview"]["avgSpeed"].ToString(),
+                                        TopsRoads = new TrafficRoadState[5]
+                                    };
+                                }
+                                if (modelRoadTop != null)
                                 {
-                                    tampData.TopsRoads[i] = new TrafficRoadState(
-                                            modelRoadTop["data"]["rows"][i]["roadName"].ToString(),
-                                            modelRoadTop["data"]["rows"][i]["speed"].ToString(),
-                                            modelRoadTop["data"]["rows"][i]["traIndex"].ToString());
+                                    for (int i = 0; i < 5; i++)
+                                    {
+                                        tampData.TopsRoads[i] = new TrafficRoadState(
+                                                modelRoadTop["data"]["rows"][i]["roadName"].ToString(),
+                                                modelRoadTop["data"]["rows"][i]["speed"].ToString(),
+                                                modelRoadTop["data"]["rows"][i]["traIndex"].ToString());
+                                    }
+                                }
+                                if (tampData != null)
+                                {
+                                    // JsonRoadDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonRoadDataStruct>(tampData);
+                                    var YEAR = System.DateTime.Now.Year.ToString();
+                                    var MONTH = System.DateTime.Now.Month.ToString("00");
+                                    var DAY = System.DateTime.Now.Day.ToString("00");
+                                    var HH = System.DateTime.Now.Hour.ToString("00");
+                                    var MM = System.DateTime.Now.Minute.ToString("00");
+                                    for (int i = 0; i < tampData.TopsRoads.Count(); i++)
+                                    {
+                                        var item = tampData.TopsRoads[i];
+                                        IRoadDataRecord.Add(new RoadDataRecord
+                                        {
+                                            Timestamp = timeNow,
+                                            Year = YEAR,
+                                            Month = MONTH,
+                                            Day = DAY,
+                                            HH = HH,
+                                            MM = MM,
+                                            Roadname = item.RoadName,
+                                            TrafficAvgSpeed = item.TrafficAvgSpeed,
+                                            TrafficData = item.TrafficData
+                                        });
+                                    }
                                 }
                             }
-                            if(tampData!=null)
+                            catch (Exception e)
                             {
-                                // JsonRoadDataStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonRoadDataStruct>(tampData);
-                                var YEAR = System.DateTime.Now.Year.ToString();
-                                var MONTH = System.DateTime.Now.Month.ToString("00");
-                                var DAY = System.DateTime.Now.Day.ToString("00");
-                                var HH = System.DateTime.Now.Hour.ToString("00");
-                                var MM = System.DateTime.Now.Minute.ToString("00");
-                                for (int i=0;i<tampData.TopsRoads.Count();i++)
-                                {
-                                    var item = tampData.TopsRoads[i];
-                                    IRoadDataRecord.Add(new RoadDataRecord{
-                                        Timestamp =timeNow,
-                                        Year =YEAR,
-                                        Month =MONTH,
-                                        Day =DAY,
-                                        HH =HH,
-                                        MM = MM,
-                                        Roadname=item.RoadName, 
-                                        TrafficAvgSpeed=item.TrafficAvgSpeed,
-                                        TrafficData =item.TrafficData
-                                    });
-                                }
+                                Logmng.Logger.Error("ThreadPool=4---ERROR:" + e.ToString());
                             }
 
-                            Thread.Sleep(1000*60*3);
+
+                            Thread.Sleep(1000 * 60 * 3);
                         }
                     }
                 });
 
                 //每隔1分钟读取mqServerData  更新mqServerData
-                ThreadPool.QueueUserWorkItem((a) => 
+                ThreadPool.QueueUserWorkItem((a) =>
                 {
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
                     {
@@ -526,123 +581,65 @@ namespace PCServer.Server
 
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 5;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
+
                         while (true)
                         {
-                            Logmng.Logger.Trace("ThreadPool=5-----------正在读取：ftp MQ物联报警数据");
-                            var YEAR = System.DateTime.Now.Year.ToString();
-                            var MONTH = System.DateTime.Now.Month.ToString("00");
-                            var DAY = System.DateTime.Now.Day.ToString("00");
-                            var HH = System.DateTime.Now.Hour.ToString("00");
-                            string path = "receive/rcwj/" + "wulian_" + YEAR +MONTH+DAY+HH+".txt";
-
-                            FtpClient ftpClient = new FtpClient("ftp://10.15.55.15:32121/", "zbfjrcwj", "zbfjrcwj");
-                            List<string> strList = ftpClient.DownloadToListStr(path);
-                            if (strList.Count!=0)
+                            try
                             {
-                                for (int i = 0; i < strList.Count; i++)
+                                Logmng.Logger.Trace("ThreadPool=5-----------正在读取：ftp MQ物联报警数据");
+                                var YEAR = System.DateTime.Now.Year.ToString();
+                                var MONTH = System.DateTime.Now.Month.ToString("00");
+                                var DAY = System.DateTime.Now.Day.ToString("00");
+                                var HH = System.DateTime.Now.Hour.ToString("00");
+                                string path = "receive/rcwj/" + "wulian_" + YEAR + MONTH + DAY + HH + ".txt";
+
+                                FtpClient ftpClient = new FtpClient("ftp://10.15.55.15:32121/", "zbfjrcwj", "zbfjrcwj");
+                                List<string> strList = ftpClient.DownloadToListStr(path);
+                                if (strList.Count != 0)
                                 {
-                                    JsonMQServerDataContruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonMQServerDataContruct>(strList[i]);
-                                    var query = IMQServerData.Find(p => p.dsnum == data.dsnum && p.mtype == data.mtype && p.time == data.time);
-                                    if (query==null)
+                                    for (int i = 0; i < strList.Count; i++)
                                     {
-                                        IMQServerData.Add(new MQServerData {
-                                            commRmk = data.commRmk,
-                                            dsnum = data.dsnum,
-                                            foreignld = data.foreignld,
-                                            mtype = data.mtype,
-                                            projectId = data.projectId,
-                                            time = data.time,
-                                            userId = data.userId,
-                                            topicType = data.topicType,
-                                            timeStamp = data.timeStamp
-                                        });
+                                        JsonMQServerDataContruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonMQServerDataContruct>(strList[i]);
+                                        var query = IMQServerData.Find(p => p.dsnum == data.dsnum && p.mtype == data.mtype && p.time == data.time);
+                                        if (query == null)
+                                        {
+                                            IMQServerData.Add(new MQServerData
+                                            {
+                                                commRmk = data.commRmk,
+                                                dsnum = data.dsnum,
+                                                foreignld = data.foreignld,
+                                                mtype = data.mtype,
+                                                projectId = data.projectId,
+                                                time = data.time,
+                                                userId = data.userId,
+                                                topicType = data.topicType,
+                                                timeStamp = data.timeStamp
+                                            });
+                                        }
                                     }
                                 }
                             }
+                            catch (Exception e)
+                            {
+                                Logmng.Logger.Error("ThreadPool=5---ERROR:" + e.ToString());
+                            }
+
+
                             Thread.Sleep(1000 * 60);
                         }
                     }
                 });
+             
 
-                //每隔1分钟读取 ftp  sqlserver hongwaiPeopleData 更新hongwaiPeopleData
-                ThreadPool.QueueUserWorkItem((a) =>
-                {
-                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
-                    {
-                        var Ihongwaipeople = serviceScope.ServiceProvider.GetService<IHongWaiPeopleDataRepositoy>();
-                        var IhongwaiHistoryPeople = serviceScope.ServiceProvider.GetService<IHongWaiPeopleHistoryDataRepositoy>();
-
-
-                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
-
-                        while (true)
-                        {
-                            Logmng.Logger.Trace("ThreadPool=6-----------正在读取：ftp 红外报警数据");
-                            var YEAR = System.DateTime.Now.Year.ToString();
-                            var MONTH = System.DateTime.Now.Month.ToString("00");
-                            var DAY = System.DateTime.Now.Day.ToString("00");
-                            var HH = System.DateTime.Now.Hour.ToString("00");
-                            var MM = System.DateTime.Now.Minute.ToString("00");
-                            var nowM = System.DateTime.Now.Minute;
-
-                            string path = "receive/rcwj/" + "hongwai_" + YEAR+"-" + MONTH + "-" + DAY + ".txt";
-
-                            FtpClient ftpClient = new FtpClient("ftp://10.15.55.15:32121/", "zbfjrcwj", "zbfjrcwj");
-                            List<string> strList = ftpClient.DownloadToListStr(path);
-                            if (strList.Count!=0)
-                            {
-                                int timeNow = TimeUtils.ConvertToTimeStampNow();
-                                for (int i = 0; i < strList.Count; i++)
-                                {
-                                    JosnHongWaiStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JosnHongWaiStruct>(strList[i]);
-                                    var query = Ihongwaipeople.Find(p => p.sn == data.sn && p.type == data.type&&p.Year==YEAR&&p.Month==MONTH&&p.Day==DAY);
-                                    if (query != null)
-                                    {
-                                        query.count = data.count;
-                                        query.timeStamp = data.timeStamp;
-
-                                        Ihongwaipeople.Update(query);
-                                    }
-                                    else
-                                    {
-                                        Ihongwaipeople.Add(new HongWaiPeopleData {
-                                            sn=data.sn,
-                                            count=data.count,
-                                            type=data.type,
-                                            timeStamp=timeNow,
-                                            Year=YEAR,
-                                            Month=MONTH,
-                                            Day=DAY
-                                        });
-                                    }
-                                    if (nowM>56)
-                                    {
-                                        var queryHistory = IhongwaiHistoryPeople.Find(p => p.sn == data.sn && p.type == data.type && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.Hour == HH && p.Minute == MM);
-                                        if (queryHistory == null)
-                                        {
-                                            IhongwaiHistoryPeople.Add(new HongWaiPeopleHistoryData
-                                            {
-                                                sn = data.sn,
-                                                count = data.count,
-                                                type = data.type,
-                                                timeStamp = timeNow,
-                                                Year = YEAR,
-                                                Month = MONTH,
-                                                Day = DAY,
-                                                Hour = HH,
-                                                Minute = MM,
-                                            });
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                            Thread.Sleep(1000 * 60 *1);
-                        }
-                    }
-                });
-
-                //每隔5分钟读取 ftp人脸识别信息 更新FaceAlarmData
+                //每隔2分钟读取 ftp人脸识别信息 更新FaceAlarmData
+                
                 ThreadPool.QueueUserWorkItem((a) =>
                 {
                     using (var serviceScope = ServiceLocator.Instance.CreateScope())
@@ -652,63 +649,92 @@ namespace PCServer.Server
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
                         var hostingEnv = serviceScope.ServiceProvider.GetService<IHostingEnvironment>();
 
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 7;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
+
+
                         while (true)
                         {
-                            Logmng.Logger.Trace("ThreadPool=7-----------正在读取：ftp人脸识别信息");
-                            var YEAR = System.DateTime.Now.Year.ToString();
-                            var MONTH = System.DateTime.Now.Month.ToString("00");
-                            var DAY = System.DateTime.Now.Day.ToString("00");
-                            var HH = System.DateTime.Now.Hour.ToString("00");
-
-                            string path = hostingEnv.WebRootPath+ @"\FaceAlarmData\AlarmData";
-                            
-                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
-                            //List<string> strList = FileUtils.ReadDirChild(@"\\38.104.104.4\FaceAlarmData\AlarmData", "data.json");
-                            List<string> strList = FileUtils.ReadDirChild(path, "data.json");
-                            if (strList.Count != 0)
+                            try
                             {
-                                for (int i = 0; i < strList.Count; i++)
+                                Logmng.Logger.Trace("ThreadPool=7-----------正在读取：ftp人脸识别信息");
+                                var YEAR = System.DateTime.Now.Year.ToString();
+                                var MONTH = System.DateTime.Now.Month.ToString("00");
+                                var DAY = System.DateTime.Now.Day.ToString("00");
+                                var HH = System.DateTime.Now.Hour.ToString("00");
+
+                                string path = hostingEnv.WebRootPath + @"\FaceAlarmData\AlarmData";
+
+                                Logmng.Logger.Trace("ThreadPool=7-----------Path：" + path);
+
+                                //FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                                //List<string> strList = FileUtils.ReadDirChild(@"\\38.104.104.4\FaceAlarmData\AlarmData", "data.json");
+                                string[] dirs = FileUtils.GetDirs(path);
+                                Logmng.Logger.Trace("ThreadPool=7-----------dirs length：" + dirs.Length);
+
+                                for (int i = 0; i < dirs.Length; i++)
                                 {
-                                    try
-                                    {
-                                        if (string.IsNullOrEmpty(strList[i]))
-                                            continue;
-                                        JsonFaceStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonFaceStruct>(strList[i]);
-                                        var query = IFaceAlarmData.Find(p => p.alarmId == data.alarmId);
-                                        if (query == null)
-                                        {
-                                            List<string> list = new List<string>();
-                                            for (int m = 0; m < data.humans.Count; m++)
-                                            {
-                                                list.Add(data.humans[m].humanId);
-                                            }
-                                            string matchString = Newtonsoft.Json.JsonConvert.SerializeObject(list);
-                                            IFaceAlarmData.Add(new FaceAlarmData
-                                            {
-                                                alarmTime = data.alarmTime,
-                                                timeStamp = TimeUtils.ConvertToTimeStamps(data.alarmTime),
-                                                cameraName = data.cameraName,
-                                                position = data.humans[0].listLibName,
-                                                alarmId = data.alarmId,
-                                                humanId = data.humanId,
-                                                humanName = data.humanName,
-                                                matchHumanList = matchString,
-                                                Year=YEAR,
-                                                Month=MONTH,
-                                                Day=DAY
-                                            });
-                                        }
-                                    }
-                                    catch 
-                                    {
+                                    string dirFullPath = dirs[i];
+                                    string dirName = Path.GetFileName(dirFullPath);
+                                    if (DoneDirsWithFace.Contains(dirName))
                                         continue;
+
+                                    Logmng.Logger.Debug("ThreadPool=7-----------AddNew");
+
+                                    string file = dirFullPath + "/data.json";
+                                    string fileContent = FileUtils.ReadFile(file);
+                                    if (string.IsNullOrEmpty(fileContent))
+                                        continue;
+
+                                    JsonFaceStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonFaceStruct>(fileContent);
+                                    var query = IFaceAlarmData.Find(p => p.alarmId == data.alarmId);
+                                    if (query == null)
+                                    {
+                                        List<string> list = new List<string>();
+                                        for (int m = 0; m < data.humans.Count; m++)
+                                        {
+                                            list.Add(data.humans[m].humanId);
+                                        }
+                                        string matchString = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+                                        IFaceAlarmData.Add(new FaceAlarmData
+                                        {
+                                            alarmTime = data.alarmTime,
+                                            timeStamp = TimeUtils.ConvertToTimeStamps(data.alarmTime),
+                                            cameraName = data.cameraName,
+                                            position = data.humans[0].listLibName,
+                                            alarmId = data.alarmId,
+                                            humanId = data.humanId,
+                                            humanName = data.humanName,
+                                            matchHumanList = matchString,
+                                            Year = YEAR,
+                                            Month = MONTH,
+                                            Day = DAY
+                                        });
                                     }
+
+                                    if (!DoneDirsWithFace.Contains(dirName))
+                                        DoneDirsWithFace.Add(dirName);
+
                                 }
                             }
-                            Thread.Sleep(1000 * 60 * 5);
+                            catch (Exception e)
+                            {
+                                Logmng.Logger.Error("ThreadPool=7---ERROR:" + e.ToString());
+                            }
+
+
+
+                            Thread.Sleep(1000 * 30);
                         }
                     }
                 });
+
+            
 
                 //每隔5分钟读取 车辆识别信息 更新表caralarmdata
                 ThreadPool.QueueUserWorkItem((a) =>
@@ -720,70 +746,182 @@ namespace PCServer.Server
                         var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
                         var hostingEnv = serviceScope.ServiceProvider.GetService<IHostingEnvironment>();
 
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 8;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
+
                         while (true)
                         {
-                            //2018-1-30-12-53-55_沪AFB883_共和新路延长路(高清)
-                            Logmng.Logger.Trace("ThreadPool=8-----------正在读取：车辆识别信息");
-                            var YEAR = System.DateTime.Now.Year.ToString();
-                            var MONTH = System.DateTime.Now.Month.ToString("00");
-                            var DAY = System.DateTime.Now.Day.ToString("00");
-                            var HH = System.DateTime.Now.Hour.ToString("00");
-
-                            string path = hostingEnv.WebRootPath + @"\CarAlarmData\CheLiangShiBieData";
-
-                            List<string> strList = FileUtils.ReadFileChild(path);
-                            int timeStampNow = TimeUtils.ConvertToTimeStampNow();
-                            if (strList.Count != 0)
+                            try
                             {
-                                for (int i = 0; i < strList.Count; i++)
+
+                                //2018-1-30-12-53-55_沪AFB883_共和新路延长路(高清)
+                                Logmng.Logger.Trace("ThreadPool=8-----------正在读取：车辆识别信息");
+                                var YEAR = System.DateTime.Now.Year.ToString();
+                                var MONTH = System.DateTime.Now.Month.ToString("00");
+                                var DAY = System.DateTime.Now.Day.ToString("00");
+                                var HH = System.DateTime.Now.Hour.ToString("00");
+
+                                string path = hostingEnv.WebRootPath + @"\CarAlarmData\CheLiangShiBieData";
+
+                                List<string> strList = FileUtils.ReadFileChild(path);
+                                int timeStampNow = TimeUtils.ConvertToTimeStampNow();
+                                if (strList.Count != 0)
                                 {
-                                    try
+                                    for (int i = 0; i < strList.Count; i++)
                                     {
-                                        var dataStr = strList[i].Split('_');
-                                        var timeStr = dataStr[0].Split('-');
-                                        var Year = timeStr[0];
-                                        var Month = timeStr[1];
-                                        var Day = timeStr[2];
-
-                                        //var alarmTime = Year + "-" + Month + "-" + Day + " " + timeStr[3] + ":" + timeStr[4] + ":" + timeStr[5];
-                                        var alarmTime = dataStr[0];
-                                        var plateID = dataStr[1];
-                                        var position = dataStr[2];
-                                        var query = ICarAlarmData.Find(p => p.alarmTime == alarmTime && p.plateId == plateID);
-
-                                        if (query==null)
+                                        try
                                         {
-                                            query = new CarAlarmData
+                                            var dataStr = strList[i].Split('_');
+                                            var timeStr = dataStr[0].Split('-');
+                                            var Year = timeStr[0];
+                                            var Month = timeStr[1];
+                                            var Day = timeStr[2];
+
+                                            //var alarmTime = Year + "-" + Month + "-" + Day + " " + timeStr[3] + ":" + timeStr[4] + ":" + timeStr[5];
+                                            var alarmTime = dataStr[0];
+                                            var plateID = dataStr[1];
+                                            var position = dataStr[2];
+                                            var query = ICarAlarmData.Find(p => p.alarmTime == alarmTime && p.plateId == plateID);
+
+                                            if (query == null)
                                             {
-                                                Positon= position,
-                                                alarmTime= alarmTime,
-                                                plateId=plateID,
-                                                Year=Year,
-                                                Month=Month,
-                                                Day=Day,
-                                                timeStamp= timeStampNow
-                                            };
-                                            ICarAlarmData.Add(query);
+                                                query = new CarAlarmData
+                                                {
+                                                    Positon = position,
+                                                    alarmTime = alarmTime,
+                                                    plateId = plateID,
+                                                    Year = Year,
+                                                    Month = Month,
+                                                    Day = Day,
+                                                    timeStamp = timeStampNow
+                                                };
+                                                ICarAlarmData.Add(query);
+                                            }
                                         }
-                                    }
-                                    catch
-                                    {
-                                        continue;
+                                        catch
+                                        {
+                                            continue;
+                                        }
                                     }
                                 }
                             }
+                            catch (Exception e)
+                            {
+                                Logmng.Logger.Error("ThreadPool=8---ERROR:" + e.ToString());
+                            }
+
                             Thread.Sleep(1000 * 60 * 5);
                         }
                     }
                 });
 
+                
+                //每隔1分钟读取 ftp  sqlserver hongwaiPeopleData 更新hongwaiPeopleData
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var Ihongwaipeople = serviceScope.ServiceProvider.GetService<IHongWaiPeopleDataRepositoy>();
+                        var IhongwaiHistoryPeople = serviceScope.ServiceProvider.GetService<IHongWaiPeopleHistoryDataRepositoy>();
+
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 6;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
+                        while (true)
+                        {
+                            try
+                            {
+                                Logmng.Logger.Trace("ThreadPool=6-----------正在读取：ftp 红外报警数据");
+                                var YEAR = System.DateTime.Now.Year.ToString();
+                                var MONTH = System.DateTime.Now.Month.ToString("00");
+                                var DAY = System.DateTime.Now.Day.ToString("00");
+                                var HH = System.DateTime.Now.Hour.ToString("00");
+                                var MM = System.DateTime.Now.Minute.ToString("00");
+                                var nowM = System.DateTime.Now.Minute;
+
+                                string path = "receive/rcwj/" + "hongwai_" + YEAR + "-" + MONTH + "-" + DAY + ".txt";
+
+                                FtpClient ftpClient = new FtpClient("ftp://10.15.55.15:32121/", "zbfjrcwj", "zbfjrcwj");
+                                List<string> strList = ftpClient.DownloadToListStr(path);
+
+                                Logmng.Logger.Trace("ThreadPool=6-----------str:" + strList);
 
 
+                                if (strList.Count != 0)
+                                {
+                                    int timeNow = TimeUtils.ConvertToTimeStampNow();
+                                    for (int i = 0; i < strList.Count; i++)
+                                    {
+                                        JosnHongWaiStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JosnHongWaiStruct>(strList[i]);
+                                        var query = Ihongwaipeople.Find(p => p.sn == data.sn && p.type == data.type && p.Year == YEAR && p.Month == MONTH && p.Day == DAY);
+                                        if (query != null)
+                                        {
+                                            query.count = data.count;
+                                            query.timeStamp = data.timeStamp;
+
+                                            Ihongwaipeople.Update(query);
+                                        }
+                                        else
+                                        {
+                                            Ihongwaipeople.Add(new HongWaiPeopleData
+                                            {
+                                                sn = data.sn,
+                                                count = data.count,
+                                                type = data.type,
+                                                timeStamp = timeNow,
+                                                Year = YEAR,
+                                                Month = MONTH,
+                                                Day = DAY
+                                            });
+                                        }
+                                        if (nowM > 56)
+                                        {
+                                            var queryHistory = IhongwaiHistoryPeople.Find(p => p.sn == data.sn && p.type == data.type && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.Hour == HH && p.Minute == MM);
+                                            if (queryHistory == null)
+                                            {
+                                                IhongwaiHistoryPeople.Add(new HongWaiPeopleHistoryData
+                                                {
+                                                    sn = data.sn,
+                                                    count = data.count,
+                                                    type = data.type,
+                                                    timeStamp = timeNow,
+                                                    Year = YEAR,
+                                                    Month = MONTH,
+                                                    Day = DAY,
+                                                    Hour = HH,
+                                                    Minute = MM,
+                                                });
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Logmng.Logger.Error("ThreadPool=6---ERROR:" + e.ToString());
+                            }
+
+                            Thread.Sleep(1000 * 60 * 1);
+                        }
+                    }
+                });
+
+                
 
             }
             //弃用  服务器不用分析区域 改为api设置  读取配置
             //ReadConfig_PoliceGpsStaticAreas();
-
 
             return;
         }
@@ -857,7 +995,10 @@ namespace PCServer.Server
 
                 if (list != null)
                 {
-                    //List<sys_cameras> addrangeList = new List<sys_cameras>();
+                    var all = ICamerasRepository.FindList(p => true, "", false);
+                    ICamerasRepository.RemoveRange(all);
+
+                    List<SHSecurityModels.sys_cameras> newCamList = new List<sys_cameras>();
 
                     for (int i = 0; i < list.Count; i++)
                     {
@@ -866,75 +1007,65 @@ namespace PCServer.Server
                         if (string.IsNullOrEmpty(item))
                             continue;
 
-                        try
+
+                        //31010811001180006016,华康路秣陵路朝南HG,,,,31010811,,,0,0,31010601002000000002,ON,0,00,,
+
+                        var arr = item.Split(',');
+
+                        if (arr.Length < 13)
+                            continue;
+
+                        var c_id = arr[0] ?? "";
+                        var c_name = arr[1] ?? "";
+                        var c_domain = arr[5] ?? "";
+                        var c_back1 = arr[8] ?? "";
+                        var c_back2 = arr[9] ?? "";
+                        var c_parent = arr[10] ?? "";
+                        var c_state = arr[11] ?? "";
+                        var c_lang = arr[12] ?? "";
+                        var c_lat = arr[13] ?? "";
+
+                        c_lat = c_lat.Substring(c_lang.Length);
+
+
+                        //转换成世界坐标
+                        var c_worldX = "";
+                        var c_worldY = "";
+
+                        if (!string.IsNullOrEmpty(c_lang) && !string.IsNullOrEmpty(c_lat))
                         {
-                            //31010811001180006016,华康路秣陵路朝南HG,,,,31010811,,,0,0,31010601002000000002,ON,0,00,,
-
-                            var arr = item.Split(',');
-
-                            if (arr.Length < 13)
-                                continue;
-
-                            var c_id = arr[0] ?? "";
-                            var c_name = arr[1] ?? "";
-                            var c_domain = arr[5] ?? "";
-                            var c_back1 = arr[8] ?? "";
-                            var c_back2 = arr[9] ?? "";
-                            var c_parent = arr[10] ?? "";
-                            var c_state = arr[11] ?? "";
-                            var c_lang = arr[12] ?? "";
-                            var c_lat = arr[13] ?? "";
-
-                            c_lat = c_lat.Substring(c_lang.Length);
-
-
-                            //转换成世界坐标
-                            var c_worldX = "";
-                            var c_worldY = "";
-
-
-                            var query = ICamerasRepository.Find(p => p.id == c_id);
-                            if (query != null)
+                            if (c_lang == "0" && c_lat == "0")
                             {
-                                continue;
+
+
                             }
                             else
                             {
-                                
-                                if(!string.IsNullOrEmpty(c_lang) && !string.IsNullOrEmpty(c_lat))
-                                {
-                                    if(c_lang =="0" && c_lat == "0") {
-
-
-                                    } else {
-                                        GPS.Vector3 vec = GPSUtils.ComputeLocalPositionGCJ(c_lang, c_lat);
-                                        c_worldX = vec.x.ToString();
-                                        c_worldY = vec.y.ToString();
-                                    }
-                                }
-
-                                ICamerasRepository.Add(new SHSecurityModels.sys_cameras()
-                                {
-                                    id = c_id,
-                                    name = c_name,
-                                    domain = c_domain,
-                                    back1 = c_back1,
-                                    back2 = c_back2,
-                                    parent = c_parent,
-                                    state = c_state,
-                                    lang = c_lang,
-                                    lat = c_lat,
-                                    worldX = c_worldX,
-                                    worldY = c_worldY
-                                });
+                                GPS.Vector3 vec = GPSUtils.ComputeLocalPositionGCJ(c_lang, c_lat);
+                                c_worldX = vec.x.ToString();
+                                c_worldY = vec.y.ToString();
                             }
                         }
-                        catch (Exception)
+
+                        var c = new SHSecurityModels.sys_cameras()
                         {
-                            Logmng.Logger.Error("导入Camera出错： Index:" + i);
-                        }
+                            id = c_id,
+                            name = c_name,
+                            domain = c_domain,
+                            back1 = c_back1,
+                            back2 = c_back2,
+                            parent = c_parent,
+                            state = c_state,
+                            lang = c_lang,
+                            lat = c_lat,
+                            worldX = c_worldX,
+                            worldY = c_worldY
+                        };
+
+                        newCamList.Add(c);
                     }
 
+                    ICamerasRepository.AddRange(newCamList);
                 }
             }
         }

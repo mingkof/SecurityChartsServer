@@ -73,55 +73,51 @@ namespace SHSecurityServer.Controllers
             var kakouConfig = PCServerMain.Instance.kakouConfigDic;
             if (sn==0)
             {
-                var inQuery = _kakoudatajin.FindList(p => kakouConfig["南广场"].Contains(p.SBBHID) && p.pass_or_out == "0", "", false);
+                var inQuery = _kakoudatajin.FindList(p => kakouConfig["南广场"].Contains(p.SBBHID) && p.pass_or_out == 0, "", false);
 
-                var outQuery = _kakoudatajin.FindList(p => kakouConfig["北广场"].Contains(p.SBBHID) && p.pass_or_out == "1", "", false);
+                var outQuery = _kakoudatajin.FindList(p => kakouConfig["南广场"].Contains(p.SBBHID) && p.pass_or_out == 1, "", false);
 
                 try
                 {
                     if (inQuery != null)
                     {
-                        inQueryCount = inQuery.Sum(p => int.Parse(p.Count));
+                        inQueryCount = inQuery.Sum(p => p.Count);
                     }
                     if (outQuery != null)
                     {
-                        outQueryCount = outQuery.Sum(p => int.Parse(p.Count));
+                        outQueryCount = outQuery.Sum(p => p.Count);
                     }
                 }
                 catch
                 {
-
-                    throw;
                 }
             }
             else if(sn==1)
             {
-                var inQuery = _kakoudatajin.FindList(p => kakouConfig["北广场"].Contains(p.SBBHID) && p.pass_or_out == "0", "", false);
+                var inQuery = _kakoudatajin.FindList(p => kakouConfig["北广场"].Contains(p.SBBHID) && p.pass_or_out == 0, "", false);
 
-                var outQuery = _kakoudatajin.FindList(p => kakouConfig["北广场"].Contains(p.SBBHID) && p.pass_or_out == "1", "", false);
+                var outQuery = _kakoudatajin.FindList(p => kakouConfig["北广场"].Contains(p.SBBHID) && p.pass_or_out == 1, "", false);
 
                 try
                 {
                     if (inQuery != null)
                     {
-                        inQueryCount = inQuery.Sum(p => int.Parse(p.Count));
+                        inQueryCount = inQuery.Sum(p => p.Count);
                     }
                     if (outQuery != null)
                     {
-                        outQueryCount = outQuery.Sum(p => int.Parse(p.Count));
+                        outQueryCount = outQuery.Sum(p => p.Count);
                     }
                 }
                 catch
                 {
-
-                    throw;
                 }
             }
           
            
             
             return Ok(new {
-                res=new {
+                res= new {
                     inCount=inQueryCount,
                     outCount=outQueryCount
                 }
