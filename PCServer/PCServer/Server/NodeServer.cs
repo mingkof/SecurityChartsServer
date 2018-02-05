@@ -267,6 +267,18 @@ namespace MKServerWeb.Server
                     DateTime.TryParse(ticket[3] + " " + ticket[4], out DateTime GoDT);
 
 
+                    var passId = ticket[9] ?? "";
+                    var tTime = ticket[13] ?? "";
+
+                    if(passId != "" && tTime != "")
+                    {
+                        var queryItem = systicketRepo.Find(p => p.PassageID == passId && p.TicketTime == tTime);
+                        if(queryItem != null)
+                        {
+                            Logmng.Logger.Trace("Ticket 重复: " + passId + "  " + tTime);
+                            continue;
+                        }
+                    }
 
                     ticketList.Add(new SHSecurityModels.sys_ticketres()
                     {
@@ -291,13 +303,15 @@ namespace MKServerWeb.Server
                         GoDateDay = GoDT.Day.ToString("00")
                     });
 
+        
+
 
                     //Logmng.Logger.Trace("InitTicketResultData at 222:  IN FOR AT : " + i);
                 }
 
 
                 //Logmng.Logger.Trace("InitTicketResultData A555555");
-
+                Logmng.Logger.Trace("Ticket Add New List Count is : " + ticketList.Count);
                 systicketRepo.AddRange(ticketList);
 
                 //Logmng.Logger.Trace("InitTicketResultData A666666");

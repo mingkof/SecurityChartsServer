@@ -93,7 +93,7 @@ namespace MKServerWeb.Controllers
             string nowDay = System.DateTime.Now.Day.ToString("00");
 
 
-            var query = _sysTicketresRepository.FindPageList(pageIndex, pageSize, out int totalSize, p => p.TicketYear == nowYear && p.TicketMonth == nowMonth && p.TicketDay == nowDay, "", false);
+            var query = _sysTicketresRepository.FindPageList(pageIndex, pageSize, out int totalSize, p => p.GoDateYear == nowYear && p.GoDateMonth == nowMonth && p.GoDateDay == nowDay, "GoTime", false);
 
             return Ok(new {
                 res=query
