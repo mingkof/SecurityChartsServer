@@ -428,65 +428,70 @@ namespace PCServer.Server
                 });
 
                 //每隔1分钟，读取ftp文件抓拍 Travio.json，更新traviodata
-                //ThreadPool.QueueUserWorkItem((a) =>
-                //{
+                ThreadPool.QueueUserWorkItem((a) =>
+                {
 
-                //    using (var serviceScope = ServiceLocator.Instance.CreateScope())
-                //    {
-                //        var ITravioData = serviceScope.ServiceProvider.GetService<ITravioDataRepositoy>();
+                    using (var serviceScope = ServiceLocator.Instance.CreateScope())
+                    {
+                        var ITravioData = serviceScope.ServiceProvider.GetService<ITravioDataRepositoy>();
 
-                //        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
+                        var RealDataConfig = serviceScope.ServiceProvider.GetService<IOptions<RealDataUrl>>();
 
-                //        string path = "AllTravioInfo.json";
+                        string path = "AllTravioInfo.json";
 
-                //        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
-                //        var kc_key = 900000 + 3;
-                //        var queryKey = KeyConfig.Find(p => p.key == kc_key);
-                //        if (queryKey != null && queryKey.valueInt == 9)
-                //        {
-                //            return;
-                //        }
+                        var KeyConfig = serviceScope.ServiceProvider.GetService<ISysConfigRepository>();
+                        var kc_key = 900000 + 3;
+                        var queryKey = KeyConfig.Find(p => p.key == kc_key);
+                        if (queryKey != null && queryKey.valueInt == 9)
+                        {
+                            return;
+                        }
 
 
-                //        while (true)
-                //        {
-                //            Logmng.Logger.Trace("ThreadPool=3-----------正在读取：AllTravioInfo.json");
-                //            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
-                //            string str = ftpClient.DownloadToStr(path);
-                //            if (!string.IsNullOrEmpty(str))
-                //            {
-                //                int timeNow = TimeUtils.ConvertToTimeStampNow();
-                //                // Logmng.Logger.Trace(str);
-                //                TraVioInfoStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<TraVioInfoStruct>(str);
-                //                var count = res.NearWeekCount.nearWeekCount;
+                        while (true)
+                        {
+                            Logmng.Logger.Trace("ThreadPool=3-----------正在读取：AllTravioInfo.json");
+                            FtpClient ftpClient = new FtpClient(RealDataConfig.Value.ip, RealDataConfig.Value.username, RealDataConfig.Value.userpassword);
+                            string str = ftpClient.DownloadToStr(path);
+                            if (!string.IsNullOrEmpty(str))
+                            {
+                                int timeNow = TimeUtils.ConvertToTimeStampNow();
+                                // Logmng.Logger.Trace(str);
+                                TraVioInfoStruct res = Newtonsoft.Json.JsonConvert.DeserializeObject<TraVioInfoStruct>(str);
 
-                //                var YEAR = System.DateTime.Now.Year.ToString();
-                //                var MONTH = System.DateTime.Now.Month.ToString("00");
-                //                var DAY = System.DateTime.Now.Day.ToString("00");
+                                if(res != null && res.NearWeekCount != null && res.NearWeekCount.nearWeekCount != null)
+                                {
+                                    var count = res.NearWeekCount.nearWeekCount;
 
-                //                var query = ITravioData.Find(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY);
-                //                if (query != null)
-                //                {
-                //                    query.TodayCount = count;
-                //                    query.TimeStamp = timeNow;
-                //                    ITravioData.Update(query);
-                //                }
-                //                else
-                //                {
-                //                    ITravioData.Add(new traviodata()
-                //                    {
-                //                        Year = YEAR,
-                //                        Month = MONTH,
-                //                        Day = DAY,
-                //                        TodayCount = count,
-                //                        TimeStamp = timeNow
-                //                    });
-                //                }
-                //            }
-                //            Thread.Sleep(1000 * 60);
-                //        }
-                //    }
-                //});
+                                    var YEAR = System.DateTime.Now.Year.ToString();
+                                    var MONTH = System.DateTime.Now.Month.ToString("00");
+                                    var DAY = System.DateTime.Now.Day.ToString("00");
+
+                                    var query = ITravioData.Find(p => p.Year == YEAR && p.Month == MONTH && p.Day == DAY);
+                                    if (query != null)
+                                    {
+                                        query.TodayCount = count;
+                                        query.TimeStamp = timeNow;
+                                        ITravioData.Update(query);
+                                    }
+                                    else
+                                    {
+                                        ITravioData.Add(new traviodata()
+                                        {
+                                            Year = YEAR,
+                                            Month = MONTH,
+                                            Day = DAY,
+                                            TodayCount = count,
+                                            TimeStamp = timeNow
+                                        });
+                                    }
+                                }
+                            }
+
+                            Thread.Sleep(1000 * 60);
+                        }
+                    }
+                });
 
                 //每隔五分钟记录roaddata   更新roaddatarecord
                 ThreadPool.QueueUserWorkItem((a) =>
