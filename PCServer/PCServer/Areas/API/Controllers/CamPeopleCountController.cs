@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.NodeServices;
 using PCServer;
 using System.Net.Http;
 using System.Text;
+using KVDDDCore.Utils;
 
 namespace SHSecurityServer.Controllers
 {
@@ -52,9 +53,13 @@ namespace SHSecurityServer.Controllers
             });
         }
 
-
+        /// <summary>
+        /// 设置摄像头数人的数量
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
         [HttpPost("AddRange")]
-        public IActionResult AddRange([FromBody] List<sys_camPeopleCount> values)
+        public IActionResult AddRange([FromBody] List<camPeopleCount> values)
         {
             if (values == null)
                 return BadRequest();
@@ -65,19 +70,39 @@ namespace SHSecurityServer.Controllers
 
                 if (string.IsNullOrEmpty(item.ID))
                     continue;
+                var dateTime = TimeUtils.ConvertToDateTime(item.Time);
+                var year = dateTime.Year.ToString();
+                var month = dateTime.Month.ToString("00");
+                var day = dateTime.Day.ToString("00");
+                var hour = dateTime.Hour.ToString("00");
+                var minute = dateTime.Minute.ToString("00");
 
-                var query = _camPeopleCount.Find(p => p.ID == item.ID);
+                var query = _camPeopleCount.Find(p => p.ID == item.ID&&p.Year==year&&p.Month==month&&p.Day==day&&p.Hour==hour&&p.Minute==minute);
                 if (query == null)
                 {
-                    _camPeopleCount.Add(item);
+                    _camPeopleCount.Add(new sys_camPeopleCount {
+                        ID=item.ID,
+                        Count=item.Count,
+                        Time=item.Time,
+                        Year=year,
+                        Month=month,
+                        Day=day,
+                        Hour=hour,
+                        Minute=minute
+                    });
                 }
                 else
                 {
                     query.Count = item.Count;
+                    query.Time = item.Time;
+                    query.Year = year;
+                    query.Month = month;
+                    query.Day = day;
+                    query.Hour = hour;
+                    query.Minute = minute;
                     _camPeopleCount.Update(query);
                 }
             }
-
             return Ok();
         }
 
@@ -137,3 +162,9 @@ namespace SHSecurityServer.Controllers
 
     }
     }
+public class camPeopleCount
+{
+    public string ID { get; set; }
+    public int Count { get; set; }
+    public int Time { get; set; }
+}

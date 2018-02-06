@@ -847,12 +847,12 @@ namespace PCServer.Server
                             try
                             {
                                 Logmng.Logger.Trace("ThreadPool=6-----------正在读取：ftp 红外报警数据");
-                                var YEAR = System.DateTime.Now.Year.ToString();
-                                var MONTH = System.DateTime.Now.Month.ToString("00");
-                                var DAY = System.DateTime.Now.Day.ToString("00");
-                                var HH = System.DateTime.Now.Hour.ToString("00");
-                                var MM = System.DateTime.Now.Minute.ToString("00");
-                                var nowM = System.DateTime.Now.Minute;
+                                var YEAR = "0000";
+                                var MONTH = "";
+                                var DAY = "";
+                                var HH = "";
+                                var MM = "";
+                                int intM =0;
 
                                 string path = "receive/rcwj/" + "hongwai_" + YEAR + "-" + MONTH + "-" + DAY + ".txt";
 
@@ -861,36 +861,48 @@ namespace PCServer.Server
 
                                 Logmng.Logger.Trace("ThreadPool=6-----------str:" + strList);
 
-
                                 if (strList.Count != 0)
                                 {
                                     int timeNow = TimeUtils.ConvertToTimeStampNow();
                                     for (int i = 0; i < strList.Count; i++)
                                     {
                                         JosnHongWaiStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JosnHongWaiStruct>(strList[i]);
-                                        var query = Ihongwaipeople.Find(p => p.sn == data.sn && p.type == data.type && p.Year == YEAR && p.Month == MONTH && p.Day == DAY);
-                                        if (query != null)
-                                        {
-                                            query.count = data.count;
-                                            query.timeStamp = data.timeStamp;
 
-                                            Ihongwaipeople.Update(query);
-                                        }
-                                        else
+                                        if (data==null)
                                         {
-                                            Ihongwaipeople.Add(new HongWaiPeopleData
+                                            var date = TimeUtils.ConvertToDateTime(data.timeStamp);
+                                            if (date!=null)
                                             {
-                                                sn = data.sn,
-                                                count = data.count,
-                                                type = data.type,
-                                                timeStamp = timeNow,
-                                                Year = YEAR,
-                                                Month = MONTH,
-                                                Day = DAY
-                                            });
-                                        }
-                                        if (nowM > 56)
-                                        {
+                                                YEAR = date.Year.ToString();
+                                                MONTH = date.Month.ToString("00");
+                                                DAY = date.Day.ToString("00");
+                                                HH = date.Hour.ToString("00");
+                                                MM = date.Minute.ToString("00");
+                                                intM = date.Minute;
+                                            }
+
+                                            var query = Ihongwaipeople.Find(p => p.sn == data.sn && p.type == data.type && p.Year == YEAR && p.Month == MONTH && p.Day == DAY);
+                                            if (query != null)
+                                            {
+                                                query.count = data.count;
+                                                query.timeStamp = data.timeStamp;
+
+                                                Ihongwaipeople.Update(query);
+                                            }
+                                            else
+                                            {
+                                                Ihongwaipeople.Add(new HongWaiPeopleData
+                                                {
+                                                    sn = data.sn,
+                                                    count = data.count,
+                                                    type = data.type,
+                                                    timeStamp = timeNow,
+                                                    Year = YEAR,
+                                                    Month = MONTH,
+                                                    Day = DAY
+                                                });
+                                            }
+                                            //记录历史数据
                                             var queryHistory = IhongwaiHistoryPeople.Find(p => p.sn == data.sn && p.type == data.type && p.Year == YEAR && p.Month == MONTH && p.Day == DAY && p.Hour == HH && p.Minute == MM);
                                             if (queryHistory == null)
                                             {
@@ -908,7 +920,6 @@ namespace PCServer.Server
                                                 });
                                             }
                                         }
-
                                     }
                                 }
                             }

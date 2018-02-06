@@ -50,39 +50,42 @@ namespace SHSecurityServer.Controllers
         [HttpGet("GetTodayCount/{sn}")]
         public IActionResult GetTodayCount(string sn)
         {
-            string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
-            int todayStamp = TimeUtils.ConvertToTimeStamps(today);
+            //string today = DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00";
+            //int todayStamp = TimeUtils.ConvertToTimeStamps(today);
             string nowYear = System.DateTime.Now.Year.ToString();
             string nowMonth = System.DateTime.Now.Month.ToString("00");
             string nowDay = System.DateTime.Now.Day.ToString("00");
 
-            var nowH = System.DateTime.Now.Hour;
-            var query = _hongwaidata.FindList(p => p.sn == sn && p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay, "", false);
+            //var nowH = System.DateTime.Now.Hour;
+            //var query = _hongwaidata.FindList(p => p.sn == sn && p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay, "", false);
 
-            List<string> inlist = new List<string>();
-            List<string> outlist = new List<string>();
+            //List<string> inlist = new List<string>();
+            //List<string> outlist = new List<string>();
 
-            for (int i = 0; i <= nowH; i++)
-            {
+            //升序
+            var inQuey = _hongwaiHistorydata.FindList(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.sn == sn && p.type == "0", "timeStamp", true);
+            var outQuey = _hongwaiHistorydata.FindList(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.sn == sn && p.type == "1", "timeStamp", true);
 
-                var inQuey = _hongwaiHistorydata.Find(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay & p.Hour == i.ToString("00") &&p.Minute=="59"&& p.sn == sn && p.type == "0");
-                var outQuey = _hongwaiHistorydata.Find(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay & p.Hour == i.ToString("00") && p.Minute == "59" && p.sn == sn && p.type == "1");
-                if (inQuey != null && outQuey != null)
-                {
-                    inlist.Add(inQuey.count);
-                    outlist.Add(outQuey.count);
-                }
-                else
-                {
-                    inlist.Add("");
-                    outlist.Add("");
-                }
-            }
             return Ok(new
             {
-                inList = inlist,
-                outList= outlist,
+                inList = inQuey,
+                outList = outQuey,
             });
+            //for (int i = 0; i <= nowH; i++)
+            //{
+            //    var inQuey = _hongwaiHistorydata.Find(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay & p.Hour == i.ToString("00") && p.Minute == "59" && p.sn == sn && p.type == "0");
+            //    var outQuey = _hongwaiHistorydata.Find(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay & p.Hour == i.ToString("00") && p.Minute == "59" && p.sn == sn && p.type == "1");
+            //    if (inQuey != null && outQuey != null)
+            //    {
+            //        inlist.Add(inQuey.count);
+            //        outlist.Add(outQuey.count);
+            //    }
+            //    else
+            //    {
+            //        inlist.Add("");
+            //        outlist.Add("");
+            //    }
+            //}
         }
     }
  }

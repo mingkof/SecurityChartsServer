@@ -13,5 +13,10 @@ namespace SHSecurityModels
         public string ID { get; set; }
         public int Count { get; set; }
         public int Time { get; set; }
+        public string Year { get; set; }
+        public string Month { get; set; }
+        public string Day { get; set; }
+        public string Hour { get; set; }
+        public string Minute { get; set; }
     }
 }
