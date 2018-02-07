@@ -37,9 +37,15 @@ namespace SHSecurityServer.Controllers
             string nowYear = System.DateTime.Now.Year.ToString();
             string nowMonth = System.DateTime.Now.Month.ToString("00");
             string nowDay = System.DateTime.Now.Day.ToString("00");
-            var query = _hongwaidata.FindList(p => p.sn == sn && p.Year == nowYear&&p.Month==nowMonth&&p.Day==nowDay,"",false);
-            return Ok(new {
-                res = query
+            //var query = _hongwaidata.FindList(p => p.sn == sn && p.Year == nowYear&&p.Month==nowMonth&&p.Day==nowDay,"",false);
+            //为了与下API保持同样的数据结构
+            var inQuey = _hongwaidata.FindList(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.sn == sn && p.type == "0", "timeStamp", true);
+            var outQuey = _hongwaidata.FindList(p => p.Year == nowYear && p.Month == nowMonth && p.Day == nowDay && p.sn == sn && p.type == "1", "timeStamp", true);
+
+            return Ok(new
+            {
+                inList = inQuey,
+                outList = outQuey,
             });
         }
         /// <summary>

@@ -847,9 +847,9 @@ namespace PCServer.Server
                             try
                             {
                                 Logmng.Logger.Trace("ThreadPool=6-----------正在读取：ftp 红外报警数据");
-                                var YEAR = "0000";
-                                var MONTH = "";
-                                var DAY = "";
+                                var YEAR = DateTime.Now.Year.ToString();
+                                var MONTH = DateTime.Now.Month.ToString("00");
+                                var DAY = DateTime.Now.Day.ToString("00");
                                 var HH = "";
                                 var MM = "";
                                 int intM =0;
@@ -866,9 +866,9 @@ namespace PCServer.Server
                                     int timeNow = TimeUtils.ConvertToTimeStampNow();
                                     for (int i = 0; i < strList.Count; i++)
                                     {
-                                        JosnHongWaiStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JosnHongWaiStruct>(strList[i]);
+                                        JsonHongWaiStruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonHongWaiStruct>(strList[i]);
 
-                                        if (data==null)
+                                        if (data!=null)
                                         {
                                             var date = TimeUtils.ConvertToDateTime(data.timeStamp);
                                             if (date!=null)

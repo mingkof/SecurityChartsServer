@@ -18,7 +18,7 @@ namespace SHSecurityModels
         public string Day { get; set; }
     }
 
-    public class JosnHongWaiStruct
+    public class JsonHongWaiStruct
     {
         public string sn;
         public string type;
