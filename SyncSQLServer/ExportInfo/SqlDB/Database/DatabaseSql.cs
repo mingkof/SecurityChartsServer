@@ -54,7 +54,7 @@ namespace ServerDBExt.Database
         /// <param name="commandText">The Sql query to execute</param>
         /// <param name="parameters">Optional parameters to pass to the query</param>
         /// <returns>The count of records affected by the Sql statement</returns>
-        public int Execute(string commandText, IEnumerable parameters)
+        public int Execute(string commandText, IEnumerable parameters, bool FinallyClose )
         {
             int result;
 
@@ -71,7 +71,8 @@ namespace ServerDBExt.Database
             }
             finally
             {
-                _connection.Close();
+                if(FinallyClose)
+                    EnsureConnectionClosed();
             }
 
             return result;
@@ -83,7 +84,7 @@ namespace ServerDBExt.Database
         /// <param name="commandText">The Sql query to execute</param>
         /// <param name="parameters">Optional parameters to pass to the query</param>
         /// <returns></returns>
-        public object QueryValue(string commandText, IEnumerable parameters)
+        public object QueryValue(string commandText, IEnumerable parameters, bool FinallyClose)
         {
             object result;
 
@@ -104,7 +105,8 @@ namespace ServerDBExt.Database
             }
             finally
             {
-                EnsureConnectionClosed();
+                if (FinallyClose)
+                    EnsureConnectionClosed();
             }
 
             return result;
@@ -117,7 +119,7 @@ namespace ServerDBExt.Database
         /// <param name="parameters">Parameters to pass to the Sql query</param>
         /// <returns>A list of a Dictionary of Key, values pairs representing the 
         /// ColumnName and corresponding value</returns>
-        public List<Dictionary<string, string>> Query(string commandText, IEnumerable parameters)
+        public List<Dictionary<string, string>> Query(string commandText, IEnumerable parameters, bool FinallyClose)
         {
             List<Dictionary<string, string>> rows;
             if (string.IsNullOrEmpty(commandText))
@@ -147,7 +149,8 @@ namespace ServerDBExt.Database
             }
             finally
             {
-                EnsureConnectionClosed();
+                if (FinallyClose)
+                    EnsureConnectionClosed();
             }
 
             return rows;
@@ -256,9 +259,9 @@ namespace ServerDBExt.Database
         /// <param name="commandText">The Sql query to execute</param>
         /// <param name="parameters">Parameters to pass to the Sql query</param>
         /// <returns>The string value resulting from the query</returns>
-        public string GetStrValue(string commandText, IEnumerable parameters)
+        public string GetStrValue(string commandText, IEnumerable parameters, bool FinallyClose)
         {
-            var value = QueryValue(commandText, parameters) as string;
+            var value = QueryValue(commandText, parameters, FinallyClose) as string;
             return value;
         }
 

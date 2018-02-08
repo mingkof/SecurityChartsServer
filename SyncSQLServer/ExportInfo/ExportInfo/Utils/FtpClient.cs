@@ -102,7 +102,6 @@ namespace KVDDDCore.Utils
             }
             catch (Exception ex)
             {
-                throw ex;
             }
 
         }

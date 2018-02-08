@@ -82,19 +82,26 @@ namespace KVDDDCore.Utils
 
         public static void WriteFile(string path, List<string> list, bool overWrite, Encoding encode)
         {
-            if (overWrite || !File.Exists(path))
+            try
             {
-                FileInfo myfile = new FileInfo(path);
-                FileStream fs = myfile.Create();
-                fs.Close();
+                if (overWrite || !File.Exists(path))
+                {
+                    FileInfo myfile = new FileInfo(path);
+                    FileStream fs = myfile.Create();
+                    fs.Close();
+                }
+                StreamWriter sw = new StreamWriter(path, false, encode);
+                foreach (string item in list)
+                {
+                    sw.WriteLine(item);
+                }
+                sw.Flush();
+                sw.Close();
             }
-            StreamWriter sw = new StreamWriter(path, false, encode);
-            foreach (string item in list)
+            catch 
             {
-                sw.WriteLine(item);
             }
-            sw.Flush();
-            sw.Close();
+          
         }
         public static bool WriteFile(string path, string content, bool overWrite, Encoding encode)
         {

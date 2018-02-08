@@ -7,10 +7,10 @@ namespace ServerDBExt.Database
 {
     public interface IDatabase
     {
-        int Execute(string commandText, IEnumerable parameters);
-        object QueryValue(string commandText, IEnumerable parameters);
-        List<Dictionary<string, string>> Query(string commandText, IEnumerable parameters);
-        string GetStrValue(string commandText, IEnumerable parameters);
+        int Execute(string commandText, IEnumerable parameters, bool FinallyClose);
+        object QueryValue(string commandText, IEnumerable parameters, bool FinallyClose);
+        List<Dictionary<string, string>> Query(string commandText, IEnumerable parameters, bool FinallyClose);
+        string GetStrValue(string commandText, IEnumerable parameters, bool FinallyClose);
         bool DoEnsureOpen(Action<string> CB);
         void DoEnsureClose();
 
