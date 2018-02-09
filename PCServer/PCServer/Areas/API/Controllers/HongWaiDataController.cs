@@ -93,5 +93,43 @@ namespace SHSecurityServer.Controllers
             //    }
             //}
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sn"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        [HttpGet("GetTimeRangeData/{sn}/{startTime}/{endTime}")]
+        public IActionResult GetTimeRangeData(string sn, string startTime,string endTime)
+        {
+            try
+            {
+                var startTimeStamp = TimeUtils.ConvertToTimeStamps(startTime);
+                var endTimeStamp = TimeUtils.ConvertToTimeStampByZero(endTime,1);
+
+                //var start = Convert.ToDateTime(startTime);
+                //var end = Convert.ToDateTime(endTime);
+                //var startYear = start.Year.ToString();
+                //var startMonth = start.Month.ToString("00");
+                //var startDay = start.Day.ToString("00");
+                //var endYear = start.Year.ToString();
+                //var endMonth = start.Month.ToString("00");
+                //var endDay = start.Day.ToString("00");
+
+                var inQuery = _hongwaidata.FindList(p =>p.sn==sn && p.type == "0" && p.timeStamp >= startTimeStamp && p.timeStamp <= endTimeStamp, "timeStamp", true);
+                var outQuery = _hongwaidata.FindList(p =>p.sn==sn && p.type == "1" && p.timeStamp >= startTimeStamp && p.timeStamp <= endTimeStamp, "timeStamp", true);
+                return Ok(new {
+                    inList = inQuery,
+                    outList = outQuery,
+                });
+
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
  }
