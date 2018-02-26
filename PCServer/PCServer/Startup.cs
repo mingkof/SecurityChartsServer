@@ -1,5 +1,5 @@
-﻿#define PUBLISH_GONGAN
-//#define AT_COMPANY
+﻿//#define PUBLISH_GONGAN
+#define AT_COMPANY
 
 using System;
 using System.Collections.Generic;

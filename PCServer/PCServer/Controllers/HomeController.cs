@@ -22,7 +22,8 @@ namespace MKServerWeb.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return Redirect("/swagger/");
+            //return View();
         }
 
         public IActionResult swagger()
