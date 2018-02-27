@@ -598,7 +598,7 @@ namespace PCServer.Server
                         {
                             try
                             {
-                                Logmng.Logger.Trace("ThreadPool=5-----------正在读取：ftp MQ物联报警数据");
+                                Logmng.Logger.Trace("ThreadPool=5----1-------正在读取：ftp MQ物联报警数据");
                                 var YEAR = System.DateTime.Now.Year.ToString();
                                 var MONTH = System.DateTime.Now.Month.ToString("00");
                                 var DAY = System.DateTime.Now.Day.ToString("00");
@@ -606,11 +606,15 @@ namespace PCServer.Server
                                 string path = "receive/rcwj/" + "wulian_" + YEAR + MONTH + DAY + HH + ".txt";
 
                                 FtpClient ftpClient = new FtpClient("ftp://10.15.55.15:32121/", "zbfjrcwj", "zbfjrcwj");
+
+                                Logmng.Logger.Trace("ThreadPool=5----2-------正在读取：ftp MQ物联报警数据"+ path);
+
                                 List<string> strList = ftpClient.DownloadToListStr(path);
                                 if (strList.Count != 0)
                                 {
                                     for (int i = 0; i < strList.Count; i++)
                                     {
+                                        Logmng.Logger.Trace("ThreadPool=5------3-----正在读取：ftp MQ物联报警数据" );
                                         JsonMQServerDataContruct data = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonMQServerDataContruct>(strList[i]);
                                         var query = IMQServerData.Find(p => p.dsnum == data.dsnum && p.mtype == data.mtype && p.time == data.time);
                                         if (query == null)
@@ -627,6 +631,11 @@ namespace PCServer.Server
                                                 topicType = data.topicType,
                                                 timeStamp = data.timeStamp
                                             });
+                                            Logmng.Logger.Trace("ThreadPool=5------4-----数据记录：ftp MQ物联报警数据");
+                                        }
+                                        else
+                                        {
+                                            Logmng.Logger.Trace("ThreadPool=5------5-----读取出错："+query.dsnum);
                                         }
                                     }
                                 }
