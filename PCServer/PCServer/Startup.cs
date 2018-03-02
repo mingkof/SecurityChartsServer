@@ -51,6 +51,7 @@ namespace PCServer
             services.AddNodeServices();
 
             services.AddScoped<IJJDRepository, JJDRepository>();
+            services.AddScoped<ITestReposity, TestRepository>();
             services.AddScoped<ISysWifiTableRepository, SysWifiTableRepository>();
             services.AddScoped<ISys110WarningRepository, Sys110WarningRepository>();
             services.AddScoped<ISysTicketresRepository, SysTicketresRepository>();
@@ -79,6 +80,7 @@ namespace PCServer
 
 
             var conn = Configuration.GetConnectionString("DefaultConnection");
+       
 
             services.AddEntityFrameworkMySql()
                     .AddOptions()

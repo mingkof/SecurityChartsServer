@@ -23,7 +23,7 @@ namespace PCServer
                .UseContentRoot(Directory.GetCurrentDirectory())
                .UseStartup<Startup>()
                .UseKestrel()
-               //.UseUrls("http://38.104.104.23:8001")
+               //.UseUrls("http://127.0.0.1:12000")
                .Build();
     }
 }

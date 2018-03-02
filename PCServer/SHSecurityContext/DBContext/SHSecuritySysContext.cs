@@ -23,6 +23,7 @@ namespace SHSecurityContext.DBContext
         }
 
         public DbSet<db_jjd> db_jjds { get; set; }
+        public DbSet<db_test> db_test { get; set; }
         public DbSet<sys_wifitable> sys_wifitable { get; set; }
         public DbSet<sys_110warningdb> sys_110warningdb { get; set; }
         public DbSet<sys_ticketres> sys_ticketres { get; set; }

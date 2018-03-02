@@ -11,9 +11,10 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    partial class SHSecuritySysContextModelSnapshot : ModelSnapshot
+    [Migration("20180227024950_dbtest")]
+    partial class dbtest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,24 +71,6 @@ namespace SHSecurityContext.Migrations
                     b.HasKey("id");
 
                     b.ToTable("db_jjds");
-                });
-
-            modelBuilder.Entity("SHSecurityModels.db_test", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("adress");
-
-                    b.Property<string>("name");
-
-                    b.Property<float>("old");
-
-                    b.Property<bool>("wedding");
-
-                    b.HasKey("id");
-
-                    b.ToTable("db_test");
                 });
 
             modelBuilder.Entity("SHSecurityModels.FaceAlarmData", b =>

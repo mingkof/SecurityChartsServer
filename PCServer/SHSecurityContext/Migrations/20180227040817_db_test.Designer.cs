@@ -11,9 +11,10 @@ using System;
 namespace SHSecurityContext.Migrations
 {
     [DbContext(typeof(SHSecuritySysContext))]
-    partial class SHSecuritySysContextModelSnapshot : ModelSnapshot
+    [Migration("20180227040817_db_test")]
+    partial class db_test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
