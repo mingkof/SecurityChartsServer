@@ -1,0 +1,139 @@
+﻿body {
+  margin:0px;
+  background-image:none;
+  position:static;
+  left:auto;
+  width:1060px;
+  margin-left:0;
+  margin-right:0;
+  text-align:left;
+}
+#base {
+  position:absolute;
+  z-index:0;
+}
+#u12_img {
+  border-width:0px;
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:960px;
+  height:540px;
+}
+#u12 {
+  border-width:0px;
+  position:absolute;
+  left:100px;
+  top:100px;
+  width:960px;
+  height:540px;
+}
+#u13 {
+  border-width:0px;
+  position:absolute;
+  left:2px;
+  top:262px;
+  width:956px;
+  visibility:hidden;
+  word-wrap:break-word;
+}
+#u14_img {
+  border-width:0px;
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:24px;
+  height:25px;
+}
+#u14 {
+  border-width:0px;
+  position:absolute;
+  left:206px;
+  top:394px;
+  width:24px;
+  height:25px;
+}
+#u15 {
+  border-width:0px;
+  position:absolute;
+  left:2px;
+  top:4px;
+  width:20px;
+  visibility:hidden;
+  word-wrap:break-word;
+}
+#u16_img {
+  border-width:0px;
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:439px;
+  height:77px;
+}
+#u16 {
+  border-width:0px;
+  position:absolute;
+  left:100px;
+  top:100px;
+  width:439px;
+  height:77px;
+}
+#u17 {
+  border-width:0px;
+  position:absolute;
+  left:2px;
+  top:30px;
+  width:435px;
+  visibility:hidden;
+  word-wrap:break-word;
+}
+#u18_img {
+  border-width:0px;
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:24px;
+  height:25px;
+}
+#u18 {
+  border-width:0px;
+  position:absolute;
+  left:335px;
+  top:474px;
+  width:24px;
+  height:25px;
+}
+#u19 {
+  border-width:0px;
+  position:absolute;
+  left:2px;
+  top:4px;
+  width:20px;
+  visibility:hidden;
+  word-wrap:break-word;
+}
+#u20_img {
+  border-width:0px;
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:24px;
+  height:25px;
+}
+#u20 {
+  border-width:0px;
+  position:absolute;
+  left:801px;
+  top:265px;
+  width:24px;
+  height:25px;
+}
+#u21 {
+  border-width:0px;
+  position:absolute;
+  left:2px;
+  top:4px;
+  width:20px;
+  visibility:hidden;
+  word-wrap:break-word;
+}
